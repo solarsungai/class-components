@@ -5,11 +5,23 @@ import Header from './components/Header';
 import Results from './components/Results';
 
 type AppState = {
+  serverUrl: string;
   inputValue: string;
-  results: string[];
+  results: PokemonData[];
   loading: boolean;
   error: string | null;
   lastSearchTerm: string;
+};
+
+type PokemonData = {
+  name: string;
+  id: number;
+  image: string;
+  types: string[];
+  height: number;
+  weight: number;
+  baseExperience: number;
+  abilities: string[];
 };
 
 class App extends Component<{}, AppState> {
@@ -61,7 +73,17 @@ class App extends Component<{}, AppState> {
       }
       const data = await response.json();
       console.log(data);
-      this.setState({ loading: false, results: [data.name] });
+      const pokemonData: PokemonData = {
+        name: data.name,
+        id: data.id,
+        image: data.sprites.front_default,
+        types: data.types.map((typeInfo: any) => typeInfo.type.name),
+        height: data.height,
+        weight: data.weight,
+        baseExperience: data.base_experience,
+        abilities: data.abilities.map((abilityInfo: any) => abilityInfo.ability.name),
+      };
+      this.setState({ loading: false, results: [pokemonData] });
     } catch (error) {
       console.log(error);
       const message = error instanceof Error ? error.message : "Unknown error";

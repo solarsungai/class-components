@@ -1,16 +1,27 @@
 import { PureComponent } from 'react';
+import ResultItem from './ResultItem';
+
+type PokemonData = {
+  name: string;
+  id: number;
+  image: string;
+  types: string[];
+  height: number;
+  weight: number;
+  baseExperience: number;
+  abilities: string[];
+};
 
 type ResultsProps = {
-  results: string[];
+  results: PokemonData[];
 };
 
 class Results extends PureComponent<ResultsProps> {
     render() {
-        console.log("results");
         return (
             <div className="results">
-                {this.props.results.map((result, index) => (
-                    <div key={index} className="result-item">{result}</div>
+                {this.props.results.map((pokemon) => (
+                    <ResultItem key={pokemon.id} pokemon={pokemon} />
                 ))}
             </div>
         );
