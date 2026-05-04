@@ -11,10 +11,14 @@ class ResultItem extends PureComponent<ResultItemProps> {
     const types = pokemon.types ?? [];
     const abilities = pokemon.abilities ?? [];
     const hasStats =
-      pokemon.height !== undefined
-      && pokemon.weight !== undefined
-      && pokemon.baseExperience !== undefined;
-    const hasExtraDetails = Boolean(pokemon.image) || types.length > 0 || abilities.length > 0 || hasStats;
+      pokemon.height !== undefined &&
+      pokemon.weight !== undefined &&
+      pokemon.baseExperience !== undefined;
+    const hasExtraDetails =
+      Boolean(pokemon.image) ||
+      types.length > 0 ||
+      abilities.length > 0 ||
+      hasStats;
 
     return (
       <div className="pokemon-card">
@@ -37,7 +41,9 @@ class ResultItem extends PureComponent<ResultItemProps> {
                 <h3>Types</h3>
                 <div className="tags">
                   {types.map((type) => (
-                    <span key={type} className={`tag tag-${type}`}>{type}</span>
+                    <span key={type} className={`tag tag-${type}`}>
+                      {type}
+                    </span>
                   ))}
                 </div>
               </div>
@@ -48,7 +54,9 @@ class ResultItem extends PureComponent<ResultItemProps> {
                 <h3>Abilities</h3>
                 <div className="tags">
                   {abilities.map((ability) => (
-                    <span key={ability} className="tag tag-ability">{ability}</span>
+                    <span key={ability} className="tag tag-ability">
+                      {ability}
+                    </span>
                   ))}
                 </div>
               </div>
@@ -72,7 +80,6 @@ class ResultItem extends PureComponent<ResultItemProps> {
             )}
           </div>
         )}
-
       </div>
     );
   }

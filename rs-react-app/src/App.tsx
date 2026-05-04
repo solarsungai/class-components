@@ -3,12 +3,17 @@ import { Component } from 'react';
 import Search from './components/Search';
 import Header from './components/Header';
 import Results from './components/Results';
-import type { AppState, PokemonData, PokemonListResponse } from './types';
+import type {
+  AppState,
+  PokemonData,
+  PokemonListResponse,
+  PokemonApiResponse,
+} from './types';
 
 const FIRST_PAGE_LIMIT = 20;
 const FIRST_PAGE_OFFSET = 0;
 
-class App extends Component<{}, AppState> {
+class App extends Component<Record<string, never>, AppState> {
   state = {
     serverUrl: 'https://pokeapi.co/api/v2/pokemon/',
     inputValue: '',
@@ -45,9 +50,7 @@ class App extends Component<{}, AppState> {
           {this.state.error && (
             <div className="error-message">{this.state.error}</div>
           )}
-          {this.state.loading && (
-            <div className="loader">Loading...</div>
-          )}
+          {this.state.loading && <div className="loader">Loading...</div>}
         </section>
 
         <section className="results-section">
@@ -57,7 +60,11 @@ class App extends Component<{}, AppState> {
         </section>
 
         <div className="tools-row">
-          <button className="error-test-button" type="button" onClick={this.handleTestErrorClick}>
+          <button
+            className="error-test-button"
+            type="button"
+            onClick={this.handleTestErrorClick}
+          >
             Test Error Boundary
           </button>
         </div>
@@ -75,12 +82,17 @@ class App extends Component<{}, AppState> {
     if (term === this.state.lastSearchTerm) return;
 
     localStorage.setItem('searchTerm', term);
-    this.setState({ loading: true, error: null, lastSearchTerm: term, inputValue: term });
+    this.setState({
+      loading: true,
+      error: null,
+      lastSearchTerm: term,
+      inputValue: term,
+    });
 
     try {
       if (!term) {
         const response = await fetch(
-          `${this.state.serverUrl}?limit=${FIRST_PAGE_LIMIT}&offset=${FIRST_PAGE_OFFSET}`,
+          `${this.state.serverUrl}?limit=${FIRST_PAGE_LIMIT}&offset=${FIRST_PAGE_OFFSET}`
         );
 
         if (!response.ok) {
@@ -103,20 +115,12 @@ class App extends Component<{}, AppState> {
         throw new Error('Pokemon not found');
       }
 
-      const data = await response.json() as {
-        name: string;
-        sprites?: { front_default: string | null };
-        types?: Array<{ type: { name: string } }>;
-        height?: number;
-        weight?: number;
-        base_experience?: number;
-        abilities?: Array<{ ability: { name: string } }>;
-      };
+      const data: PokemonApiResponse = await response.json();
       const types = Array.isArray(data.types)
-        ? data.types.map((typeInfo: { type: { name: string } }) => typeInfo.type.name)
+        ? data.types.map((typeInfo) => typeInfo.type.name)
         : [];
       const abilities = Array.isArray(data.abilities)
-        ? data.abilities.map((abilityInfo: { ability: { name: string } }) => abilityInfo.ability.name)
+        ? data.abilities.map((abilityInfo) => abilityInfo.ability.name)
         : [];
 
       const pokemonData: PokemonData = {

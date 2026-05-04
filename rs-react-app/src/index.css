@@ -6,6 +6,11 @@ body,
 
 body {
   margin: 0;
-  background: radial-gradient(circle at top right, #eef2ff 0%, #f5f8ff 45%, #f7f9fc 100%);
+  background: radial-gradient(
+    circle at top right,
+    #eef2ff 0%,
+    #f5f8ff 45%,
+    #f7f9fc 100%
+  );
   color: #1f2937;
 }

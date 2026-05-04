@@ -8,16 +8,18 @@ class Search extends Component<SearchProps> {
 
   render() {
     return (
-        <div className="search-controls">
-          <input
-              className="search-input"
-              type="text"
-              placeholder="Search..."
-              value={this.props.value}
-              onChange={(e) => this.props.onChange(e.target.value)}
-            />
-            <button className="search-button" onClick={this.props.onSearch}>Search</button>
-        </div>
+      <div className="search-controls">
+        <input
+          className="search-input"
+          type="text"
+          placeholder="Search..."
+          value={this.props.value}
+          onChange={(e) => this.props.onChange(e.target.value)}
+        />
+        <button className="search-button" onClick={this.props.onSearch}>
+          Search
+        </button>
+      </div>
     );
   }
 }

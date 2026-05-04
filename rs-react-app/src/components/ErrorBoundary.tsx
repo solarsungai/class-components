@@ -20,7 +20,8 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   static getDerivedStateFromError(error: unknown): ErrorBoundaryState {
     return {
       hasError: true,
-      message: error instanceof Error ? error.message : 'Unexpected application error',
+      message:
+        error instanceof Error ? error.message : 'Unexpected application error',
     };
   }
 
@@ -42,7 +43,9 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
         <div className="error-boundary-fallback">
           <h2>Something went wrong</h2>
           <p>{this.state.message}</p>
-          <button type="button" onClick={this.handleReset}>Try again</button>
+          <button type="button" onClick={this.handleReset}>
+            Try again
+          </button>
         </div>
       );
     }
