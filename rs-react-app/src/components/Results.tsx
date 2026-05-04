@@ -1,16 +1,6 @@
 import { PureComponent } from 'react';
 import ResultItem from './ResultItem';
-
-type PokemonData = {
-  name: string;
-  id: number;
-  image: string;
-  types: string[];
-  height: number;
-  weight: number;
-  baseExperience: number;
-  abilities: string[];
-};
+import type { PokemonData } from '../types';
 
 type ResultsProps = {
   results: PokemonData[];

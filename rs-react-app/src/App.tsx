@@ -3,26 +3,7 @@ import { Component } from 'react';
 import Search from './components/Search';
 import Header from './components/Header';
 import Results from './components/Results';
-
-type AppState = {
-  serverUrl: string;
-  inputValue: string;
-  results: PokemonData[];
-  loading: boolean;
-  error: string | null;
-  lastSearchTerm: string;
-};
-
-type PokemonData = {
-  name: string;
-  id: number;
-  image: string;
-  types: string[];
-  height: number;
-  weight: number;
-  baseExperience: number;
-  abilities: string[];
-};
+import type { AppState, PokemonData } from './types';
 
 class App extends Component<{}, AppState> {
   state = {
@@ -72,7 +53,6 @@ class App extends Component<{}, AppState> {
         throw new Error("Pokemon not found");
       }
       const data = await response.json();
-      console.log(data);
       const pokemonData: PokemonData = {
         name: data.name,
         id: data.id,
@@ -85,7 +65,6 @@ class App extends Component<{}, AppState> {
       };
       this.setState({ loading: false, results: [pokemonData] });
     } catch (error) {
-      console.log(error);
       const message = error instanceof Error ? error.message : "Unknown error";
       this.setState({ loading: false, error: message });
     }

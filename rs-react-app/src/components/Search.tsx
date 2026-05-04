@@ -1,10 +1,5 @@
 import { Component } from 'react';
-
-type SearchProps = {
-  value: string;
-  onChange: (value: string) => void;
-  onSearch: () => void;
-};
+import type { SearchProps } from '../types';
 
 class Search extends Component<SearchProps> {
   constructor(props: SearchProps) {
