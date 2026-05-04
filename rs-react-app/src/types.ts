@@ -1,12 +1,17 @@
 export type PokemonData = {
   name: string;
-  id: number;
   image?: string;
-  types: string[];
-  height: number;
-  weight: number;
-  baseExperience: number;
-  abilities: string[];
+  types?: string[];
+  height?: number;
+  weight?: number;
+  baseExperience?: number;
+  abilities?: string[];
+};
+
+export type PokemonListResponse = {
+  results: Array<{
+    name: string;
+  }>;
 };
 
 export type AppState = {
@@ -15,7 +20,7 @@ export type AppState = {
   results: PokemonData[];
   loading: boolean;
   error: string | null;
-  lastSearchTerm: string;
+  lastSearchTerm: string | null;
   shouldThrowTestError: boolean;
 };
 

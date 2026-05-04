@@ -19,8 +19,8 @@ class Results extends PureComponent<ResultsProps> {
 
         return (
             <div className="results">
-                {this.props.results.map((pokemon) => (
-                    <ResultItem key={pokemon.id} pokemon={pokemon} />
+                {this.props.results.map((pokemon, index) => (
+                    <ResultItem key={`${pokemon.name}-${index}`} pokemon={pokemon} />
                 ))}
             </div>
         );
