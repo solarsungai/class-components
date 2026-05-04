@@ -12,30 +12,50 @@ class App extends Component<{}, AppState> {
     results: [],
     loading: false,
     error: null,
-    lastSearchTerm: ""
+    lastSearchTerm: "",
+    shouldThrowTestError: false,
   };
 
   render() {
+    if (this.state.shouldThrowTestError) {
+      throw new Error('Test error button triggered');
+    }
+
     return (
       <div className="App">
         <Header />
-        <Search
-          value={this.state.inputValue}
-          onChange={(value) => this.setState({ inputValue: value })}
-          onSearch={() => this.handleSearch(this.state.inputValue)}
-        />
-        {this.state.error && (
-          <div className="error-message">{this.state.error}</div>
-        )}
-        {this.state.loading && (
-          <div className="loader">Loading...</div>
-        )}
-        {!this.state.error && !this.state.loading && (
-          <Results results={this.state.results} />
-        )}
+        <section className="search-section">
+          <Search
+            value={this.state.inputValue}
+            onChange={(value) => this.setState({ inputValue: value })}
+            onSearch={() => this.handleSearch(this.state.inputValue)}
+          />
+          {this.state.error && (
+            <div className="error-message">{this.state.error}</div>
+          )}
+          {this.state.loading && (
+            <div className="loader">Loading...</div>
+          )}
+        </section>
+
+        <section className="results-section">
+          {!this.state.error && !this.state.loading && (
+            <Results results={this.state.results} />
+          )}
+        </section>
+
+        <div className="tools-row">
+          <button className="error-test-button" type="button" onClick={this.handleTestErrorClick}>
+            Test Error Boundary
+          </button>
+        </div>
       </div>
     );
   }
+
+  handleTestErrorClick = () => {
+    this.setState({ shouldThrowTestError: true });
+  };
 
   handleSearch = async (searchTerm: string) => {
     const term = searchTerm.trim().toLowerCase();
@@ -57,11 +77,11 @@ class App extends Component<{}, AppState> {
         name: data.name,
         id: data.id,
         image: data.sprites.front_default,
-        types: data.types.map((typeInfo: any) => typeInfo.type.name),
+        types: data.types.map((typeInfo: { type: { name: string } }) => typeInfo.type.name),
         height: data.height,
         weight: data.weight,
         baseExperience: data.base_experience,
-        abilities: data.abilities.map((abilityInfo: any) => abilityInfo.ability.name),
+        abilities: data.abilities.map((abilityInfo: { ability: { name: string } }) => abilityInfo.ability.name),
       };
       this.setState({ loading: false, results: [pokemonData] });
     } catch (error) {

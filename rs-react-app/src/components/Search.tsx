@@ -8,7 +8,7 @@ class Search extends Component<SearchProps> {
 
   render() {
     return (
-        <>
+        <div className="search-controls">
           <input
               className="search-input"
               type="text"
@@ -16,8 +16,8 @@ class Search extends Component<SearchProps> {
               value={this.props.value}
               onChange={(e) => this.props.onChange(e.target.value)}
             />
-            <button onClick={this.props.onSearch}>Search</button>
-        </>
+            <button className="search-button" onClick={this.props.onSearch}>Search</button>
+        </div>
     );
   }
 }

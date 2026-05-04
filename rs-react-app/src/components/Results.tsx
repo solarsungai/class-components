@@ -8,6 +8,15 @@ type ResultsProps = {
 
 class Results extends PureComponent<ResultsProps> {
     render() {
+        if (this.props.results.length === 0) {
+            return (
+                <div className="results-empty">
+                    <h3>No results yet</h3>
+                    <p>Enter a Pokémon name and click Search to see details.</p>
+                </div>
+            );
+        }
+
         return (
             <div className="results">
                 {this.props.results.map((pokemon) => (

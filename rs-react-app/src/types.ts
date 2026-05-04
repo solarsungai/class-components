@@ -16,6 +16,7 @@ export type AppState = {
   loading: boolean;
   error: string | null;
   lastSearchTerm: string;
+  shouldThrowTestError: boolean;
 };
 
 export type SearchProps = {
