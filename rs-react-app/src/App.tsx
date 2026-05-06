@@ -3,15 +3,9 @@ import { Component } from 'react';
 import Search from './components/Search';
 import Header from './components/Header';
 import Results from './components/Results';
-import type {
-  AppState,
-  PokemonData,
-  PokemonListResponse,
-  PokemonApiResponse,
-} from './types';
-
-const FIRST_PAGE_LIMIT = 20;
-const FIRST_PAGE_OFFSET = 0;
+import type { AppState } from './types';
+import { loadSearchTerm, saveSearchTerm } from './services/storage';
+import { performPokemonSearch } from './services/search';
 
 class App extends Component<Record<string, never>, AppState> {
   state = {
@@ -25,7 +19,7 @@ class App extends Component<Record<string, never>, AppState> {
   };
 
   componentDidMount() {
-    const savedSearchTerm = localStorage.getItem('searchTerm');
+    const savedSearchTerm = loadSearchTerm();
     const initialSearchTerm = savedSearchTerm ?? '';
 
     this.setState({ inputValue: initialSearchTerm }, () => {
@@ -77,67 +71,26 @@ class App extends Component<Record<string, never>, AppState> {
   };
 
   handleSearch = async (searchTerm: string) => {
-    const term = searchTerm.trim().toLowerCase();
-
-    if (term === this.state.lastSearchTerm) return;
-
-    localStorage.setItem('searchTerm', term);
-    this.setState({
-      loading: true,
-      error: null,
-      lastSearchTerm: term,
-      inputValue: term,
-    });
-
-    try {
-      if (!term) {
-        const response = await fetch(
-          `${this.state.serverUrl}?limit=${FIRST_PAGE_LIMIT}&offset=${FIRST_PAGE_OFFSET}`
-        );
-
-        if (!response.ok) {
-          throw new Error('Unable to load the first page of Pokemon list');
-        }
-
-        const listData: PokemonListResponse = await response.json();
-        const results: PokemonData[] = listData.results.map((item) => {
-          return {
-            name: item.name,
-          };
+    await performPokemonSearch({
+      searchTerm,
+      lastSearchTerm: this.state.lastSearchTerm,
+      serverUrl: this.state.serverUrl,
+      saveSearchTerm,
+      onStart: (term) => {
+        this.setState({
+          loading: true,
+          error: null,
+          lastSearchTerm: term,
+          inputValue: term,
         });
-
+      },
+      onSuccess: (results) => {
         this.setState({ loading: false, results });
-        return;
-      }
-
-      const response = await fetch(`${this.state.serverUrl}${term}`);
-      if (!response.ok) {
-        throw new Error('Pokemon not found');
-      }
-
-      const data: PokemonApiResponse = await response.json();
-      const types = Array.isArray(data.types)
-        ? data.types.map((typeInfo) => typeInfo.type.name)
-        : [];
-      const abilities = Array.isArray(data.abilities)
-        ? data.abilities.map((abilityInfo) => abilityInfo.ability.name)
-        : [];
-
-      const pokemonData: PokemonData = {
-        name: data.name,
-        image: data.sprites?.front_default ?? undefined,
-        types,
-        height: data.height,
-        weight: data.weight,
-        baseExperience: data.base_experience,
-        abilities,
-      };
-
-      this.setState({ loading: false, results: [pokemonData] });
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'Unknown error';
-      this.setState({ loading: false, error: message, results: [] });
-    }
+      },
+      onError: (message) => {
+        this.setState({ loading: false, error: message, results: [] });
+      },
+    });
   };
 }
 
