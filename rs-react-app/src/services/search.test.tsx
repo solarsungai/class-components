@@ -41,13 +41,13 @@ describe('performPokemonSearch', () => {
 
   it('should fetch the first page of results when the search term is empty', async () => {
     const mockInitialData: PokemonData[] = [
-      { 
-        name: 'bulbasaur', 
-        image: 'img_url', 
-        types: ['grass', 'poison'] 
-      }
+      {
+        name: 'bulbasaur',
+        image: 'img_url',
+        types: ['grass', 'poison'],
+      },
     ];
-    
+
     vi.mocked(fetchFirstPokemonPage).mockResolvedValue(mockInitialData);
 
     await performPokemonSearch({
@@ -64,12 +64,12 @@ describe('performPokemonSearch', () => {
   });
 
   it('should normalize the search term and fetch specific pokemon data', async () => {
-    const mockPokemon: PokemonData = { 
-      name: 'pikachu', 
-      image: 'pikachu_img', 
+    const mockPokemon: PokemonData = {
+      name: 'pikachu',
+      image: 'pikachu_img',
       types: ['electric'],
       height: 4,
-      weight: 60
+      weight: 60,
     };
 
     vi.mocked(fetchPokemonByTerm).mockResolvedValue(mockPokemon);
@@ -83,13 +83,16 @@ describe('performPokemonSearch', () => {
 
     expect(mocks.saveSearchTerm).toHaveBeenCalledWith('pikachu');
     expect(mocks.onStart).toHaveBeenCalledWith('pikachu');
-    expect(vi.mocked(fetchPokemonByTerm)).toHaveBeenCalledWith(serverUrl, 'pikachu');
+    expect(vi.mocked(fetchPokemonByTerm)).toHaveBeenCalledWith(
+      serverUrl,
+      'pikachu'
+    );
     expect(mocks.onSuccess).toHaveBeenCalledWith([mockPokemon]);
   });
 
   it('should call onError when the API request fails', async () => {
     const apiErrorMessage = '404 Not Found';
-    
+
     vi.mocked(fetchPokemonByTerm).mockRejectedValue(new Error(apiErrorMessage));
 
     await performPokemonSearch({

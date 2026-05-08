@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "format:fix": "prettier --write .",
     "preview": "vite preview",
-    "prepare": "cd .. && npx --prefix rs-react-app husky .husky",
+    "prepare": "husky",
     "test": "vitest"
   },
   "dependencies": {
