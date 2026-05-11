@@ -20,10 +20,6 @@ describe('performPokemonSearch', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    mocks.saveSearchTerm.mockClear();
-    mocks.onStart.mockClear();
-    mocks.onSuccess.mockClear();
-    mocks.onError.mockClear();
   });
 
   it('should exit early if the search term is the same as the last search term', async () => {
