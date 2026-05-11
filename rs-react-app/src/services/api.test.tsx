@@ -3,11 +3,11 @@ import { fetchFirstPokemonPage, fetchPokemonByTerm } from './api';
 
 describe('api service', () => {
   beforeEach(() => {
-    window.fetch = vi.fn();
+    vi.stubGlobal('fetch', vi.fn());
   });
 
   afterEach(() => {
-    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
   });
 
   it('should fetch first page successfully', async () => {
