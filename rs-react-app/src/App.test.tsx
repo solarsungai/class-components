@@ -109,17 +109,11 @@ describe('App', () => {
     vi.mocked(loadSearchTerm).mockReturnValue(null);
     vi.mocked(performPokemonSearch).mockResolvedValue(undefined);
 
-    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-
     render(
       <ErrorBoundary>
         <App />
       </ErrorBoundary>
     );
-
-    await waitFor(() => {
-      expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
-    });
 
     const errorButton = screen.getByRole('button', {
       name: /test error boundary/i,
@@ -127,9 +121,10 @@ describe('App', () => {
     await user.click(errorButton);
 
     await waitFor(() => {
-      expect(consoleSpy).toHaveBeenCalled();
+      expect(screen.getByText('Something went wrong')).toBeInTheDocument();
+      expect(
+        screen.getByText('Test error button triggered')
+      ).toBeInTheDocument();
     });
-
-    consoleSpy.mockRestore();
   });
 });
