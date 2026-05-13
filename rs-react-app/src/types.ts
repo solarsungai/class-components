@@ -27,12 +27,10 @@ export type PokemonListResponse = {
 };
 
 export type AppState = {
-  serverUrl: string;
   inputValue: string;
   results: PokemonData[];
   loading: boolean;
   error: string | null;
-  lastSearchTerm: string | null;
   shouldThrowTestError: boolean;
 };
 

@@ -22,11 +22,10 @@ describe('App', () => {
 
   it('should display results after successful search', async () => {
     vi.mocked(loadSearchTerm).mockReturnValue(null);
-    vi.mocked(performPokemonSearch).mockImplementation(
-      async ({ onSuccess }) => {
-        onSuccess([{ name: 'bulbasaur' }, { name: 'ivysaur' }]);
-      }
-    );
+    vi.mocked(performPokemonSearch).mockResolvedValue([
+      { name: 'bulbasaur' },
+      { name: 'ivysaur' },
+    ]);
 
     render(<App />);
 
@@ -38,10 +37,7 @@ describe('App', () => {
 
   it('should show loading indicator while search is in progress', async () => {
     vi.mocked(loadSearchTerm).mockReturnValue(null);
-    vi.mocked(performPokemonSearch).mockImplementation(({ onStart }) => {
-      onStart('');
-      return new Promise(() => {});
-    });
+    vi.mocked(performPokemonSearch).mockReturnValue(new Promise(() => {}));
 
     render(<App />);
 
@@ -52,9 +48,9 @@ describe('App', () => {
 
   it('should display error message when search fails', async () => {
     vi.mocked(loadSearchTerm).mockReturnValue(null);
-    vi.mocked(performPokemonSearch).mockImplementation(async ({ onError }) => {
-      onError('Pokemon not found');
-    });
+    vi.mocked(performPokemonSearch).mockRejectedValue(
+      new Error('Pokemon not found')
+    );
 
     render(<App />);
 
@@ -65,49 +61,70 @@ describe('App', () => {
 
   it('should call performPokemonSearch with saved term from localStorage', async () => {
     vi.mocked(loadSearchTerm).mockReturnValue('pikachu');
-    vi.mocked(performPokemonSearch).mockResolvedValue();
+    vi.mocked(performPokemonSearch).mockResolvedValue([]);
 
     render(<App />);
 
     await waitFor(() => {
       expect(performPokemonSearch).toHaveBeenCalledWith(
-        expect.objectContaining({ searchTerm: 'pikachu' })
+        'pikachu',
+        expect.any(String)
       );
     });
   });
 
   it('should call performPokemonSearch with empty string when localStorage is empty', async () => {
     vi.mocked(loadSearchTerm).mockReturnValue('');
-    vi.mocked(performPokemonSearch).mockResolvedValue();
+    vi.mocked(performPokemonSearch).mockResolvedValue([]);
 
     render(<App />);
 
     await waitFor(() => {
-      expect(performPokemonSearch).toHaveBeenCalledWith(
-        expect.objectContaining({ searchTerm: '' })
-      );
+      expect(performPokemonSearch).toHaveBeenCalledWith('', expect.any(String));
     });
   });
 
   it('should call performPokemonSearch when search button is clicked', async () => {
     const user = userEvent.setup();
     vi.mocked(loadSearchTerm).mockReturnValue(null);
-    vi.mocked(performPokemonSearch).mockResolvedValue();
+    vi.mocked(performPokemonSearch).mockResolvedValue([]);
 
     render(<App />);
+
+    const button = screen.getByRole('button', { name: /search/i });
+    const input = screen.getByPlaceholderText(/search/i);
+    await user.type(input, 'pikachu');
+    await user.click(button);
+
+    await waitFor(() => {
+      console.log(vi.mocked(performPokemonSearch).mock.calls);
+      expect(performPokemonSearch).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  it('should not repeat search when the same term is submitted again', async () => {
+    const user = userEvent.setup();
+    vi.mocked(loadSearchTerm).mockReturnValue('pikachu');
+    vi.mocked(performPokemonSearch).mockResolvedValue([]);
+
+    render(<App />);
+
+    await waitFor(() => {
+      expect(performPokemonSearch).toHaveBeenCalledTimes(1);
+    });
 
     const button = screen.getByRole('button', { name: /search/i });
     await user.click(button);
 
     await waitFor(() => {
-      expect(performPokemonSearch).toHaveBeenCalledTimes(2);
+      expect(performPokemonSearch).toHaveBeenCalledTimes(1);
     });
   });
 
   it('should throw error when Test Error Boundary button is clicked', async () => {
     const user = userEvent.setup();
     vi.mocked(loadSearchTerm).mockReturnValue(null);
-    vi.mocked(performPokemonSearch).mockResolvedValue(undefined);
+    vi.mocked(performPokemonSearch).mockResolvedValue([]);
 
     render(
       <ErrorBoundary>

@@ -8,23 +8,23 @@ import { loadSearchTerm, saveSearchTerm } from './services/storage';
 import { performPokemonSearch } from './services/search';
 
 class App extends Component<Record<string, never>, AppState> {
-  state = {
-    serverUrl: 'https://pokeapi.co/api/v2/pokemon/',
+  private readonly serverUrl = 'https://pokeapi.co/api/v2/pokemon/';
+  private lastSearchTerm: string | null = null;
+
+  state: AppState = {
     inputValue: '',
     results: [],
     loading: false,
     error: null,
-    lastSearchTerm: null,
     shouldThrowTestError: false,
   };
 
   componentDidMount() {
-    const savedSearchTerm = loadSearchTerm();
-    const initialSearchTerm = savedSearchTerm ?? '';
-
-    this.setState({ inputValue: initialSearchTerm }, () => {
-      void this.handleSearch(initialSearchTerm);
-    });
+    const initialTerm = loadSearchTerm() ?? '';
+    this.setState(
+      { inputValue: initialTerm },
+      () => void this.handleSearch(initialTerm)
+    );
   }
 
   render() {
@@ -71,26 +71,21 @@ class App extends Component<Record<string, never>, AppState> {
   };
 
   handleSearch = async (searchTerm: string) => {
-    await performPokemonSearch({
-      searchTerm,
-      lastSearchTerm: this.state.lastSearchTerm,
-      serverUrl: this.state.serverUrl,
-      saveSearchTerm,
-      onStart: (term) => {
-        this.setState({
-          loading: true,
-          error: null,
-          lastSearchTerm: term,
-          inputValue: term,
-        });
-      },
-      onSuccess: (results) => {
-        this.setState({ loading: false, results });
-      },
-      onError: (message) => {
-        this.setState({ loading: false, error: message, results: [] });
-      },
-    });
+    const term = searchTerm.trim().toLowerCase();
+
+    if (term === this.lastSearchTerm) return;
+
+    this.lastSearchTerm = term;
+    saveSearchTerm(term);
+    this.setState({ loading: true, error: null, inputValue: term });
+
+    try {
+      const results = await performPokemonSearch(term, this.serverUrl);
+      this.setState({ loading: false, results });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      this.setState({ loading: false, error: message, results: [] });
+    }
   };
 }
 
