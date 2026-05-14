@@ -26,14 +26,6 @@ export type PokemonListResponse = {
   }>;
 };
 
-export type AppState = {
-  inputValue: string;
-  results: PokemonData[];
-  loading: boolean;
-  error: string | null;
-  shouldThrowTestError: boolean;
-};
-
 export type SearchProps = {
   value: string;
   onChange: (value: string) => void;
