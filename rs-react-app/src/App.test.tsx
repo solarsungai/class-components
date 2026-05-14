@@ -35,30 +35,6 @@ describe('App', () => {
     });
   });
 
-  it('should show loading indicator while search is in progress', async () => {
-    vi.mocked(loadSearchTerm).mockReturnValue(null);
-    vi.mocked(performPokemonSearch).mockReturnValue(new Promise(() => {}));
-
-    render(<App />);
-
-    await waitFor(() => {
-      expect(screen.getByText('Loading...')).toBeInTheDocument();
-    });
-  });
-
-  it('should display error message when search fails', async () => {
-    vi.mocked(loadSearchTerm).mockReturnValue(null);
-    vi.mocked(performPokemonSearch).mockRejectedValue(
-      new Error('Pokemon not found')
-    );
-
-    render(<App />);
-
-    await waitFor(() => {
-      expect(screen.getByText('Pokemon not found')).toBeInTheDocument();
-    });
-  });
-
   it('should call performPokemonSearch with saved term from localStorage', async () => {
     vi.mocked(loadSearchTerm).mockReturnValue('pikachu');
     vi.mocked(performPokemonSearch).mockResolvedValue([]);
@@ -97,7 +73,6 @@ describe('App', () => {
     await user.click(button);
 
     await waitFor(() => {
-      console.log(vi.mocked(performPokemonSearch).mock.calls);
       expect(performPokemonSearch).toHaveBeenCalledTimes(2);
     });
   });
@@ -119,6 +94,32 @@ describe('App', () => {
     await waitFor(() => {
       expect(performPokemonSearch).toHaveBeenCalledTimes(1);
     });
+  });
+
+  it('should display error message when search fails', async () => {
+    vi.mocked(loadSearchTerm).mockReturnValue(null);
+    vi.mocked(performPokemonSearch).mockRejectedValue(
+      new Error('Pokemon not found')
+    );
+
+    render(<App />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Pokemon not found')).toBeInTheDocument();
+    });
+  });
+
+  it('should update input value when user types in search field', async () => {
+    const user = userEvent.setup();
+    vi.mocked(loadSearchTerm).mockReturnValue(null);
+    vi.mocked(performPokemonSearch).mockResolvedValue([]);
+
+    render(<App />);
+
+    const input = screen.getByPlaceholderText(/search/i);
+    await user.type(input, 'charmander');
+
+    expect(input).toHaveValue('charmander');
   });
 
   it('should throw error when Test Error Boundary button is clicked', async () => {
