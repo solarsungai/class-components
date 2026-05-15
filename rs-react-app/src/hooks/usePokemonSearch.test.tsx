@@ -8,16 +8,12 @@ vi.mock('../services/search', () => ({
   performPokemonSearch: vi.fn(),
 }));
 
-vi.mock('../services/storage', () => ({
-  saveSearchTerm: vi.fn(),
-  loadSearchTerm: vi.fn(),
-}));
-
 describe('usePokemonSearch', () => {
   const serverUrl = 'https://pokeapi.co/api/v2/pokemon/';
 
   beforeEach(() => {
     vi.clearAllMocks();
+    localStorage.clear();
   });
 
   it('should fetch the first page of results when the search term is empty', async () => {

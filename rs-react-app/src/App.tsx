@@ -3,13 +3,14 @@ import { useState, useEffect, useRef } from 'react';
 import Search from './components/Search';
 import Header from './components/Header';
 import Results from './components/Results';
-import { loadSearchTerm } from './services/storage';
 import usePokemonSearch from './hooks/usePokemonSearch';
+import useLocalStorage from './hooks/useLocalStorage';
 
 function App() {
   const serverUrl = 'https://pokeapi.co/api/v2/pokemon/';
+  const { getSearchTerm } = useLocalStorage();
   const [inputValue, setInputValue] = useState<string>(
-    () => loadSearchTerm() ?? ''
+    () => getSearchTerm() ?? ''
   );
   const initialTerm = useRef(inputValue);
   const [shouldThrowTestError, setShouldThrowTestError] =

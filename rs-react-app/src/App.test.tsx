@@ -3,13 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
 import ErrorBoundary from './components/ErrorBoundary';
-import { loadSearchTerm } from './services/storage';
 import { performPokemonSearch } from './services/search';
-
-vi.mock('./services/storage', () => ({
-  loadSearchTerm: vi.fn(),
-  saveSearchTerm: vi.fn(),
-}));
 
 vi.mock('./services/search', () => ({
   performPokemonSearch: vi.fn(),
@@ -17,11 +11,11 @@ vi.mock('./services/search', () => ({
 
 describe('App', () => {
   beforeEach(() => {
+    localStorage.clear();
     vi.clearAllMocks();
   });
 
   it('should display results after successful search', async () => {
-    vi.mocked(loadSearchTerm).mockReturnValue(null);
     vi.mocked(performPokemonSearch).mockResolvedValue([
       { name: 'bulbasaur' },
       { name: 'ivysaur' },
@@ -36,7 +30,7 @@ describe('App', () => {
   });
 
   it('should call performPokemonSearch with saved term from localStorage', async () => {
-    vi.mocked(loadSearchTerm).mockReturnValue('pikachu');
+    localStorage.setItem('searchTerm', 'pikachu');
     vi.mocked(performPokemonSearch).mockResolvedValue([]);
 
     render(<App />);
@@ -50,7 +44,7 @@ describe('App', () => {
   });
 
   it('should call performPokemonSearch with empty string when localStorage is empty', async () => {
-    vi.mocked(loadSearchTerm).mockReturnValue('');
+    localStorage.setItem('searchTerm', '');
     vi.mocked(performPokemonSearch).mockResolvedValue([]);
 
     render(<App />);
@@ -62,7 +56,6 @@ describe('App', () => {
 
   it('should call performPokemonSearch when search button is clicked', async () => {
     const user = userEvent.setup();
-    vi.mocked(loadSearchTerm).mockReturnValue(null);
     vi.mocked(performPokemonSearch).mockResolvedValue([]);
 
     render(<App />);
@@ -79,7 +72,7 @@ describe('App', () => {
 
   it('should not repeat search when the same term is submitted again', async () => {
     const user = userEvent.setup();
-    vi.mocked(loadSearchTerm).mockReturnValue('pikachu');
+    localStorage.setItem('searchTerm', 'pikachu');
     vi.mocked(performPokemonSearch).mockResolvedValue([]);
 
     render(<App />);
@@ -97,7 +90,6 @@ describe('App', () => {
   });
 
   it('should display error message when search fails', async () => {
-    vi.mocked(loadSearchTerm).mockReturnValue(null);
     vi.mocked(performPokemonSearch).mockRejectedValue(
       new Error('Pokemon not found')
     );
@@ -111,7 +103,6 @@ describe('App', () => {
 
   it('should update input value when user types in search field', async () => {
     const user = userEvent.setup();
-    vi.mocked(loadSearchTerm).mockReturnValue(null);
     vi.mocked(performPokemonSearch).mockResolvedValue([]);
 
     render(<App />);
@@ -124,7 +115,6 @@ describe('App', () => {
 
   it('should throw error when Test Error Boundary button is clicked', async () => {
     const user = userEvent.setup();
-    vi.mocked(loadSearchTerm).mockReturnValue(null);
     vi.mocked(performPokemonSearch).mockResolvedValue([]);
 
     render(

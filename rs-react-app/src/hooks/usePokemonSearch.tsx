@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
-import { saveSearchTerm } from '../services/storage';
+import useLocalStorage from './useLocalStorage';
 import { performPokemonSearch } from '../services/search';
 import type { PokemonData } from '../types';
 
@@ -8,13 +8,14 @@ function usePokemonSearch(serverUrl: string) {
   const [results, setResults] = useState<PokemonData[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const { setSearchTerm } = useLocalStorage();
 
   const search = useCallback(
     async (searchTerm: string) => {
       const term = searchTerm.trim().toLowerCase();
       if (term === lastSearchTerm.current) return;
       lastSearchTerm.current = term;
-      saveSearchTerm(term);
+      setSearchTerm(term);
       setLoading(true);
 
       try {
@@ -29,7 +30,7 @@ function usePokemonSearch(serverUrl: string) {
         setResults([]);
       }
     },
-    [serverUrl]
+    [serverUrl, setSearchTerm]
   );
 
   return { results, loading, error, search };

@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { loadSearchTerm, saveSearchTerm } from './storage';
+import { renderHook } from '@testing-library/react';
+import useLocalStorage from './useLocalStorage';
 
 describe('storage service', () => {
   beforeEach(() => {
@@ -9,18 +10,21 @@ describe('storage service', () => {
   const MOCK_TERM = 'pikachu';
 
   it('should save the search term to localStorage', () => {
-    saveSearchTerm(MOCK_TERM);
+    const { result } = renderHook(() => useLocalStorage());
+    result.current.setSearchTerm(MOCK_TERM);
     expect(localStorage.getItem('searchTerm')).toBe(MOCK_TERM);
   });
 
   it('should return the saved term when loadSearchTerm is called', () => {
     localStorage.setItem('searchTerm', MOCK_TERM);
-    const result = loadSearchTerm();
-    expect(result).toBe(MOCK_TERM);
+    const { result } = renderHook(() => useLocalStorage());
+    const term = result.current.getSearchTerm();
+    expect(term).toBe(MOCK_TERM);
   });
 
   it('should return null if no search term is saved', () => {
-    const result = loadSearchTerm();
-    expect(result).toBeNull();
+    const { result } = renderHook(() => useLocalStorage());
+    const term = result.current.getSearchTerm();
+    expect(term).toBeNull();
   });
 });
