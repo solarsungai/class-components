@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router';
 import userEvent from '@testing-library/user-event';
 import App from './App';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -8,6 +9,8 @@ import { performPokemonSearch } from './services/search';
 vi.mock('./services/search', () => ({
   performPokemonSearch: vi.fn(),
 }));
+
+const renderApp = () => render(<MemoryRouter><App /></MemoryRouter>);
 
 describe('App', () => {
   beforeEach(() => {
@@ -21,7 +24,7 @@ describe('App', () => {
       { name: 'ivysaur' },
     ]);
 
-    render(<App />);
+    renderApp();
 
     await waitFor(() => {
       expect(screen.getByText('bulbasaur')).toBeInTheDocument();
@@ -33,7 +36,7 @@ describe('App', () => {
     localStorage.setItem('searchTerm', 'pikachu');
     vi.mocked(performPokemonSearch).mockResolvedValue([]);
 
-    render(<App />);
+    renderApp();
 
     await waitFor(() => {
       expect(performPokemonSearch).toHaveBeenCalledWith(
@@ -47,7 +50,7 @@ describe('App', () => {
     localStorage.setItem('searchTerm', '');
     vi.mocked(performPokemonSearch).mockResolvedValue([]);
 
-    render(<App />);
+    renderApp();
 
     await waitFor(() => {
       expect(performPokemonSearch).toHaveBeenCalledWith('', expect.any(String));
@@ -58,7 +61,7 @@ describe('App', () => {
     const user = userEvent.setup();
     vi.mocked(performPokemonSearch).mockResolvedValue([]);
 
-    render(<App />);
+    renderApp();
 
     const button = screen.getByRole('button', { name: /search/i });
     const input = screen.getByPlaceholderText(/search/i);
@@ -75,7 +78,7 @@ describe('App', () => {
     localStorage.setItem('searchTerm', 'pikachu');
     vi.mocked(performPokemonSearch).mockResolvedValue([]);
 
-    render(<App />);
+    renderApp();
 
     await waitFor(() => {
       expect(performPokemonSearch).toHaveBeenCalledTimes(1);
@@ -94,7 +97,7 @@ describe('App', () => {
       new Error('Pokemon not found')
     );
 
-    render(<App />);
+    renderApp();
 
     await waitFor(() => {
       expect(screen.getByText('Pokemon not found')).toBeInTheDocument();
@@ -105,7 +108,7 @@ describe('App', () => {
     const user = userEvent.setup();
     vi.mocked(performPokemonSearch).mockResolvedValue([]);
 
-    render(<App />);
+    renderApp();
 
     const input = screen.getByPlaceholderText(/search/i);
     await user.type(input, 'charmander');
@@ -118,9 +121,11 @@ describe('App', () => {
     vi.mocked(performPokemonSearch).mockResolvedValue([]);
 
     render(
-      <ErrorBoundary>
-        <App />
-      </ErrorBoundary>
+      <MemoryRouter>
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
+      </MemoryRouter>
     );
 
     const errorButton = screen.getByRole('button', {
