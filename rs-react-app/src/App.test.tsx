@@ -10,7 +10,12 @@ vi.mock('./services/search', () => ({
   performPokemonSearch: vi.fn(),
 }));
 
-const renderApp = () => render(<MemoryRouter><App /></MemoryRouter>);
+const renderApp = () =>
+  render(
+    <MemoryRouter>
+      <App />
+    </MemoryRouter>
+  );
 
 describe('App', () => {
   beforeEach(() => {
