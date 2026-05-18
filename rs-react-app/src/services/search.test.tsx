@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { performPokemonSearch } from './search';
-import { fetchFirstPokemonPage, fetchPokemonByTerm } from './api';
+import { fetchPokemonByPage, fetchPokemonByTerm } from './api';
 import type { PokemonData } from '../types';
 
 vi.mock('./api', () => ({
-  fetchFirstPokemonPage: vi.fn(),
+  fetchPokemonByPage: vi.fn(),
   fetchPokemonByTerm: vi.fn(),
 }));
 
@@ -24,12 +24,15 @@ describe('performPokemonSearch', () => {
       },
     ];
 
-    vi.mocked(fetchFirstPokemonPage).mockResolvedValue(mockInitialData);
+    vi.mocked(fetchPokemonByPage).mockResolvedValue({
+      results: mockInitialData,
+      count: 1,
+    });
 
-    const results = await performPokemonSearch('', serverUrl);
+    const results = await performPokemonSearch('', serverUrl, 1);
 
-    expect(vi.mocked(fetchFirstPokemonPage)).toHaveBeenCalledWith(serverUrl);
-    expect(results).toEqual(mockInitialData);
+    expect(vi.mocked(fetchPokemonByPage)).toHaveBeenCalledWith(serverUrl, 1);
+    expect(results).toEqual({ results: mockInitialData, count: 1 });
   });
 
   it('should fetch specific pokemon data and return it wrapped in an array', async () => {
@@ -43,13 +46,13 @@ describe('performPokemonSearch', () => {
 
     vi.mocked(fetchPokemonByTerm).mockResolvedValue(mockPokemon);
 
-    const results = await performPokemonSearch('pikachu', serverUrl);
+    const results = await performPokemonSearch('pikachu', serverUrl, 1);
 
     expect(vi.mocked(fetchPokemonByTerm)).toHaveBeenCalledWith(
       serverUrl,
       'pikachu'
     );
-    expect(results).toEqual([mockPokemon]);
+    expect(results).toEqual({ results: [mockPokemon], count: 1 });
   });
 
   it('should throw when the API request fails', async () => {
@@ -58,14 +61,14 @@ describe('performPokemonSearch', () => {
     vi.mocked(fetchPokemonByTerm).mockRejectedValue(new Error(apiErrorMessage));
 
     await expect(
-      performPokemonSearch('non-existent-pokemon', serverUrl)
+      performPokemonSearch('non-existent-pokemon', serverUrl, 1)
     ).rejects.toThrow(apiErrorMessage);
   });
 
   it('should throw when the API rejects with a non-Error value', async () => {
     vi.mocked(fetchPokemonByTerm).mockRejectedValue('Critical failure string');
 
-    await expect(performPokemonSearch('mew', serverUrl)).rejects.toBe(
+    await expect(performPokemonSearch('mew', serverUrl, 1)).rejects.toBe(
       'Critical failure string'
     );
   });

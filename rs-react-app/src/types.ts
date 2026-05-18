@@ -21,6 +21,7 @@ export type PokemonApiResponse = {
 };
 
 export type PokemonListResponse = {
+  count: number;
   results: Array<{
     name: string;
   }>;

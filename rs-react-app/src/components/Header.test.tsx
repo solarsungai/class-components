@@ -34,4 +34,14 @@ describe('Header', () => {
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute('href', '/about');
   });
+
+  it('should apply active class to About link when on /about route', () => {
+    render(
+      <MemoryRouter initialEntries={['/about']}>
+        <Header />
+      </MemoryRouter>
+    );
+    const link = screen.getByRole('link', { name: /about/i });
+    expect(link).toHaveClass('header-nav-link--active');
+  });
 });

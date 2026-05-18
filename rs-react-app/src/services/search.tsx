@@ -1,13 +1,14 @@
-import { fetchFirstPokemonPage, fetchPokemonByTerm } from './api';
+import { fetchPokemonByPage, fetchPokemonByTerm } from './api';
 import type { PokemonData } from '../types';
 
 export const performPokemonSearch = async (
   searchTerm: string,
-  serverUrl: string
-): Promise<PokemonData[]> => {
+  serverUrl: string,
+  page: number
+): Promise<{ results: PokemonData[]; count: number }> => {
   if (!searchTerm) {
-    return fetchFirstPokemonPage(serverUrl);
+    return fetchPokemonByPage(serverUrl, page);
   }
   const pokemonData = await fetchPokemonByTerm(serverUrl, searchTerm);
-  return [pokemonData];
+  return { results: [pokemonData], count: 1 };
 };

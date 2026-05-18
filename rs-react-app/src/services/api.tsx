@@ -5,11 +5,12 @@ import type {
 } from '../types';
 
 const FIRST_PAGE_LIMIT = 20;
-const FIRST_PAGE_OFFSET = 0;
 
-export const fetchFirstPokemonPage = async (serverUrl: string) => {
+export const fetchPokemonByPage = async (serverUrl: string, page: number = 1) => {
+  const offset = (page - 1) * FIRST_PAGE_LIMIT;
+
   const response = await fetch(
-    `${serverUrl}?limit=${FIRST_PAGE_LIMIT}&offset=${FIRST_PAGE_OFFSET}`
+    `${serverUrl}?limit=${FIRST_PAGE_LIMIT}&offset=${offset}`
   );
 
   if (!response.ok) {
@@ -23,7 +24,7 @@ export const fetchFirstPokemonPage = async (serverUrl: string) => {
     };
   });
 
-  return results;
+  return { results, count: listData.count };
 };
 
 export const fetchPokemonByTerm = async (serverUrl: string, term: string) => {

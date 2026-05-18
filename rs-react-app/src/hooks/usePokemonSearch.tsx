@@ -3,9 +3,11 @@ import useLocalStorage from './useLocalStorage';
 import { performPokemonSearch } from '../services/search';
 import type { PokemonData } from '../types';
 
-function usePokemonSearch(serverUrl: string) {
+function usePokemonSearch(serverUrl: string, page:number) {
   const lastSearchTerm = useRef<string | null>(null);
+  const lastPage = useRef<number | null>(null);
   const [results, setResults] = useState<PokemonData[]>([]);
+  const [count, setPageCount] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const { setSearchTerm } = useLocalStorage();
@@ -13,15 +15,17 @@ function usePokemonSearch(serverUrl: string) {
   const search = useCallback(
     async (searchTerm: string) => {
       const term = searchTerm.trim().toLowerCase();
-      if (term === lastSearchTerm.current) return;
+      if (term === lastSearchTerm.current && page === lastPage.current) return;
       lastSearchTerm.current = term;
+      lastPage.current = page;
       setSearchTerm(term);
       setLoading(true);
 
       try {
-        const results = await performPokemonSearch(term, serverUrl);
+        const { results, count } = await performPokemonSearch(term, serverUrl, page);
         setLoading(false);
         setResults(results);
+        setPageCount(count);
       } catch (error) {
         const message =
           error instanceof Error ? error.message : 'Unknown error';
@@ -30,10 +34,16 @@ function usePokemonSearch(serverUrl: string) {
         setResults([]);
       }
     },
-    [serverUrl, setSearchTerm]
+    [serverUrl, setSearchTerm, page]
   );
 
-  return { results, loading, error, search };
+    const reset = useCallback(() => {
+        lastSearchTerm.current = null;
+        lastPage.current = null;
+    }, []);
+
+  return { results, count, loading, error, search, reset };
 }
 
 export default usePokemonSearch;
+ 

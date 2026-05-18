@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { fetchFirstPokemonPage, fetchPokemonByTerm } from './api';
+import { fetchPokemonByPage, fetchPokemonByTerm } from './api';
 
 describe('api service', () => {
   beforeEach(() => {
@@ -12,6 +12,7 @@ describe('api service', () => {
 
   it('should fetch first page successfully', async () => {
     const mockResponse = {
+      count: 2,
       results: [{ name: 'bulbasaur' }, { name: 'ivysaur' }],
     };
 
@@ -20,8 +21,11 @@ describe('api service', () => {
       json: async () => mockResponse,
     } as Response);
 
-    const result = await fetchFirstPokemonPage('http://api.com/');
-    expect(result).toEqual([{ name: 'bulbasaur' }, { name: 'ivysaur' }]);
+    const result = await fetchPokemonByPage('http://api.com/');
+    expect(result).toEqual({
+      results: [{ name: 'bulbasaur' }, { name: 'ivysaur' }],
+      count: 2,
+    });
   });
 
   it('should throw error when response for the first page is not ok', async () => {
@@ -30,7 +34,7 @@ describe('api service', () => {
       status: 404,
     } as Response);
 
-    await expect(fetchFirstPokemonPage('http://api.com/')).rejects.toThrow(
+    await expect(fetchPokemonByPage('http://api.com/')).rejects.toThrow(
       'Unable to load the first page of Pokemon list'
     );
   });
@@ -45,9 +49,12 @@ describe('api service', () => {
       json: async () => mockResponse,
     } as Response);
 
-    const result = await fetchFirstPokemonPage('http://api.com/');
+    const result = await fetchPokemonByPage('http://api.com/');
 
-    expect(result).toEqual([{ name: undefined }, { name: undefined }]);
+    expect(result).toEqual({
+      results: [{ name: undefined }, { name: undefined }],
+      count: undefined,
+    });
   });
 
   it('should fetch pokemon data and transform it correctly', async () => {
