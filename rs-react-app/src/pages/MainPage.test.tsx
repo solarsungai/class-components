@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router';
+import { MemoryRouter, Routes, Route } from 'react-router';
 import userEvent from '@testing-library/user-event';
 import MainPage from './MainPage';
 import ErrorBoundary from '../components/ErrorBoundary';
@@ -17,6 +17,17 @@ const renderPage = (initialEntries?: string[]) =>
     </MemoryRouter>
   );
 
+const renderPageWithRoutes = (initialEntries?: string[]) =>
+  render(
+    <MemoryRouter initialEntries={initialEntries || ['/']}>
+      <Routes>
+        <Route path="/" element={<MainPage />}>
+          <Route path="details/:name" element={<div data-testid="detail">Detail</div>} />
+        </Route>
+      </Routes>
+    </MemoryRouter>
+  );
+
 describe('MainPage', () => {
   beforeEach(() => {
     localStorage.clear();
@@ -25,10 +36,7 @@ describe('MainPage', () => {
 
   it('should display results after successful search', async () => {
     vi.mocked(performPokemonSearch).mockResolvedValue({
-      results: [
-        { name: 'bulbasaur' },
-        { name: 'ivysaur' },
-      ],
+      results: [{ name: 'bulbasaur' }, { name: 'ivysaur' }],
       count: 100,
     });
 
@@ -163,6 +171,131 @@ describe('MainPage', () => {
     await waitFor(() => {
       expect(performPokemonSearch).toHaveBeenCalledWith(
         'bulb',
+        expect.any(String),
+        2
+      );
+    });
+  });
+
+  it('should navigate to details page when a pokemon card is clicked', async () => {
+    const user = userEvent.setup();
+    vi.mocked(performPokemonSearch).mockResolvedValue({
+      results: [{ name: 'bulbasaur' }],
+      count: 1,
+    });
+
+    renderPageWithRoutes();
+
+    await waitFor(() => {
+      expect(screen.getByText('bulbasaur')).toBeInTheDocument();
+    });
+
+    await user.click(screen.getByText('bulbasaur'));
+
+    await waitFor(() => {
+      expect(screen.getByTestId('detail')).toBeInTheDocument();
+    });
+  });
+
+  it('should close detail panel when clicking left panel outside a pokemon card', async () => {
+    const user = userEvent.setup();
+    vi.mocked(performPokemonSearch).mockResolvedValue({
+      results: [],
+      count: 0,
+    });
+
+    renderPageWithRoutes(['/details/bulbasaur?page=1']);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('detail')).toBeInTheDocument();
+    });
+
+    await user.click(screen.getByText('No results yet'));
+
+    await waitFor(() => {
+      expect(screen.queryByTestId('detail')).not.toBeInTheDocument();
+    });
+  });
+
+  it('should search without adding search param when input is empty', async () => {
+    const user = userEvent.setup();
+    vi.mocked(performPokemonSearch).mockResolvedValue({
+      results: [],
+      count: 0,
+    });
+
+    renderPageWithRoutes();
+
+    const button = screen.getByRole('button', { name: /search/i });
+    await user.click(button);
+
+    await waitFor(() => {
+      expect(performPokemonSearch).toHaveBeenCalledWith(
+        '',
+        expect.any(String),
+        expect.any(Number)
+      );
+    });
+  });
+
+  it('should preserve search param when closing via left panel click', async () => {
+    const user = userEvent.setup();
+    vi.mocked(performPokemonSearch).mockResolvedValue({
+      results: [],
+      count: 0,
+    });
+
+    renderPageWithRoutes(['/details/bulbasaur?page=1&search=bulb']);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('detail')).toBeInTheDocument();
+    });
+
+    await user.click(screen.getByText('No results yet'));
+
+    await waitFor(() => {
+      expect(screen.queryByTestId('detail')).not.toBeInTheDocument();
+    });
+  });
+
+  it('should preserve search param when navigating to details', async () => {
+    const user = userEvent.setup();
+    vi.mocked(performPokemonSearch).mockResolvedValue({
+      results: [{ name: 'bulbasaur' }],
+      count: 1,
+    });
+
+    renderPageWithRoutes(['/?page=1&search=bulb']);
+
+    await waitFor(() => {
+      expect(screen.getByText('bulbasaur')).toBeInTheDocument();
+    });
+
+    await user.click(screen.getByText('bulbasaur'));
+
+    await waitFor(() => {
+      expect(screen.getByTestId('detail')).toBeInTheDocument();
+    });
+  });
+
+  it('should paginate without search param when no search term', async () => {
+    const user = userEvent.setup();
+    vi.mocked(performPokemonSearch).mockResolvedValue({
+      results: [{ name: 'bulbasaur' }],
+      count: 40,
+    });
+
+    renderPageWithRoutes();
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
+    });
+
+    await user.click(screen.getByRole('button', { name: /next/i }));
+
+    await waitFor(() => {
+      expect(performPokemonSearch).toHaveBeenCalledWith(
+        '',
         expect.any(String),
         2
       );

@@ -3,10 +3,12 @@ import type {
   PokemonData,
   PokemonListResponse,
 } from '../types';
+import { FIRST_PAGE_LIMIT } from '../constants';
 
-const FIRST_PAGE_LIMIT = 20;
-
-export const fetchPokemonByPage = async (serverUrl: string, page: number = 1) => {
+export const fetchPokemonByPage = async (
+  serverUrl: string,
+  page: number = 1
+) => {
   const offset = (page - 1) * FIRST_PAGE_LIMIT;
 
   const response = await fetch(

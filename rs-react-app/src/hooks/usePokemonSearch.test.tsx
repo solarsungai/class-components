@@ -16,7 +16,10 @@ vi.mock('./useLocalStorage', () => ({
 
 describe('usePokemonSearch', () => {
   const serverUrl = 'https://pokeapi.co/api/v2/pokemon/';
-  const mockResult = { results: [{ name: 'bulbasaur' }, { name: 'ivysaur' }], count: 40 };
+  const mockResult = {
+    results: [{ name: 'bulbasaur' }, { name: 'ivysaur' }],
+    count: 40,
+  };
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -60,7 +63,9 @@ describe('usePokemonSearch', () => {
   });
 
   it('should display error message when search fails', async () => {
-    vi.mocked(performPokemonSearch).mockRejectedValue(new Error('Pokemon not found'));
+    vi.mocked(performPokemonSearch).mockRejectedValue(
+      new Error('Pokemon not found')
+    );
     const { result } = renderHook(() => usePokemonSearch(serverUrl, 1));
 
     await act(async () => {
@@ -123,13 +128,15 @@ describe('usePokemonSearch', () => {
     const { result } = renderHook(() => usePokemonSearch(serverUrl, 1));
 
     await act(async () => {
-        await result.current.search('pikachu');
+      await result.current.search('pikachu');
     });
 
-    act(() => {result.current.reset();});
+    act(() => {
+      result.current.reset();
+    });
 
     await act(async () => {
-        await result.current.search('pikachu');
+      await result.current.search('pikachu');
     });
 
     expect(performPokemonSearch).toHaveBeenCalledTimes(2);

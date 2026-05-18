@@ -1,8 +1,7 @@
 import { useCallback } from 'react';
+import { SEARCH_TERM_KEY } from '../constants';
 
 function useLocalStorage() {
-  const SEARCH_TERM_KEY = 'searchTerm';
-
   const getSearchTerm = useCallback((): string | null => {
     return localStorage.getItem(SEARCH_TERM_KEY);
   }, []);

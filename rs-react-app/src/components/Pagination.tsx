@@ -4,7 +4,11 @@ type PaginationProps = {
   onPageChange: (page: number) => void;
 };
 
-function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) {
+function Pagination({
+  currentPage,
+  totalPages,
+  onPageChange,
+}: PaginationProps) {
   return (
     <div className="pagination">
       <button

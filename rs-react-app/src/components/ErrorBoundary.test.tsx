@@ -82,4 +82,14 @@ describe('ErrorBoundary', () => {
     await user.click(screen.getByRole('button', { name: /try again/i }));
     expect(screen.getByText('Something went wrong')).toBeInTheDocument();
   });
+
+  it('should show "Unexpected application error" when a non-Error value is thrown', () => {
+    const BrokenNonError = () => { throw 'string error'; };
+    render(
+      <ErrorBoundary>
+        <BrokenNonError />
+      </ErrorBoundary>
+    );
+    expect(screen.getByText('Unexpected application error')).toBeInTheDocument();
+  });
 });

@@ -19,7 +19,9 @@ describe('App routing', () => {
         <App />
       </MemoryRouter>
     );
-    expect(screen.getByRole('heading', { name: /about pokédex explorer/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /about pokédex explorer/i })
+    ).toBeInTheDocument();
   });
 
   it('should render NotFound page on unknown route', () => {

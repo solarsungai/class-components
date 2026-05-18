@@ -220,6 +220,15 @@
   border-radius: 16px;
   padding: 18px;
   background: linear-gradient(145deg, #ffffff 0%, #f8faff 100%);
+  cursor: pointer;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.pokemon-card:hover {
+  border-color: #c7d2fe;
+  box-shadow: var(--shadow-md);
 }
 
 .pokemon-header {
@@ -660,6 +669,206 @@
   color: #fff;
 }
 
+/* ── Content Row (split view) ── */
+
+.content-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.content-row .results-section {
+  flex: 1;
+  min-width: 0;
+}
+
+.split-view {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.left-panel {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ── Detail Panel ── */
+
+.detail-panel {
+  width: 320px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 20px;
+  align-self: flex-start;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 20px 18px 18px;
+  box-shadow: var(--shadow-md);
+}
+
+.detail-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-soft);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.detail-close:hover {
+  background: var(--danger-soft);
+  color: var(--danger);
+  border-color: #fecaca;
+}
+
+.detail-title {
+  font-size: 1.3rem;
+  padding-right: 36px;
+}
+
+.detail-image {
+  width: 148px;
+  height: 148px;
+  object-fit: contain;
+  border-radius: 14px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 10px;
+  display: block;
+  margin: 12px auto 0;
+}
+
+.detail-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* ── Pokemon type tag colours ── */
+
+.tag-fire {
+  background: #fff7ed;
+  color: #c2410c;
+  border-color: #fed7aa;
+}
+.tag-water {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+.tag-grass {
+  background: #f0fdf4;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+.tag-electric {
+  background: #fefce8;
+  color: #a16207;
+  border-color: #fde68a;
+}
+.tag-ice {
+  background: #ecfeff;
+  color: #0e7490;
+  border-color: #a5f3fc;
+}
+.tag-fighting {
+  background: #fef2f2;
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+.tag-poison {
+  background: #faf5ff;
+  color: #7e22ce;
+  border-color: #e9d5ff;
+}
+.tag-ground {
+  background: #fefce8;
+  color: #854d0e;
+  border-color: #fde68a;
+}
+.tag-flying {
+  background: #f0f9ff;
+  color: #0369a1;
+  border-color: #bae6fd;
+}
+.tag-psychic {
+  background: #fff1f2;
+  color: #be185d;
+  border-color: #fecdd3;
+}
+.tag-bug {
+  background: #f7fee7;
+  color: #3f6212;
+  border-color: #d9f99d;
+}
+.tag-rock {
+  background: #f5f5f4;
+  color: #44403c;
+  border-color: #d6d3d1;
+}
+.tag-ghost {
+  background: #f5f3ff;
+  color: #5b21b6;
+  border-color: #ddd6fe;
+}
+.tag-dragon {
+  background: #eef2ff;
+  color: #3730a3;
+  border-color: #c7d2fe;
+}
+.tag-dark {
+  background: #1f2937;
+  color: #f9fafb;
+  border-color: #374151;
+}
+.tag-steel {
+  background: #f8fafc;
+  color: #475569;
+  border-color: #cbd5e1;
+}
+.tag-fairy {
+  background: #fdf2f8;
+  color: #9d174d;
+  border-color: #fbcfe8;
+}
+
 @media (max-width: 768px) {
   .App {
     padding: 16px 14px 28px;
@@ -677,6 +886,22 @@
 
   .pokemon-stats {
     grid-template-columns: 1fr;
+  }
+
+  .content-row {
+    flex-direction: column;
+  }
+
+  .split-view {
+    flex-direction: column;
+  }
+
+  .detail-panel {
+    width: 100%;
+  }
+
+  .detail-stats {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .tools-row {

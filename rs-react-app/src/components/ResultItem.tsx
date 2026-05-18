@@ -2,9 +2,10 @@ import type { PokemonData } from '../types';
 
 type ResultItemProps = {
   pokemon: PokemonData;
+  onSelect: (name: string) => void;
 };
 
-function ResultItem({ pokemon }: ResultItemProps) {
+function ResultItem({ pokemon, onSelect }: ResultItemProps) {
   const types = pokemon.types ?? [];
   const abilities = pokemon.abilities ?? [];
   const hasStats =
@@ -18,7 +19,7 @@ function ResultItem({ pokemon }: ResultItemProps) {
     hasStats;
 
   return (
-    <div className="pokemon-card">
+    <div className="pokemon-card" onClick={() => onSelect(pokemon.name)}>
       <div className="pokemon-header">
         <h2 className="pokemon-name">{pokemon.name}</h2>
       </div>
