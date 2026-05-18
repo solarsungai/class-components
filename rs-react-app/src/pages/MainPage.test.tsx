@@ -22,7 +22,10 @@ const renderPageWithRoutes = (initialEntries?: string[]) =>
     <MemoryRouter initialEntries={initialEntries || ['/']}>
       <Routes>
         <Route path="/" element={<MainPage />}>
-          <Route path="details/:name" element={<div data-testid="detail">Detail</div>} />
+          <Route
+            path="details/:name"
+            element={<div data-testid="detail">Detail</div>}
+          />
         </Route>
       </Routes>
     </MemoryRouter>

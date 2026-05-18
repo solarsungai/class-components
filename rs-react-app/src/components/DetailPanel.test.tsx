@@ -142,7 +142,9 @@ describe('DetailPanel', () => {
     vi.mocked(fetchPokemonByTerm).mockResolvedValue(mockPokemon);
 
     render(
-      <MemoryRouter initialEntries={['/details/squirtle?page=1&search=squirtle']}>
+      <MemoryRouter
+        initialEntries={['/details/squirtle?page=1&search=squirtle']}
+      >
         <Routes>
           <Route path="/details/:name" element={<DetailPanel />} />
           <Route path="/" element={<div data-testid="main">Main Page</div>} />

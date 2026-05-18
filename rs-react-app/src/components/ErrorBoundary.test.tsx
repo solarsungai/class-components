@@ -84,12 +84,16 @@ describe('ErrorBoundary', () => {
   });
 
   it('should show "Unexpected application error" when a non-Error value is thrown', () => {
-    const BrokenNonError = () => { throw 'string error'; };
+    const BrokenNonError = () => {
+      throw 'string error';
+    };
     render(
       <ErrorBoundary>
         <BrokenNonError />
       </ErrorBoundary>
     );
-    expect(screen.getByText('Unexpected application error')).toBeInTheDocument();
+    expect(
+      screen.getByText('Unexpected application error')
+    ).toBeInTheDocument();
   });
 });
