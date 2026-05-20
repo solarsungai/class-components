@@ -17,6 +17,23 @@
   --shadow-md: 0 12px 30px rgba(79, 70, 229, 0.12);
 }
 
+[data-theme='dark'] {
+  --bg: #0d0f1a;
+  --surface: #161828;
+  --surface-soft: #1c1f33;
+  --text: #e2e8f0;
+  --text-muted: #7c8db5;
+  --border: #272b45;
+  --primary: #818cf8;
+  --primary-hover: #6366f1;
+  --primary-soft: #1e2040;
+  --danger: #f87171;
+  --danger-soft: #2a1515;
+  --success-soft: #0d2118;
+  --shadow-sm: 0 8px 20px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 12px 30px rgba(99, 102, 241, 0.2);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -67,6 +84,13 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+}
+
+.header-buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
 }
 
 .header-nav-link {
@@ -907,4 +931,172 @@
   .tools-row {
     justify-content: stretch;
   }
+}
+
+/* ── Dark theme overrides for hard-coded colours ── */
+
+[data-theme='dark'] body,
+[data-theme='dark'] {
+  background: var(--bg);
+  color: var(--text);
+}
+
+[data-theme='dark'] .header {
+  background: linear-gradient(130deg, #1a1d30 0%, #1c1f35 50%, #1e2240 100%);
+}
+
+[data-theme='dark'] .header h1 {
+  color: #e2e8f0;
+}
+
+[data-theme='dark'] .pokemon-card {
+  background: linear-gradient(145deg, #1c1f33 0%, #1a1d2e 100%);
+}
+
+[data-theme='dark'] .pokemon-name {
+  color: #e2e8f0;
+}
+
+[data-theme='dark'] .pokemon-image,
+[data-theme='dark'] .detail-image {
+  background: #1e2233;
+  border-color: #2d3250;
+}
+
+[data-theme='dark'] .search-input {
+  background: #1c1f33;
+  border-color: #2d3250;
+  color: var(--text);
+}
+
+[data-theme='dark'] .search-input::placeholder {
+  color: #4a5578;
+}
+
+[data-theme='dark'] .search-input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.18);
+}
+
+[data-theme='dark'] .stat,
+[data-theme='dark'] .stat-item {
+  background: #1e2233;
+  border-color: #2d3250;
+}
+
+[data-theme='dark'] .value,
+[data-theme='dark'] .stat-value {
+  color: #e2e8f0;
+}
+
+[data-theme='dark'] .pokemon-id {
+  background: #232644;
+  border-color: #2d3250;
+  color: #a5b4fc;
+}
+
+[data-theme='dark'] .results-empty {
+  border-color: #2d3250;
+}
+
+[data-theme='dark'] .results-empty h3 {
+  color: #e2e8f0;
+}
+
+[data-theme='dark'] .loader {
+  background: #1a2340;
+  border-color: #2d3a6b;
+  color: #93c5fd;
+}
+
+[data-theme='dark'] .error-boundary-fallback {
+  background: #1a1215;
+  border-color: #5a1e1e;
+}
+
+[data-theme='dark'] .page-title {
+  color: #e2e8f0;
+}
+
+[data-theme='dark'] .search-button {
+  background: #1e2a50;
+  color: #93c5fd;
+}
+
+[data-theme='dark'] .search-button:hover {
+  background: #1e3460;
+}
+
+[data-theme='dark'] .error-test-button {
+  background: #1a1215;
+  border-color: #5a1e1e;
+  color: #f87171;
+}
+
+[data-theme='dark'] .error-test-button:hover {
+  background: #220f10;
+}
+
+/* ── Theme toggle button ── */
+
+.theme-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 80px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  background: rgba(200, 215, 255, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
+  padding: 0 6px;
+  justify-content: space-between;
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease;
+  flex-shrink: 0;
+}
+
+[data-theme='dark'] .theme-toggle {
+  background: rgba(40, 44, 80, 0.6);
+  border-color: rgba(129, 140, 248, 0.3);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+.theme-toggle-thumb {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.theme-toggle-thumb--dark {
+  transform: translateX(38px);
+}
+
+[data-theme='dark'] .theme-toggle-thumb {
+  background: rgba(99, 102, 241, 0.85);
+  box-shadow: 0 2px 10px rgba(99, 102, 241, 0.45);
+}
+
+.theme-icon {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  pointer-events: none;
 }

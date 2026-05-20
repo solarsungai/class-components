@@ -5,6 +5,7 @@ import userEvent from '@testing-library/user-event';
 import MainPage from './MainPage';
 import ErrorBoundary from '../components/ErrorBoundary';
 import { performPokemonSearch } from '../services/search';
+import { ThemeProvider } from '../context/ThemeProvider';
 
 vi.mock('../services/search', () => ({
   performPokemonSearch: vi.fn(),
@@ -12,23 +13,27 @@ vi.mock('../services/search', () => ({
 
 const renderPage = (initialEntries?: string[]) =>
   render(
-    <MemoryRouter initialEntries={initialEntries || ['/']}>
-      <MainPage />
-    </MemoryRouter>
+    <ThemeProvider>
+      <MemoryRouter initialEntries={initialEntries || ['/']}>
+        <MainPage />
+      </MemoryRouter>
+    </ThemeProvider>
   );
 
 const renderPageWithRoutes = (initialEntries?: string[]) =>
   render(
-    <MemoryRouter initialEntries={initialEntries || ['/']}>
-      <Routes>
-        <Route path="/" element={<MainPage />}>
-          <Route
-            path="details/:name"
-            element={<div data-testid="detail">Detail</div>}
-          />
-        </Route>
-      </Routes>
-    </MemoryRouter>
+    <ThemeProvider>
+      <MemoryRouter initialEntries={initialEntries || ['/']}>
+        <Routes>
+          <Route path="/" element={<MainPage />}>
+            <Route
+              path="details/:name"
+              element={<div data-testid="detail">Detail</div>}
+            />
+          </Route>
+        </Routes>
+      </MemoryRouter>
+    </ThemeProvider>
   );
 
 describe('MainPage', () => {
@@ -313,11 +318,13 @@ describe('MainPage', () => {
     });
 
     render(
-      <MemoryRouter>
-        <ErrorBoundary>
-          <MainPage />
-        </ErrorBoundary>
-      </MemoryRouter>
+      <ThemeProvider>
+        <MemoryRouter>
+          <ErrorBoundary>
+            <MainPage />
+          </ErrorBoundary>
+        </MemoryRouter>
+      </ThemeProvider>
     );
 
     const errorButton = screen.getByRole('button', {

@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router';
+import ThemeToggle from './ThemeToggle';
 
 function Header() {
   return (
@@ -10,16 +11,19 @@ function Header() {
             Search Pokémon and view key stats instantly.
           </p>
         </div>
-        <NavLink
-          to="/about"
-          className={({ isActive }) =>
-            isActive
-              ? 'header-nav-link header-nav-link--active'
-              : 'header-nav-link'
-          }
-        >
-          About
-        </NavLink>
+        <div className="header-buttons">
+          <ThemeToggle />
+          <NavLink
+            to="/about"
+            className={({ isActive }) =>
+              isActive
+                ? 'header-nav-link header-nav-link--active'
+                : 'header-nav-link'
+            }
+          >
+            About
+          </NavLink>
+        </div>
       </div>
     </header>
   );
