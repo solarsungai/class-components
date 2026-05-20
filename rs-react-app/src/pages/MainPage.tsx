@@ -1,6 +1,6 @@
 import '../App.css';
 import { useState, useEffect, useRef } from 'react';
-import { SERVER_URL } from '../constants';
+import { SERVER_URL, POCKEMON_PER_PAGE_LIMIT } from '../constants';
 import Search from '../components/Search';
 import Header from '../components/Header';
 import Results from '../components/Results';
@@ -13,8 +13,6 @@ import {
   useNavigate,
   useLocation,
 } from 'react-router';
-
-const POCKEMON_PER_PAGE_LIMIT = 20;
 
 function MainPage() {
   const { getSearchTerm } = useLocalStorage();
