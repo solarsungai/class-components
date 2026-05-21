@@ -16,18 +16,30 @@ const mockPokemons: PokemonData[] = [
 
 describe('Results', () => {
   it('should render empty state when results array is empty', () => {
-    render(<Provider store={makeStore()}><Results results={[]} onSelect={() => {}} /></Provider>);
+    render(
+      <Provider store={makeStore()}>
+        <Results results={[]} onSelect={() => {}} />
+      </Provider>
+    );
     expect(screen.getByText('No results yet')).toBeInTheDocument();
   });
 
   it('should render correct number of pokemon cards', () => {
-    render(<Provider store={makeStore()}><Results results={mockPokemons} onSelect={() => {}} /></Provider>);
+    render(
+      <Provider store={makeStore()}>
+        <Results results={mockPokemons} onSelect={() => {}} />
+      </Provider>
+    );
     expect(screen.getByText('bulbasaur')).toBeInTheDocument();
     expect(screen.getByText('ivysaur')).toBeInTheDocument();
   });
 
   it('should not render empty state when results are provided', () => {
-    render(<Provider store={makeStore()}><Results results={mockPokemons} onSelect={() => {}} /></Provider>);
+    render(
+      <Provider store={makeStore()}>
+        <Results results={mockPokemons} onSelect={() => {}} />
+      </Provider>
+    );
     expect(screen.queryByText('No results yet')).not.toBeInTheDocument();
   });
 });

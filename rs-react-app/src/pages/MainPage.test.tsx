@@ -340,7 +340,7 @@ describe('MainPage', () => {
     );
 
     const errorButton = screen.getByRole('button', {
-      name: /test error boundary/i,
+      name: /test error/i,
     });
     await user.click(errorButton);
 

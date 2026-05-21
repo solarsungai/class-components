@@ -26,27 +26,47 @@ describe('ResultItem', () => {
   });
 
   it('should render the pockemon name', () => {
-    render(<Provider store={makeStore()}><ResultItem pokemon={mockPokemon} onSelect={() => {}} /></Provider>);
+    render(
+      <Provider store={makeStore()}>
+        <ResultItem pokemon={mockPokemon} onSelect={() => {}} />
+      </Provider>
+    );
     expect(screen.getByText('pikachu')).toBeInTheDocument();
   });
 
   it('should render the image if it received from the API', () => {
-    render(<Provider store={makeStore()}><ResultItem pokemon={mockPokemon} onSelect={() => {}} /></Provider>);
+    render(
+      <Provider store={makeStore()}>
+        <ResultItem pokemon={mockPokemon} onSelect={() => {}} />
+      </Provider>
+    );
     expect(screen.getByRole('img')).toBeInTheDocument();
   });
 
   it('should render the types if it received from the API', () => {
-    render(<Provider store={makeStore()}><ResultItem pokemon={mockPokemon} onSelect={() => {}} /></Provider>);
+    render(
+      <Provider store={makeStore()}>
+        <ResultItem pokemon={mockPokemon} onSelect={() => {}} />
+      </Provider>
+    );
     expect(screen.getByText('electric')).toBeInTheDocument();
   });
 
   it('should render the abilities if it received from the API', () => {
-    render(<Provider store={makeStore()}><ResultItem pokemon={mockPokemon} onSelect={() => {}} /></Provider>);
+    render(
+      <Provider store={makeStore()}>
+        <ResultItem pokemon={mockPokemon} onSelect={() => {}} />
+      </Provider>
+    );
     expect(screen.getByText('static')).toBeInTheDocument();
   });
 
   it('should render stats if it received from the API', () => {
-    render(<Provider store={makeStore()}><ResultItem pokemon={mockPokemon} onSelect={() => {}} /></Provider>);
+    render(
+      <Provider store={makeStore()}>
+        <ResultItem pokemon={mockPokemon} onSelect={() => {}} />
+      </Provider>
+    );
     expect(screen.getByText('112')).toBeInTheDocument();
   });
 
@@ -65,7 +85,10 @@ describe('ResultItem', () => {
   it('should not render the types if it not received from the API', () => {
     render(
       <Provider store={makeStore()}>
-        <ResultItem pokemon={{ ...mockPokemon, types: [] }} onSelect={() => {}} />
+        <ResultItem
+          pokemon={{ ...mockPokemon, types: [] }}
+          onSelect={() => {}}
+        />
       </Provider>
     );
     expect(screen.queryByText('electric')).not.toBeInTheDocument();
@@ -98,7 +121,11 @@ describe('ResultItem', () => {
   it('should call onSelect with pokemon name when card is clicked', async () => {
     const user = userEvent.setup();
     const onSelect = vi.fn();
-    render(<Provider store={makeStore()}><ResultItem pokemon={mockPokemon} onSelect={onSelect} /></Provider>);
+    render(
+      <Provider store={makeStore()}>
+        <ResultItem pokemon={mockPokemon} onSelect={onSelect} />
+      </Provider>
+    );
     await user.click(screen.getByText('pikachu'));
     expect(onSelect).toHaveBeenCalledWith('pikachu');
   });

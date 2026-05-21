@@ -111,7 +111,7 @@ function MainPage() {
           type="button"
           onClick={handleTestErrorClick}
         >
-          Test Error Boundary
+          Test Error
         </button>
       </div>
     </div>
