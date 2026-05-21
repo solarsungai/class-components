@@ -20,47 +20,47 @@ describe('ResultItem', () => {
   });
 
   it('should render the pockemon name', () => {
-    render(<ResultItem pokemon={mockPokemon} />);
+    render(<ResultItem pokemon={mockPokemon} onSelect={() => {}} />);
     expect(screen.getByText('pikachu')).toBeInTheDocument();
   });
 
   it('should render the image if it received from the API', () => {
-    render(<ResultItem pokemon={mockPokemon} />);
+    render(<ResultItem pokemon={mockPokemon} onSelect={() => {}} />);
     expect(screen.getByRole('img')).toBeInTheDocument();
   });
 
   it('should render the types if it received from the API', () => {
-    render(<ResultItem pokemon={mockPokemon} />);
+    render(<ResultItem pokemon={mockPokemon} onSelect={() => {}} />);
     expect(screen.getByText('electric')).toBeInTheDocument();
   });
 
   it('should render the abilities if it received from the API', () => {
-    render(<ResultItem pokemon={mockPokemon} />);
+    render(<ResultItem pokemon={mockPokemon} onSelect={() => {}} />);
     expect(screen.getByText('static')).toBeInTheDocument();
   });
 
   it('should render stats if it received from the API', () => {
-    render(<ResultItem pokemon={mockPokemon} />);
+    render(<ResultItem pokemon={mockPokemon} onSelect={() => {}} />);
     expect(screen.getByText('112')).toBeInTheDocument();
   });
 
   it('should not render the image if it not received from the API', () => {
-    render(<ResultItem pokemon={{ ...mockPokemon, image: undefined }} />);
+    render(<ResultItem pokemon={{ ...mockPokemon, image: undefined }} onSelect={() => {}} />);
     expect(screen.queryByRole('img')).not.toBeInTheDocument();
   });
 
   it('should not render the types if it not received from the API', () => {
-    render(<ResultItem pokemon={{ ...mockPokemon, types: [] }} />);
+    render(<ResultItem pokemon={{ ...mockPokemon, types: [] }} onSelect={() => {}} />);
     expect(screen.queryByText('electric')).not.toBeInTheDocument();
   });
 
   it('should not render the abilities if it not received from the API', () => {
-    render(<ResultItem pokemon={{ ...mockPokemon, abilities: [] }} />);
+    render(<ResultItem pokemon={{ ...mockPokemon, abilities: [] }} onSelect={() => {}} />);
     expect(screen.queryByText('static')).not.toBeInTheDocument();
   });
 
   it('should not render stats if it not received from the API', () => {
-    render(<ResultItem pokemon={{ ...mockPokemon, height: undefined }} />);
+    render(<ResultItem pokemon={{ ...mockPokemon, height: undefined }} onSelect={() => {}} />);
     expect(screen.queryByText('Height:')).not.toBeInTheDocument();
   });
 
