@@ -4,6 +4,7 @@ import { SERVER_URL, POCKEMON_PER_PAGE_LIMIT } from '../constants';
 import Search from '../components/Search';
 import Header from '../components/Header';
 import Results from '../components/Results';
+import Flyout from '../components/Flyout';
 import Pagination from '../components/Pagination';
 import usePokemonSearch from '../hooks/usePokemonSearch';
 import useLocalStorage from '../hooks/useLocalStorage';
@@ -114,6 +115,8 @@ function MainPage() {
           Test Error
         </button>
       </div>
+
+      <Flyout />
     </div>
   );
 }
