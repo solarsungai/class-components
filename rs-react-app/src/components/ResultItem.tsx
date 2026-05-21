@@ -1,4 +1,7 @@
 import type { PokemonData } from '../types';
+import { useDispatch, useSelector } from 'react-redux';
+import { addPokemon, deletePokemon } from '../store/pokemonSlice';
+import type { RootState } from '../store';
 
 type ResultItemProps = {
   pokemon: PokemonData;
@@ -6,6 +9,12 @@ type ResultItemProps = {
 };
 
 function ResultItem({ pokemon, onSelect }: ResultItemProps) {
+  const dispatch = useDispatch();
+  const selectedNames = useSelector(
+    (state: RootState) => state.pokemon.selectedNames
+  );
+  const isSelected = selectedNames.includes(pokemon.name);
+
   const types = pokemon.types ?? [];
   const abilities = pokemon.abilities ?? [];
   const hasStats =
@@ -21,6 +30,24 @@ function ResultItem({ pokemon, onSelect }: ResultItemProps) {
   return (
     <div className="pokemon-card" onClick={() => onSelect(pokemon.name)}>
       <div className="pokemon-header">
+        <label
+          className="pokemon-checkbox-label"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <input
+            type="checkbox"
+            className="pokemon-checkbox"
+            checked={isSelected}
+            onChange={() => {
+              if (isSelected) {
+                dispatch(deletePokemon(pokemon.name));
+              } else {
+                dispatch(addPokemon(pokemon.name));
+              }
+            }}
+          />
+          <span className="pokemon-checkbox-custom" />
+        </label>
         <h2 className="pokemon-name">{pokemon.name}</h2>
       </div>
 

@@ -6,34 +6,44 @@ import MainPage from './MainPage';
 import ErrorBoundary from '../components/ErrorBoundary';
 import { performPokemonSearch } from '../services/search';
 import { ThemeProvider } from '../context/ThemeProvider';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import pokemonReducer from '../store/pokemonSlice';
 
 vi.mock('../services/search', () => ({
   performPokemonSearch: vi.fn(),
 }));
 
+const makeStore = () =>
+  configureStore({ reducer: { pokemon: pokemonReducer } });
+
 const renderPage = (initialEntries?: string[]) =>
   render(
-    <ThemeProvider>
-      <MemoryRouter initialEntries={initialEntries || ['/']}>
-        <MainPage />
-      </MemoryRouter>
-    </ThemeProvider>
+    <Provider store={makeStore()}>
+      <ThemeProvider>
+        <MemoryRouter initialEntries={initialEntries || ['/']}>
+          <MainPage />
+        </MemoryRouter>
+      </ThemeProvider>
+    </Provider>
   );
 
 const renderPageWithRoutes = (initialEntries?: string[]) =>
   render(
-    <ThemeProvider>
-      <MemoryRouter initialEntries={initialEntries || ['/']}>
-        <Routes>
-          <Route path="/" element={<MainPage />}>
-            <Route
-              path="details/:name"
-              element={<div data-testid="detail">Detail</div>}
-            />
-          </Route>
-        </Routes>
-      </MemoryRouter>
-    </ThemeProvider>
+    <Provider store={makeStore()}>
+      <ThemeProvider>
+        <MemoryRouter initialEntries={initialEntries || ['/']}>
+          <Routes>
+            <Route path="/" element={<MainPage />}>
+              <Route
+                path="details/:name"
+                element={<div data-testid="detail">Detail</div>}
+              />
+            </Route>
+          </Routes>
+        </MemoryRouter>
+      </ThemeProvider>
+    </Provider>
   );
 
 describe('MainPage', () => {
@@ -318,13 +328,15 @@ describe('MainPage', () => {
     });
 
     render(
-      <ThemeProvider>
-        <MemoryRouter>
-          <ErrorBoundary>
-            <MainPage />
-          </ErrorBoundary>
-        </MemoryRouter>
-      </ThemeProvider>
+      <Provider store={makeStore()}>
+        <ThemeProvider>
+          <MemoryRouter>
+            <ErrorBoundary>
+              <MainPage />
+            </ErrorBoundary>
+          </MemoryRouter>
+        </ThemeProvider>
+      </Provider>
     );
 
     const errorButton = screen.getByRole('button', {

@@ -9,6 +9,9 @@ function Search({ value, onChange, onSearch }: SearchProps) {
         placeholder="Search..."
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') onSearch();
+        }}
       />
       <button className="search-button" onClick={onSearch}>
         Search
