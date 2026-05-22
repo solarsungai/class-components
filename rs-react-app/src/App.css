@@ -970,6 +970,11 @@
   white-space: nowrap;
 }
 
+.flyout-error {
+  color: 'red';
+  margin-left: 10px;
+}
+
 .flyout-buttons {
   display: flex;
   gap: 8px;
