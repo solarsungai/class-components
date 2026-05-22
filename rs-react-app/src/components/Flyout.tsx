@@ -33,37 +33,42 @@ function Flyout() {
 
   const handleDownload = async () => {
     try {
-    setDownloadError(null);
-    const results: PokemonData[] = await Promise.all(selectedPokemons.map(pokemon => fetchPokemonByTerm(SERVER_URL, pokemon)));
-    let csvContent = 'Name,Types,Height (m),Weight (kg),Base XP,Details URL\n';
-    results.forEach((pokemon) => {
-      const pokemonTypes = pokemon.types ? pokemon.types.join(', ') : 'none';
-      const heightM = pokemon.height ? pokemon.height / 10 : 0;
-      const weightKg = pokemon.weight ? pokemon.weight / 10 : 0;
-      const detailsUrl = `${window.location.origin}/?page=1&search=${pokemon.name}`;
-      csvContent += `"${pokemon.name}","${pokemonTypes}",${heightM},${weightKg},${pokemon.baseExperience},"${detailsUrl}"\n`;
-    });
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', `selected__pokemons_${results.length}.csv`);
-    link.click();
-    URL.revokeObjectURL(url);
+      setDownloadError(null);
+      const results: PokemonData[] = await Promise.all(
+        selectedPokemons.map((pokemon) =>
+          fetchPokemonByTerm(SERVER_URL, pokemon)
+        )
+      );
+      let csvContent =
+        'Name,Types,Height (m),Weight (kg),Base XP,Details URL\n';
+      results.forEach((pokemon) => {
+        const pokemonTypes = pokemon.types ? pokemon.types.join(', ') : 'none';
+        const heightM = pokemon.height ? pokemon.height / 10 : 0;
+        const weightKg = pokemon.weight ? pokemon.weight / 10 : 0;
+        const detailsUrl = `${window.location.origin}/?page=1&search=${pokemon.name}`;
+        csvContent += `"${pokemon.name}","${pokemonTypes}",${heightM},${weightKg},${pokemon.baseExperience},"${detailsUrl}"\n`;
+      });
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `selected__pokemons_${results.length}.csv`);
+      link.click();
+      URL.revokeObjectURL(url);
     } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    setDownloadError(`(Download failed: ${errorMessage})`);
+      const errorMessage =
+        error instanceof Error ? error.message : 'Unknown error';
+      setDownloadError(`(Download failed: ${errorMessage})`);
     }
   };
 
   return (
     <div className={`flyout-box${!hasItems ? ' flyout-box--hiding' : ''}`}>
       <div className="flyout-header">
-        <h3>Selected Pokémon ({selectedPokemons.length})
+        <h3>
+          Selected Pokémon ({selectedPokemons.length})
           {downloadError && (
-            <span className="flyout-error">
-              {downloadError}
-            </span>
+            <span className="flyout-error">{downloadError}</span>
           )}
         </h3>
         <div className="flyout-buttons">
