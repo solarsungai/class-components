@@ -129,4 +129,57 @@ describe('ResultItem', () => {
     await user.click(screen.getByText('pikachu'));
     expect(onSelect).toHaveBeenCalledWith('pikachu');
   });
+
+  it('should dispatch addPokemon when checkbox is checked', async () => {
+    const user = userEvent.setup();
+    const store = makeStore();
+    render(
+      <Provider store={store}>
+        <ResultItem pokemon={mockPokemon} onSelect={() => {}} />
+      </Provider>
+    );
+    await user.click(screen.getByRole('checkbox'));
+    expect(store.getState().pokemon.selectedNames).toContain('pikachu');
+  });
+
+  it('should dispatch deletePokemon when checkbox is unchecked', async () => {
+    const user = userEvent.setup();
+    const store = makeStore();
+    store.dispatch({ type: 'pokemon/addPokemon', payload: 'pikachu' });
+    render(
+      <Provider store={store}>
+        <ResultItem pokemon={mockPokemon} onSelect={() => {}} />
+      </Provider>
+    );
+    await user.click(screen.getByRole('checkbox'));
+    expect(store.getState().pokemon.selectedNames).not.toContain('pikachu');
+  });
+
+  it('should not call onSelect when checkbox label is clicked', async () => {
+    const user = userEvent.setup();
+    const onSelect = vi.fn();
+    render(
+      <Provider store={makeStore()}>
+        <ResultItem pokemon={mockPokemon} onSelect={onSelect} />
+      </Provider>
+    );
+    await user.click(screen.getByRole('checkbox'));
+    expect(onSelect).not.toHaveBeenCalled();
+  });
+
+  it('should handle undefined types and abilities gracefully', () => {
+    render(
+      <Provider store={makeStore()}>
+        <ResultItem
+          pokemon={{
+            ...mockPokemon,
+            types: undefined as unknown as string[],
+            abilities: undefined as unknown as string[],
+          }}
+          onSelect={() => {}}
+        />
+      </Provider>
+    );
+    expect(screen.getByText('pikachu')).toBeInTheDocument();
+  });
 });

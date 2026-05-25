@@ -39,4 +39,10 @@ describe('Search', () => {
     await user.click(screen.getByRole('button'));
     expect(mockData.onSearch).toHaveBeenCalled();
   });
+
+  it('should call onSearch when the user presses Enter in the input', async () => {
+    render(<Search {...mockData} />);
+    await user.type(screen.getByRole('textbox'), '{Enter}');
+    expect(mockData.onSearch).toHaveBeenCalled();
+  });
 });

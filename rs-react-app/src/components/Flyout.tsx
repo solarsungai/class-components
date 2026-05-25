@@ -24,7 +24,7 @@ function Flyout() {
     }
   }, [hasItems]);
 
-  if (!hasItems) return null;
+  if (!shouldRender) return null;
 
   const handleUnselectAll = () => {
     dispatch(clearAllSelections());
