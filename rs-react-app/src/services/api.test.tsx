@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { fetchPokemonByPage, fetchPokemonByTerm } from './api';
+import { fetchPokemonByPage, fetchPokemonByTerm } from './pokemonApi';
 
 describe('api service', () => {
   beforeEach(() => {

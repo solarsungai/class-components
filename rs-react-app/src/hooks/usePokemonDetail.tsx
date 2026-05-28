@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchPokemonByTerm } from '../services/api';
+import { fetchPokemonByTerm } from '../services/pokemonApi';
 import { SERVER_URL } from '../constants';
 import type { PokemonData } from '../types';
 

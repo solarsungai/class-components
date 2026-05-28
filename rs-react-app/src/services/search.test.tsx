@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { performPokemonSearch } from './search';
-import { fetchPokemonByPage, fetchPokemonByTerm } from './api';
+import { fetchPokemonByPage, fetchPokemonByTerm } from './pokemonApi';
 import type { PokemonData } from '../types';
 
 vi.mock('./api', () => ({

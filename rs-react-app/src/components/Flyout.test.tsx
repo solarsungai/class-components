@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import Flyout from './Flyout';
 import pokemonReducer, { addPokemon } from '../store/pokemonSlice';
-import * as api from '../services/api';
+import * as api from '../services/pokemonApi';
 import type { PokemonData } from '../types';
 
 const makeStore = (names: string[] = []) => {
@@ -91,7 +91,9 @@ describe('Flyout', () => {
     const revokeObjectURL = vi
       .spyOn(URL, 'revokeObjectURL')
       .mockImplementation(() => {});
-    const clickSpy = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
+    const clickSpy = vi
+      .spyOn(HTMLAnchorElement.prototype, 'click')
+      .mockImplementation(() => {});
 
     render(
       <Provider store={makeStore(['pikachu'])}>
@@ -153,9 +155,7 @@ describe('Flyout', () => {
   it('"Unselect all" clears error message', async () => {
     const user = userEvent.setup();
 
-    vi.spyOn(api, 'fetchPokemonByTerm').mockRejectedValue(
-      new Error('fail')
-    );
+    vi.spyOn(api, 'fetchPokemonByTerm').mockRejectedValue(new Error('fail'));
 
     render(
       <Provider store={makeStore(['pikachu'])}>
@@ -189,7 +189,8 @@ describe('Flyout', () => {
     await user.click(screen.getByRole('button', { name: /unselect all/i }));
 
     await waitFor(
-      () => expect(screen.queryByText(/selected pokémon/i)).not.toBeInTheDocument(),
+      () =>
+        expect(screen.queryByText(/selected pokémon/i)).not.toBeInTheDocument(),
       { timeout: 1000 }
     );
   });

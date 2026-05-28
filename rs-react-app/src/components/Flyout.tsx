@@ -4,7 +4,7 @@ import { clearAllSelections } from '../store/pokemonSlice';
 import type { RootState } from '../store';
 import type { PokemonData } from '../types';
 import { SERVER_URL } from '../constants';
-import { fetchPokemonByTerm } from '../services/api';
+import { fetchPokemonByTerm } from '../services/pokemonApi';
 
 function Flyout() {
   const selectedPokemons = useSelector(

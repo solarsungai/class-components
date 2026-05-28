@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
 import { Route, Routes } from 'react-router';
 import DetailPanel from './DetailPanel';
-import { fetchPokemonByTerm } from '../services/api';
+import { fetchPokemonByTerm } from '../services/pokemonApi';
 
 vi.mock('../services/api', () => ({
   fetchPokemonByTerm: vi.fn(),

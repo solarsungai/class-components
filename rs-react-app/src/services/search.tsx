@@ -1,4 +1,4 @@
-import { fetchPokemonByPage, fetchPokemonByTerm } from './api';
+import { fetchPokemonByPage, fetchPokemonByTerm } from './pokemonApi';
 import type { PokemonData } from '../types';
 
 export const performPokemonSearch = async (

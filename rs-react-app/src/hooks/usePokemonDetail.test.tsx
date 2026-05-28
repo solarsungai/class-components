@@ -1,6 +1,6 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { fetchPokemonByTerm } from '../services/api';
+import { fetchPokemonByTerm } from '../services/pokemonApi';
 import usePokemonDetail from './usePokemonDetail';
 
 vi.mock('../services/api', () => ({
