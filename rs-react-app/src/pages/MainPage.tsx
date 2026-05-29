@@ -25,9 +25,9 @@ function MainPage() {
   const [inputValue, setInputValue] = useState<string>(() => searchFromUrl || (getSearchTerm() ?? ''));
 
   const hasSearch = Boolean(searchFromUrl);
-  const { data: pageData, isLoading: isPageLoading, error: pageError } = useGetPokemonByPageQuery(page, { skip: hasSearch });
-  const { data: searchData, isLoading: isSearchLoading, error: searchError } = useGetPokemonByNameQuery(searchFromUrl, { skip: !hasSearch });
-  const loading = hasSearch ? isSearchLoading : isPageLoading;
+  const { data: pageData, isFetching: isPageFetching, error: pageError } = useGetPokemonByPageQuery(page, { skip: hasSearch });
+  const { data: searchData, isFetching: isSearchFetching, error: searchError } = useGetPokemonByNameQuery(searchFromUrl, { skip: !hasSearch });
+  const loading = hasSearch ? isSearchFetching : isPageFetching;
   const error = hasSearch ? searchError : pageError;
   const results = hasSearch ? (searchData ? [searchData] : []) : (pageData?.results ?? []);
   const count = hasSearch ? (searchData ? 1 : 0) : (pageData?.count ?? 0);
