@@ -1,6 +1,6 @@
 import '../App.css';
 import { useState } from 'react';
-import { POCKEMON_PER_PAGE_LIMIT } from '../constants';
+import { POKEMON_PER_PAGE_LIMIT } from '../constants';
 import Search from '../components/Search';
 import Header from '../components/Header';
 import Results from '../components/Results';
@@ -14,7 +14,10 @@ import {
   useLocation,
 } from 'react-router';
 import { useGetPokemonByPageQuery, useGetPokemonByNameQuery } from '../services/pokemonApi';
+import { pokemonApi } from '../services/pokemonApi';
 import getErrorMessage from '../utils/getErrorMessage';
+import { useDispatch } from 'react-redux';
+import type { AppDispatch } from '../store';
 
 function MainPage() {
   const { getSearchTerm } = useLocalStorage();
@@ -34,8 +37,12 @@ function MainPage() {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch<AppDispatch>();
   const isDetailOpen = location.pathname.startsWith('/details/');
   const handleTestErrorClick = () => {setShouldThrowTestError(true);};
+  const handleRefresh = () => {
+    dispatch(pokemonApi.util.invalidateTags(['PokemonList', 'PokemonDetail']));
+  };
 
   if (shouldThrowTestError) throw new Error('Test error button triggered');
 
@@ -90,7 +97,7 @@ function MainPage() {
         {!loading && !error && count > 0 && (
           <Pagination
             currentPage={page}
-            totalPages={Math.ceil(count / POCKEMON_PER_PAGE_LIMIT)}
+            totalPages={Math.ceil(count / POKEMON_PER_PAGE_LIMIT)}
             onPageChange={(newPage) => {
               const params: Record<string, string> = { page: String(newPage) };
               if (searchFromUrl) params.search = searchFromUrl;
@@ -104,6 +111,13 @@ function MainPage() {
           onClick={handleTestErrorClick}
         >
           Test Error
+        </button>
+        <button
+          className="refresh-button"
+          type="button"
+          onClick={handleRefresh}
+        >
+          Refresh
         </button>
       </div>
 

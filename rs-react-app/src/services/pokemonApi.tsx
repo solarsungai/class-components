@@ -4,7 +4,7 @@ import type {
   PokemonData,
   PokemonListResponse,
 } from '../types';
-import { SERVER_URL, POCKEMON_PER_PAGE_LIMIT } from '../constants';
+import { SERVER_URL, POKEMON_PER_PAGE_LIMIT } from '../constants';
 
 export const pokemonApi = createApi({
   reducerPath: 'pokemonApi',
@@ -16,8 +16,8 @@ export const pokemonApi = createApi({
     getPokemonByPage: build.query<{ results: PokemonData[]; count: number }, number>({
         providesTags: ['PokemonList'],
         query: (page) => {
-            const offset = (page - 1) * POCKEMON_PER_PAGE_LIMIT;
-            return `?limit=${POCKEMON_PER_PAGE_LIMIT}&offset=${offset}`;
+            const offset = (page - 1) * POKEMON_PER_PAGE_LIMIT;
+            return `?limit=${POKEMON_PER_PAGE_LIMIT}&offset=${offset}`;
         },
         transformResponse: (response: PokemonListResponse) => {
             const results = response.results.map((item) => ({
