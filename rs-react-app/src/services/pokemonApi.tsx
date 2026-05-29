@@ -11,16 +11,14 @@ export const pokemonApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: SERVER_URL }),
   keepUnusedDataFor: Number(import.meta.env.VITE_CACHE_TTL) || 60,
   tagTypes: ['PokemonList', 'PokemonDetail'],
-  endpoints: (builder) => ({
+  endpoints: (build) => ({
     
-    getPokemonPage: builder.query<{ results: PokemonData[]; count: number }, number>({
+    getPokemonByPage: build.query<{ results: PokemonData[]; count: number }, number>({
         providesTags: ['PokemonList'],
-
         query: (page) => {
             const offset = (page - 1) * POCKEMON_PER_PAGE_LIMIT;
             return `?limit=${POCKEMON_PER_PAGE_LIMIT}&offset=${offset}`;
         },
-        
         transformResponse: (response: PokemonListResponse) => {
             const results = response.results.map((item) => ({
             name: item.name,
@@ -30,11 +28,9 @@ export const pokemonApi = createApi({
         },
     }),
 
-    getPokemonByName: builder.query<PokemonData, string>({
+    getPokemonByName: build.query<PokemonData, string>({
         providesTags: (_result, _error, name) => [{ type: 'PokemonDetail', id: name }],
-
         query: (term) => `${term}`,
-        
         transformResponse: (response: PokemonApiResponse) => {
             const types = Array.isArray(response.types)
                 ? response.types.map((typeInfo) => typeInfo.type.name)
@@ -59,4 +55,4 @@ export const pokemonApi = createApi({
   }),
 });
 
-export const { useGetPokemonPageQuery, useGetPokemonByNameQuery } = pokemonApi;
+export const { useGetPokemonByPageQuery, useGetPokemonByNameQuery } = pokemonApi;

@@ -1,12 +1,11 @@
 import '../App.css';
-import { useState, useEffect, useRef } from 'react';
-import { SERVER_URL, POCKEMON_PER_PAGE_LIMIT } from '../constants';
+import { useState } from 'react';
+import { POCKEMON_PER_PAGE_LIMIT } from '../constants';
 import Search from '../components/Search';
 import Header from '../components/Header';
 import Results from '../components/Results';
 import Flyout from '../components/Flyout';
 import Pagination from '../components/Pagination';
-import usePokemonSearch from '../hooks/usePokemonSearch';
 import useLocalStorage from '../hooks/useLocalStorage';
 import {
   Outlet,
@@ -14,33 +13,29 @@ import {
   useNavigate,
   useLocation,
 } from 'react-router';
+import { useGetPokemonByPageQuery, useGetPokemonByNameQuery } from '../services/pokemonApi';
+import getErrorMessage from '../utils/getErrorMessage';
 
 function MainPage() {
   const { getSearchTerm } = useLocalStorage();
-  const [shouldThrowTestError, setShouldThrowTestError] =
-    useState<boolean>(false);
+  const [shouldThrowTestError, setShouldThrowTestError] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  const searchFromUrl = searchParams.get('search') ?? '';
+  const searchFromUrl = (searchParams.get('search') ?? '').trim().toLowerCase();
   const page = Number(searchParams.get('page')) || 1;
-  const [inputValue, setInputValue] = useState<string>(
-    () => searchFromUrl || (getSearchTerm() ?? '')
-  );
-  const currentSearchTerm = useRef(searchFromUrl || (getSearchTerm() ?? ''));
-  const { results, count, loading, error, search, reset } = usePokemonSearch(
-    SERVER_URL,
-    page
-  );
+  const [inputValue, setInputValue] = useState<string>(() => searchFromUrl || (getSearchTerm() ?? ''));
+
+  const hasSearch = Boolean(searchFromUrl);
+  const { data: pageData, isLoading: isPageLoading, error: pageError } = useGetPokemonByPageQuery(page, { skip: hasSearch });
+  const { data: searchData, isLoading: isSearchLoading, error: searchError } = useGetPokemonByNameQuery(searchFromUrl, { skip: !hasSearch });
+  const loading = hasSearch ? isSearchLoading : isPageLoading;
+  const error = hasSearch ? searchError : pageError;
+  const results = hasSearch ? (searchData ? [searchData] : []) : (pageData?.results ?? []);
+  const count = hasSearch ? (searchData ? 1 : 0) : (pageData?.count ?? 0);
+
   const navigate = useNavigate();
   const location = useLocation();
   const isDetailOpen = location.pathname.startsWith('/details/');
-  const handleTestErrorClick = () => {
-    setShouldThrowTestError(true);
-  };
-
-  useEffect(() => {
-    currentSearchTerm.current = searchFromUrl;
-    void search(searchFromUrl);
-  }, [search, searchFromUrl]);
+  const handleTestErrorClick = () => {setShouldThrowTestError(true);};
 
   if (shouldThrowTestError) throw new Error('Test error button triggered');
 
@@ -52,20 +47,16 @@ function MainPage() {
           value={inputValue}
           onChange={(value) => setInputValue(value)}
           onSearch={() => {
-            currentSearchTerm.current = inputValue;
-            reset();
             const params = new URLSearchParams({ page: '1' });
             if (inputValue.trim()) params.set('search', inputValue);
             navigate(`/?${params.toString()}`);
-            void search(inputValue);
           }}
         />
-        {error && <div className="error-message">{error}</div>}
-        {loading && <div className="loader">Loading...</div>}
+        {error && <div className="error-message">{getErrorMessage(error)}</div>}
       </section>
 
       <section className="results-section">
-        {!error && !loading && (
+        {!error && (
           <div className="split-view">
             <div
               className="left-panel"
@@ -88,6 +79,7 @@ function MainPage() {
                   navigate(`/details/${name}?${params.toString()}`);
                 }}
               />
+              {loading && <div className="loader loader--overlay">Loading...</div>}
             </div>
             <Outlet />
           </div>
@@ -101,8 +93,7 @@ function MainPage() {
             totalPages={Math.ceil(count / POCKEMON_PER_PAGE_LIMIT)}
             onPageChange={(newPage) => {
               const params: Record<string, string> = { page: String(newPage) };
-              if (currentSearchTerm.current.trim())
-                params.search = currentSearchTerm.current;
+              if (searchFromUrl) params.search = searchFromUrl;
               setSearchParams(params);
             }}
           />

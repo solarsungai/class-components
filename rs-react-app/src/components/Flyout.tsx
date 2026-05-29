@@ -2,15 +2,15 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearAllSelections } from '../store/pokemonSlice';
 import type { RootState } from '../store';
+import type { AppDispatch } from '../store';
 import type { PokemonData } from '../types';
-import { SERVER_URL } from '../constants';
-import { fetchPokemonByTerm } from '../services/pokemonApi';
+import { pokemonApi } from '../services/pokemonApi';
 
 function Flyout() {
   const selectedPokemons = useSelector(
     (state: RootState) => state.pokemon.selectedNames
   );
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const [downloadError, setDownloadError] = useState<string | null>(null);
   const hasItems = selectedPokemons.length > 0;
   const [shouldRender, setShouldRender] = useState(hasItems);
@@ -36,7 +36,7 @@ function Flyout() {
       setDownloadError(null);
       const results: PokemonData[] = await Promise.all(
         selectedPokemons.map((pokemon) =>
-          fetchPokemonByTerm(SERVER_URL, pokemon)
+          dispatch(pokemonApi.endpoints.getPokemonByName.initiate(pokemon)).unwrap()
         )
       );
       let csvContent =

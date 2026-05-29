@@ -1,12 +1,13 @@
 import { useParams, useSearchParams, useNavigate } from 'react-router';
-import usePokemonDetail from '../hooks/usePokemonDetail';
+import { useGetPokemonByNameQuery } from '../services/pokemonApi';
+import getErrorMessage from '../utils/getErrorMessage';
 
 function DetailPanel() {
   const navigate = useNavigate();
   const { name } = useParams<{ name: string }>();
   const [searchParams] = useSearchParams();
   const page = searchParams.get('page') || '1';
-  const { pokemon, loading, error } = usePokemonDetail(name ?? '');
+  const { data: pokemon, isLoading: loading, error } = useGetPokemonByNameQuery(name ?? '', { skip: !name });
 
   const handleClose = () => {
     const params = new URLSearchParams({ page });
@@ -27,7 +28,7 @@ function DetailPanel() {
       </button>
 
       {loading && <div className="loader">Loading...</div>}
-      {error && <div className="error-message">{error}</div>}
+      {error && <div className="error-message">{getErrorMessage(error)}</div>}
 
       {!loading && !error && pokemon && (
         <div className="detail-content">
