@@ -102,9 +102,10 @@
   font-size: 0.95rem;
   font-weight: 600;
   text-decoration: none;
-  color: var(--text-muted);
-  background: #e1afef30;
-  border: 1px solid var(--border);
+  color: #5b1e8a;
+  background: #ddbffe;
+  border: 1px solid #b598d4;
+  box-shadow: var(--shadow-md);
   transition:
     color 0.18s ease,
     background-color 0.18s ease,
@@ -113,15 +114,12 @@
 }
 
 .header-nav-link:hover {
-  color: var(--primary);
-  background: var(--primary-soft);
-  border-color: #c7d2fe;
+  background: #c29fe8;
 }
 
 .header-nav-link--active {
-  color: var(--primary);
-  background: var(--primary-soft);
-  border-color: #c7d2fe;
+  color: #5822af;
+  background: #c56ff4;
 }
 
 .search-section,
@@ -165,6 +163,7 @@
 
 .search-button,
 .error-test-button,
+.refresh-button,
 .error-boundary-fallback button {
   height: 46px;
   border: 0;
@@ -176,7 +175,9 @@
   transition:
     transform 0.18s ease,
     box-shadow 0.2s ease,
-    background-color 0.2s ease;
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .search-button {
@@ -191,6 +192,7 @@
 
 .search-button:active,
 .error-test-button:active,
+.refresh-button:active,
 .error-boundary-fallback button:active {
   transform: translateY(1px);
 }
@@ -675,11 +677,23 @@
 .error-test-button {
   background: #fff;
   color: #b42318;
-  border: 1px solid #fecaca;
+  border: 1px solid #f49a9a;
+  margin-left: auto;
 }
 
 .error-test-button:hover {
   background: #fff5f5;
+  color: #991b1b;
+}
+
+.refresh-button {
+  background: #fff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.refresh-button:hover {
+  background: #eff6ff;
 }
 
 .error-boundary-fallback {
@@ -1240,10 +1254,24 @@
   background: #1a1215;
   border-color: #5a1e1e;
   color: #f87171;
+  margin-left: auto;
 }
 
 [data-theme='dark'] .error-test-button:hover {
-  background: #220f10;
+  background: #2d1215;
+  border-color: #a22424;
+  color: #fca5a5;
+}
+
+[data-theme='dark'] .refresh-button {
+  background: #0f1a2e;
+  border-color: #2d3a6b;
+  color: #93c5fd;
+}
+
+[data-theme='dark'] .refresh-button:hover {
+  background: #1a2340;
+  border-color: #4056a4;
 }
 
 /* ── Theme toggle button ── */

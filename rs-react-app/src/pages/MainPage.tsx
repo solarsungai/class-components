@@ -13,8 +13,7 @@ import {
   useNavigate,
   useLocation,
 } from 'react-router';
-import { useGetPokemonByPageQuery, useGetPokemonByNameQuery } from '../services/pokemonApi';
-import { pokemonApi } from '../services/pokemonApi';
+import { pokemonApi, useGetPokemonByPageQuery, useGetPokemonByNameQuery } from '../services/pokemonApi';
 import getErrorMessage from '../utils/getErrorMessage';
 import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '../store';
