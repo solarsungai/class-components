@@ -1,6 +1,6 @@
 import '../App.css';
 import { useState } from 'react';
-import { URL_PARAMS, POKEMON_PER_PAGE_LIMIT } from '../constants';
+import { URL_PARAMS, POKEMON_PER_PAGE_LIMIT, DEFAULT_PAGE } from '../constants';
 import Search from '../components/Search';
 import Header from '../components/Header';
 import Results from '../components/Results';
@@ -27,8 +27,10 @@ function MainPage() {
   const [shouldThrowTestError, setShouldThrowTestError] =
     useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  const searchFromUrl = (searchParams.get(URL_PARAMS.SEARCH) ?? '').trim().toLowerCase();
-  const page = Number(searchParams.get(URL_PARAMS.PAGE)) || 1;
+  const searchFromUrl = (searchParams.get(URL_PARAMS.SEARCH) ?? '')
+    .trim()
+    .toLowerCase();
+  const page = Number(searchParams.get(URL_PARAMS.PAGE)) || DEFAULT_PAGE;
   const [inputValue, setInputValue] = useState<string>(
     () => searchFromUrl || (getSearchTerm() ?? '')
   );
@@ -74,7 +76,7 @@ function MainPage() {
           value={inputValue}
           onChange={(value) => setInputValue(value)}
           onSearch={() => {
-            const params = new URLSearchParams({ [URL_PARAMS.PAGE]: '1' });
+            const params = new URLSearchParams({ [URL_PARAMS.PAGE]: String(DEFAULT_PAGE) });
             if (inputValue.trim()) params.set('search', inputValue);
             navigate(`/?${params.toString()}`);
           }}
@@ -92,8 +94,11 @@ function MainPage() {
                   isDetailOpen &&
                   !(e.target as HTMLElement).closest('.pokemon-card')
                 ) {
-                  const params = new URLSearchParams({ [URL_PARAMS.PAGE]: String(page) });
-                  if (searchFromUrl) params.set(URL_PARAMS.SEARCH, searchFromUrl);
+                  const params = new URLSearchParams({
+                    [URL_PARAMS.PAGE]: String(page),
+                  });
+                  if (searchFromUrl)
+                    params.set(URL_PARAMS.SEARCH, searchFromUrl);
                   navigate(`/?${params.toString()}`);
                 }
               }}
@@ -101,8 +106,11 @@ function MainPage() {
               <Results
                 results={results}
                 onSelect={(name) => {
-                  const params = new URLSearchParams({ [URL_PARAMS.PAGE]: String(page) });
-                  if (searchFromUrl) params.set(URL_PARAMS.SEARCH, searchFromUrl);
+                  const params = new URLSearchParams({
+                    [URL_PARAMS.PAGE]: String(page),
+                  });
+                  if (searchFromUrl)
+                    params.set(URL_PARAMS.SEARCH, searchFromUrl);
                   navigate(`/details/${name}?${params.toString()}`);
                 }}
               />
@@ -121,7 +129,9 @@ function MainPage() {
             currentPage={page}
             totalPages={Math.ceil(count / POKEMON_PER_PAGE_LIMIT)}
             onPageChange={(newPage) => {
-              const params: Record<string, string> = { [URL_PARAMS.PAGE]: String(newPage) };
+              const params: Record<string, string> = {
+                [URL_PARAMS.PAGE]: String(newPage),
+              };
               if (searchFromUrl) params[URL_PARAMS.SEARCH] = searchFromUrl;
               setSearchParams(params);
             }}
