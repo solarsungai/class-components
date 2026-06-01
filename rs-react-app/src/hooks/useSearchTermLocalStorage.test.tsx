@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { renderHook } from '@testing-library/react';
-import useLocalStorage from './useLocalStorage';
+import useLocalStorage from './useSearchTermLocalStorage';
 
 describe('storage service', () => {
   beforeEach(() => {

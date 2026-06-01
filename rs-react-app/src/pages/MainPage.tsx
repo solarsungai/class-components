@@ -6,7 +6,7 @@ import Header from '../components/Header';
 import Results from '../components/Results';
 import Flyout from '../components/Flyout';
 import Pagination from '../components/Pagination';
-import useLocalStorage from '../hooks/useLocalStorage';
+import useSearchTermLocalStorage from '../hooks/useSearchTermLocalStorage';
 import {
   Outlet,
   useSearchParams,
@@ -23,7 +23,7 @@ import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '../store';
 
 function MainPage() {
-  const { getSearchTerm } = useLocalStorage();
+  const { getSearchTerm } = useSearchTermLocalStorage();
   const [shouldThrowTestError, setShouldThrowTestError] =
     useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
