@@ -36,7 +36,9 @@ function Flyout() {
       setDownloadError(null);
       const results: PokemonData[] = await Promise.all(
         selectedPokemons.map((pokemon) =>
-          dispatch(pokemonApi.endpoints.getPokemonByName.initiate(pokemon)).unwrap()
+          dispatch(
+            pokemonApi.endpoints.getPokemonByName.initiate(pokemon)
+          ).unwrap()
         )
       );
       let csvContent =

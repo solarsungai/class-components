@@ -7,7 +7,11 @@ function DetailPanel() {
   const { name } = useParams<{ name: string }>();
   const [searchParams] = useSearchParams();
   const page = searchParams.get('page') || '1';
-  const { data: pokemon, isLoading: loading, error } = useGetPokemonByNameQuery(name ?? '', { skip: !name });
+  const {
+    data: pokemon,
+    isLoading: loading,
+    error,
+  } = useGetPokemonByNameQuery(name ?? '', { skip: !name });
 
   const handleClose = () => {
     const params = new URLSearchParams({ page });

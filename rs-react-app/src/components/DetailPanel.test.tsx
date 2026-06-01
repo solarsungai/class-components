@@ -4,10 +4,10 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
 import { Route, Routes } from 'react-router';
 import DetailPanel from './DetailPanel';
-import { fetchPokemonByTerm } from '../services/pokemonApi';
+import { useGetPokemonByNameQuery } from '../services/pokemonApi';
 
-vi.mock('../services/api', () => ({
-  fetchPokemonByTerm: vi.fn(),
+vi.mock('../services/pokemonApi', () => ({
+  useGetPokemonByNameQuery: vi.fn(),
 }));
 
 const mockPokemon = {
@@ -36,7 +36,12 @@ describe('DetailPanel', () => {
   });
 
   it('should show loading indicator while fetching', () => {
-    vi.mocked(fetchPokemonByTerm).mockReturnValue(new Promise(() => {}));
+    vi.mocked(useGetPokemonByNameQuery).mockReturnValue({
+      data: undefined,
+      isLoading: true,
+      error: undefined,
+      refetch: vi.fn(),
+    });
 
     renderDetailPanel();
 
@@ -44,7 +49,12 @@ describe('DetailPanel', () => {
   });
 
   it('should render pokemon name after successful fetch', async () => {
-    vi.mocked(fetchPokemonByTerm).mockResolvedValue(mockPokemon);
+    vi.mocked(useGetPokemonByNameQuery).mockReturnValue({
+      data: mockPokemon,
+      isLoading: false,
+      error: undefined,
+      refetch: vi.fn(),
+    });
 
     renderDetailPanel();
 
@@ -54,7 +64,12 @@ describe('DetailPanel', () => {
   });
 
   it('should render pokemon image after successful fetch', async () => {
-    vi.mocked(fetchPokemonByTerm).mockResolvedValue(mockPokemon);
+    vi.mocked(useGetPokemonByNameQuery).mockReturnValue({
+      data: mockPokemon,
+      isLoading: false,
+      error: undefined,
+      refetch: vi.fn(),
+    });
 
     renderDetailPanel();
 
@@ -64,7 +79,12 @@ describe('DetailPanel', () => {
   });
 
   it('should render types after successful fetch', async () => {
-    vi.mocked(fetchPokemonByTerm).mockResolvedValue(mockPokemon);
+    vi.mocked(useGetPokemonByNameQuery).mockReturnValue({
+      data: mockPokemon,
+      isLoading: false,
+      error: undefined,
+      refetch: vi.fn(),
+    });
 
     renderDetailPanel();
 
@@ -74,7 +94,12 @@ describe('DetailPanel', () => {
   });
 
   it('should render abilities after successful fetch', async () => {
-    vi.mocked(fetchPokemonByTerm).mockResolvedValue(mockPokemon);
+    vi.mocked(useGetPokemonByNameQuery).mockReturnValue({
+      data: mockPokemon,
+      isLoading: false,
+      error: undefined,
+      refetch: vi.fn(),
+    });
 
     renderDetailPanel();
 
@@ -85,7 +110,12 @@ describe('DetailPanel', () => {
   });
 
   it('should render stats after successful fetch', async () => {
-    vi.mocked(fetchPokemonByTerm).mockResolvedValue(mockPokemon);
+    vi.mocked(useGetPokemonByNameQuery).mockReturnValue({
+      data: mockPokemon,
+      isLoading: false,
+      error: undefined,
+      refetch: vi.fn(),
+    });
 
     renderDetailPanel();
 
@@ -96,8 +126,13 @@ describe('DetailPanel', () => {
     });
   });
 
-  it('should call usePokemonDetail with empty string when name param is absent', () => {
-    vi.mocked(fetchPokemonByTerm).mockReturnValue(new Promise(() => {}));
+  it('should render properly when name parameter is missing', () => {
+    vi.mocked(useGetPokemonByNameQuery).mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      error: undefined,
+      refetch: vi.fn(),
+    });
 
     render(
       <MemoryRouter initialEntries={['/panel']}>
@@ -107,11 +142,18 @@ describe('DetailPanel', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Close details' })
+    ).toBeInTheDocument();
   });
 
   it('should display error message when fetch fails', async () => {
-    vi.mocked(fetchPokemonByTerm).mockRejectedValue(new Error('Not found'));
+    vi.mocked(useGetPokemonByNameQuery).mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      error: { message: 'Not found' },
+      refetch: vi.fn(),
+    });
 
     renderDetailPanel();
 
@@ -122,7 +164,12 @@ describe('DetailPanel', () => {
 
   it('should navigate to main page with page param when close button is clicked', async () => {
     const user = userEvent.setup();
-    vi.mocked(fetchPokemonByTerm).mockResolvedValue(mockPokemon);
+    vi.mocked(useGetPokemonByNameQuery).mockReturnValue({
+      data: mockPokemon,
+      isLoading: false,
+      error: undefined,
+      refetch: vi.fn(),
+    });
 
     renderDetailPanel('/details/squirtle?page=2');
 
@@ -139,7 +186,12 @@ describe('DetailPanel', () => {
 
   it('should preserve search param in URL when closing', async () => {
     const user = userEvent.setup();
-    vi.mocked(fetchPokemonByTerm).mockResolvedValue(mockPokemon);
+    vi.mocked(useGetPokemonByNameQuery).mockReturnValue({
+      data: mockPokemon,
+      isLoading: false,
+      error: undefined,
+      refetch: vi.fn(),
+    });
 
     render(
       <MemoryRouter
@@ -165,7 +217,12 @@ describe('DetailPanel', () => {
 
   it('should default to page 1 when page param is missing in URL', async () => {
     const user = userEvent.setup();
-    vi.mocked(fetchPokemonByTerm).mockResolvedValue(mockPokemon);
+    vi.mocked(useGetPokemonByNameQuery).mockReturnValue({
+      data: mockPokemon,
+      isLoading: false,
+      error: undefined,
+      refetch: vi.fn(),
+    });
 
     render(
       <MemoryRouter initialEntries={['/details/squirtle']}>

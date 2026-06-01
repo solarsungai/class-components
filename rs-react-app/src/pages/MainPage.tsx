@@ -13,32 +13,53 @@ import {
   useNavigate,
   useLocation,
 } from 'react-router';
-import { pokemonApi, useGetPokemonByPageQuery, useGetPokemonByNameQuery } from '../services/pokemonApi';
+import {
+  pokemonApi,
+  useGetPokemonByPageQuery,
+  useGetPokemonByNameQuery,
+} from '../services/pokemonApi';
 import getErrorMessage from '../utils/getErrorMessage';
 import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '../store';
 
 function MainPage() {
   const { getSearchTerm } = useLocalStorage();
-  const [shouldThrowTestError, setShouldThrowTestError] = useState<boolean>(false);
+  const [shouldThrowTestError, setShouldThrowTestError] =
+    useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const searchFromUrl = (searchParams.get('search') ?? '').trim().toLowerCase();
   const page = Number(searchParams.get('page')) || 1;
-  const [inputValue, setInputValue] = useState<string>(() => searchFromUrl || (getSearchTerm() ?? ''));
+  const [inputValue, setInputValue] = useState<string>(
+    () => searchFromUrl || (getSearchTerm() ?? '')
+  );
 
   const hasSearch = Boolean(searchFromUrl);
-  const { data: pageData, isFetching: isPageFetching, error: pageError } = useGetPokemonByPageQuery(page, { skip: hasSearch });
-  const { data: searchData, isFetching: isSearchFetching, error: searchError } = useGetPokemonByNameQuery(searchFromUrl, { skip: !hasSearch });
+  const {
+    data: pageData,
+    isFetching: isPageFetching,
+    error: pageError,
+  } = useGetPokemonByPageQuery(page, { skip: hasSearch });
+  const {
+    data: searchData,
+    isFetching: isSearchFetching,
+    error: searchError,
+  } = useGetPokemonByNameQuery(searchFromUrl, { skip: !hasSearch });
   const loading = hasSearch ? isSearchFetching : isPageFetching;
   const error = hasSearch ? searchError : pageError;
-  const results = hasSearch ? (searchData ? [searchData] : []) : (pageData?.results ?? []);
+  const results = hasSearch
+    ? searchData
+      ? [searchData]
+      : []
+    : (pageData?.results ?? []);
   const count = hasSearch ? (searchData ? 1 : 0) : (pageData?.count ?? 0);
 
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
   const isDetailOpen = location.pathname.startsWith('/details/');
-  const handleTestErrorClick = () => {setShouldThrowTestError(true);};
+  const handleTestErrorClick = () => {
+    setShouldThrowTestError(true);
+  };
   const handleRefresh = () => {
     dispatch(pokemonApi.util.invalidateTags(['PokemonList', 'PokemonDetail']));
   };
@@ -85,7 +106,9 @@ function MainPage() {
                   navigate(`/details/${name}?${params.toString()}`);
                 }}
               />
-              {loading && <div className="loader loader--overlay">Loading...</div>}
+              {loading && (
+                <div className="loader loader--overlay">Loading...</div>
+              )}
             </div>
             <Outlet />
           </div>

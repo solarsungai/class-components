@@ -5,11 +5,19 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import Flyout from './Flyout';
 import pokemonReducer, { addPokemon } from '../store/pokemonSlice';
-import * as api from '../services/pokemonApi';
+import { pokemonApi } from '../services/pokemonApi';
 import type { PokemonData } from '../types';
 
 const makeStore = (names: string[] = []) => {
-  const s = configureStore({ reducer: { pokemon: pokemonReducer } });
+  const s = configureStore({
+    reducer: {
+      pokemon: pokemonReducer,
+      [pokemonApi.reducerPath]: pokemonApi.reducer,
+    },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(pokemonApi.middleware),
+  });
+
   names.forEach((n) => s.dispatch(addPokemon(n)));
   return s;
 };
@@ -23,9 +31,12 @@ const mockPokemon = (name: string): PokemonData => ({
   abilities: ['blaze'],
 });
 
+const originalInitiate = pokemonApi.endpoints.getPokemonByName.initiate;
+
 describe('Flyout', () => {
   beforeEach(() => {
     vi.restoreAllMocks();
+    pokemonApi.endpoints.getPokemonByName.initiate = originalInitiate;
   });
 
   it('renders nothing when there are no selected pokemons', async () => {
@@ -65,7 +76,7 @@ describe('Flyout', () => {
     expect(screen.getByText('bulbasaur')).toBeInTheDocument();
   });
 
-  it('"Unselect all" button dispatches clearAllSelections', async () => {
+  it('Unselect all button dispatches clearAllSelections', async () => {
     const user = userEvent.setup();
     const store = makeStore(['pikachu', 'bulbasaur']);
     render(
@@ -77,12 +88,15 @@ describe('Flyout', () => {
     expect(store.getState().pokemon.selectedNames).toEqual([]);
   });
 
-  it('"Download" button triggers CSV download on success', async () => {
+  it('Download button triggers CSV download on success', async () => {
     const user = userEvent.setup();
 
-    vi.spyOn(api, 'fetchPokemonByTerm').mockResolvedValue(
-      mockPokemon('pikachu')
-    );
+    pokemonApi.endpoints.getPokemonByName.initiate = vi
+      .fn()
+      .mockImplementation(() => ({
+        type: 'api/mock',
+        unwrap: () => Promise.resolve(mockPokemon('pikachu')),
+      }));
 
     const mockObjectURL = 'blob:mock-url';
     const createObjectURL = vi
@@ -112,12 +126,15 @@ describe('Flyout', () => {
     expect(screen.queryByText(/download failed/i)).not.toBeInTheDocument();
   });
 
-  it('"Download" button shows error message on failure', async () => {
+  it('Download button shows error message on failure', async () => {
     const user = userEvent.setup();
 
-    vi.spyOn(api, 'fetchPokemonByTerm').mockRejectedValue(
-      new Error('Network error')
-    );
+    pokemonApi.endpoints.getPokemonByName.initiate = vi
+      .fn()
+      .mockImplementation(() => ({
+        type: 'api/mock',
+        unwrap: () => Promise.reject(new Error('Network error')),
+      }));
 
     render(
       <Provider store={makeStore(['pikachu'])}>
@@ -134,10 +151,15 @@ describe('Flyout', () => {
     });
   });
 
-  it('"Download" button shows generic error for non-Error throws', async () => {
+  it('Download button shows generic error for non-Error throws', async () => {
     const user = userEvent.setup();
 
-    vi.spyOn(api, 'fetchPokemonByTerm').mockRejectedValue('string error');
+    pokemonApi.endpoints.getPokemonByName.initiate = vi
+      .fn()
+      .mockImplementation(() => ({
+        type: 'api/mock',
+        unwrap: () => Promise.reject('string error'),
+      }));
 
     render(
       <Provider store={makeStore(['pikachu'])}>
@@ -152,10 +174,15 @@ describe('Flyout', () => {
     });
   });
 
-  it('"Unselect all" clears error message', async () => {
+  it('Unselect all clears error message', async () => {
     const user = userEvent.setup();
 
-    vi.spyOn(api, 'fetchPokemonByTerm').mockRejectedValue(new Error('fail'));
+    pokemonApi.endpoints.getPokemonByName.initiate = vi
+      .fn()
+      .mockImplementation(() => ({
+        type: 'api/mock',
+        unwrap: () => Promise.reject(new Error('fail')),
+      }));
 
     render(
       <Provider store={makeStore(['pikachu'])}>
@@ -219,17 +246,23 @@ describe('Flyout', () => {
     expect(screen.getByText(/selected pokémon/i)).toBeInTheDocument();
   });
 
-  it('"Download" handles pokemon with missing types/height/weight', async () => {
+  it('Download handles pokemon with missing types/height/weight', async () => {
     const user = userEvent.setup();
 
-    vi.spyOn(api, 'fetchPokemonByTerm').mockResolvedValue({
-      name: 'missingno',
-      types: undefined as unknown as string[],
-      height: undefined as unknown as number,
-      weight: undefined as unknown as number,
-      baseExperience: 0,
-      abilities: [],
-    });
+    pokemonApi.endpoints.getPokemonByName.initiate = vi
+      .fn()
+      .mockImplementation(() => ({
+        type: 'api/mock',
+        unwrap: (): Promise<Partial<PokemonData>> =>
+          Promise.resolve({
+            name: 'missingno',
+            types: undefined,
+            height: undefined,
+            weight: undefined,
+            baseExperience: 0,
+            abilities: [],
+          }),
+      }));
 
     vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:mock');
     vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {});
