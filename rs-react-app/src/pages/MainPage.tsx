@@ -7,6 +7,7 @@ import Results from '../components/Results';
 import Flyout from '../components/Flyout';
 import Pagination from '../components/Pagination';
 import useSearchTermLocalStorage from '../hooks/useSearchTermLocalStorage';
+import createSearchQueryString from '../utils/navigation';
 import {
   Outlet,
   useSearchParams,
@@ -76,11 +77,11 @@ function MainPage() {
           value={inputValue}
           onChange={(value) => setInputValue(value)}
           onSearch={() => {
-            const params = new URLSearchParams({
-              [URL_PARAMS.PAGE]: String(DEFAULT_PAGE),
+            const queryString = createSearchQueryString({
+              page: DEFAULT_PAGE,
+              search: inputValue,
             });
-            if (inputValue.trim()) params.set('search', inputValue);
-            navigate(`/?${params.toString()}`);
+            navigate(`/?${queryString}`);
           }}
         />
         {error && <div className="error-message">{getErrorMessage(error)}</div>}
@@ -96,24 +97,22 @@ function MainPage() {
                   isDetailOpen &&
                   !(e.target as HTMLElement).closest('.pokemon-card')
                 ) {
-                  const params = new URLSearchParams({
-                    [URL_PARAMS.PAGE]: String(page),
-                  });
-                  if (searchFromUrl)
-                    params.set(URL_PARAMS.SEARCH, searchFromUrl);
-                  navigate(`/?${params.toString()}`);
+const queryString = createSearchQueryString({
+        page,
+        search: searchFromUrl,
+      });
+      navigate(`/?${queryString}`);
                 }
               }}
             >
               <Results
                 results={results}
                 onSelect={(name) => {
-                  const params = new URLSearchParams({
-                    [URL_PARAMS.PAGE]: String(page),
-                  });
-                  if (searchFromUrl)
-                    params.set(URL_PARAMS.SEARCH, searchFromUrl);
-                  navigate(`/details/${name}?${params.toString()}`);
+const queryString = createSearchQueryString({
+        page,
+        search: searchFromUrl,
+      });
+      navigate(`/details/${name}?${queryString}`);
                 }}
               />
               {loading && (

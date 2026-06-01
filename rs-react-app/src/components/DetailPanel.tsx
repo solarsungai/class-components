@@ -1,12 +1,14 @@
 import { useParams, useSearchParams, useNavigate } from 'react-router';
 import { useGetPokemonByNameQuery } from '../services/pokemonApi';
 import getErrorMessage from '../utils/getErrorMessage';
+import createSearchQueryString from '../utils/navigation';
+import { URL_PARAMS, DEFAULT_PAGE } from '../constants';
 
 function DetailPanel() {
   const navigate = useNavigate();
   const { name } = useParams<{ name: string }>();
   const [searchParams] = useSearchParams();
-  const page = searchParams.get('page') || '1';
+  const page = searchParams.get(URL_PARAMS.PAGE) || String(DEFAULT_PAGE);
   const {
     data: pokemon,
     isLoading: loading,
@@ -14,10 +16,11 @@ function DetailPanel() {
   } = useGetPokemonByNameQuery(name ?? '', { skip: !name });
 
   const handleClose = () => {
-    const params = new URLSearchParams({ page });
-    const search = searchParams.get('search');
-    if (search) params.set('search', search);
-    navigate(`/?${params.toString()}`);
+    const queryString = createSearchQueryString({
+    page,
+    search: searchParams.get(URL_PARAMS.SEARCH),
+  });
+  navigate(`/?${queryString}`);
   };
 
   return (

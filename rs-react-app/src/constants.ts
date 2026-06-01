@@ -11,8 +11,6 @@ export const Routes = {
   NOT_FOUND: '*',
 } as const;
 
-export const getDetailsPath = (name: string) => `/details/${name}`;
-
 export const URL_PARAMS = {
   SEARCH: 'search',
   PAGE: 'page',
