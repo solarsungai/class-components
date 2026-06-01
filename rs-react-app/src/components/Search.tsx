@@ -1,4 +1,8 @@
-import type { SearchProps } from '../types';
+export type SearchProps = {
+  value: string;
+  onChange: (value: string) => void;
+  onSearch: () => void;
+};
 
 function Search({ value, onChange, onSearch }: SearchProps) {
   return (

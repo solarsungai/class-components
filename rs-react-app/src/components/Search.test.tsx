@@ -1,8 +1,7 @@
 import { describe, it, vi, expect, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import Search from './Search';
-import type { SearchProps } from '../types';
+import Search, { type SearchProps } from './Search';
 
 describe('Search', () => {
   let mockData: SearchProps;

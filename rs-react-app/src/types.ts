@@ -26,9 +26,3 @@ export type PokemonListResponse = {
     name: string;
   }>;
 };
-
-export type SearchProps = {
-  value: string;
-  onChange: (value: string) => void;
-  onSearch: () => void;
-};

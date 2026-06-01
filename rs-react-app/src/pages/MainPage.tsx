@@ -76,7 +76,9 @@ function MainPage() {
           value={inputValue}
           onChange={(value) => setInputValue(value)}
           onSearch={() => {
-            const params = new URLSearchParams({ [URL_PARAMS.PAGE]: String(DEFAULT_PAGE) });
+            const params = new URLSearchParams({
+              [URL_PARAMS.PAGE]: String(DEFAULT_PAGE),
+            });
             if (inputValue.trim()) params.set('search', inputValue);
             navigate(`/?${params.toString()}`);
           }}
