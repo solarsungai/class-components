@@ -97,22 +97,22 @@ function MainPage() {
                   isDetailOpen &&
                   !(e.target as HTMLElement).closest('.pokemon-card')
                 ) {
-const queryString = createSearchQueryString({
-        page,
-        search: searchFromUrl,
-      });
-      navigate(`/?${queryString}`);
+                  const queryString = createSearchQueryString({
+                    page,
+                    search: searchFromUrl,
+                  });
+                  navigate(`/?${queryString}`);
                 }
               }}
             >
               <Results
                 results={results}
                 onSelect={(name) => {
-const queryString = createSearchQueryString({
-        page,
-        search: searchFromUrl,
-      });
-      navigate(`/details/${name}?${queryString}`);
+                  const queryString = createSearchQueryString({
+                    page,
+                    search: searchFromUrl,
+                  });
+                  navigate(`/details/${name}?${queryString}`);
                 }}
               />
               {loading && (

@@ -17,10 +17,10 @@ function DetailPanel() {
 
   const handleClose = () => {
     const queryString = createSearchQueryString({
-    page,
-    search: searchParams.get(URL_PARAMS.SEARCH),
-  });
-  navigate(`/?${queryString}`);
+      page,
+      search: searchParams.get(URL_PARAMS.SEARCH),
+    });
+    navigate(`/?${queryString}`);
   };
 
   return (
