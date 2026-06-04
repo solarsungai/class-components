@@ -24,9 +24,7 @@ describe('Header', () => {
         </MemoryRouter>
       </ThemeProvider>
     );
-    expect(
-      screen.getByText('Search Pokémon and view key stats instantly.')
-    ).toBeInTheDocument();
+    expect(screen.getByText('Search Pokémon and view key stats instantly.')).toBeInTheDocument();
   });
 
   it('should render the About navigation link', () => {

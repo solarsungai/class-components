@@ -19,9 +19,7 @@ describe('NotFound', () => {
         <NotFound />
       </MemoryRouter>
     );
-    expect(
-      screen.getByText(/looks like this page ran away/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/looks like this page ran away/i)).toBeInTheDocument();
   });
 
   it('should render the Psyduck image', () => {
@@ -39,8 +37,6 @@ describe('NotFound', () => {
         <NotFound />
       </MemoryRouter>
     );
-    expect(
-      screen.getByRole('link', { name: /back to pokédex/i })
-    ).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /back to pokédex/i })).toBeInTheDocument();
   });
 });

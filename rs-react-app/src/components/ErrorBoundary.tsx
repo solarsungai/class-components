@@ -20,8 +20,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   static getDerivedStateFromError(error: unknown): ErrorBoundaryState {
     return {
       hasError: true,
-      message:
-        error instanceof Error ? error.message : 'Unexpected application error',
+      message: error instanceof Error ? error.message : 'Unexpected application error',
     };
   }
 

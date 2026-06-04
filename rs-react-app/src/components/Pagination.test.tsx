@@ -14,18 +14,14 @@ describe('Pagination', () => {
   });
 
   it('should disable Prev button on the first page', () => {
-    render(
-      <Pagination currentPage={1} totalPages={5} onPageChange={vi.fn()} />
-    );
+    render(<Pagination currentPage={1} totalPages={5} onPageChange={vi.fn()} />);
 
     expect(screen.getByRole('button', { name: /prev/i })).toBeDisabled();
     expect(screen.getByRole('button', { name: /next/i })).not.toBeDisabled();
   });
 
   it('should disable Next button on the last page', () => {
-    render(
-      <Pagination currentPage={5} totalPages={5} onPageChange={vi.fn()} />
-    );
+    render(<Pagination currentPage={5} totalPages={5} onPageChange={vi.fn()} />);
 
     expect(screen.getByRole('button', { name: /next/i })).toBeDisabled();
     expect(screen.getByRole('button', { name: /prev/i })).not.toBeDisabled();
@@ -35,9 +31,7 @@ describe('Pagination', () => {
     const user = userEvent.setup();
     const onPageChange = vi.fn();
 
-    render(
-      <Pagination currentPage={3} totalPages={5} onPageChange={onPageChange} />
-    );
+    render(<Pagination currentPage={3} totalPages={5} onPageChange={onPageChange} />);
 
     await user.click(screen.getByRole('button', { name: /prev/i }));
 
@@ -48,9 +42,7 @@ describe('Pagination', () => {
     const user = userEvent.setup();
     const onPageChange = vi.fn();
 
-    render(
-      <Pagination currentPage={3} totalPages={5} onPageChange={onPageChange} />
-    );
+    render(<Pagination currentPage={3} totalPages={5} onPageChange={onPageChange} />);
 
     await user.click(screen.getByRole('button', { name: /next/i }));
 
@@ -61,9 +53,7 @@ describe('Pagination', () => {
     const user = userEvent.setup();
     const onPageChange = vi.fn();
 
-    render(
-      <Pagination currentPage={1} totalPages={5} onPageChange={onPageChange} />
-    );
+    render(<Pagination currentPage={1} totalPages={5} onPageChange={onPageChange} />);
 
     await user.click(screen.getByRole('button', { name: /prev/i }));
 
@@ -74,9 +64,7 @@ describe('Pagination', () => {
     const user = userEvent.setup();
     const onPageChange = vi.fn();
 
-    render(
-      <Pagination currentPage={5} totalPages={5} onPageChange={onPageChange} />
-    );
+    render(<Pagination currentPage={5} totalPages={5} onPageChange={onPageChange} />);
 
     await user.click(screen.getByRole('button', { name: /next/i }));
 

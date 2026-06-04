@@ -7,9 +7,7 @@ import type { PokemonData } from '../types';
 import { pokemonApi } from '../services/pokemonApi';
 
 function Flyout() {
-  const selectedPokemons = useSelector(
-    (state: RootState) => state.pokemon.selectedNames
-  );
+  const selectedPokemons = useSelector((state: RootState) => state.pokemon.selectedNames);
   const dispatch = useDispatch<AppDispatch>();
   const [downloadError, setDownloadError] = useState<string | null>(null);
   const hasItems = selectedPokemons.length > 0;
@@ -36,13 +34,10 @@ function Flyout() {
       setDownloadError(null);
       const results: PokemonData[] = await Promise.all(
         selectedPokemons.map((pokemon) =>
-          dispatch(
-            pokemonApi.endpoints.getPokemonByName.initiate(pokemon)
-          ).unwrap()
+          dispatch(pokemonApi.endpoints.getPokemonByName.initiate(pokemon)).unwrap()
         )
       );
-      let csvContent =
-        'Name,Types,Height (m),Weight (kg),Base XP,Details URL\n';
+      let csvContent = 'Name,Types,Height (m),Weight (kg),Base XP,Details URL\n';
       results.forEach((pokemon) => {
         const pokemonTypes = pokemon.types ? pokemon.types.join(', ') : 'none';
         const heightM = pokemon.height ? pokemon.height / 10 : 0;
@@ -58,8 +53,7 @@ function Flyout() {
       link.click();
       URL.revokeObjectURL(url);
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : 'Unknown error';
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       setDownloadError(`(Download failed: ${errorMessage})`);
     }
   };
@@ -69,23 +63,13 @@ function Flyout() {
       <div className="flyout-header">
         <h3>
           Selected Pokémon ({selectedPokemons.length})
-          {downloadError && (
-            <span className="flyout-error">{downloadError}</span>
-          )}
+          {downloadError && <span className="flyout-error">{downloadError}</span>}
         </h3>
         <div className="flyout-buttons">
-          <button
-            type="button"
-            className="btn-unselect"
-            onClick={handleUnselectAll}
-          >
+          <button type="button" className="btn-unselect" onClick={handleUnselectAll}>
             Unselect all
           </button>
-          <button
-            type="button"
-            className="btn-download"
-            onClick={handleDownload}
-          >
+          <button type="button" className="btn-download" onClick={handleDownload}>
             Download
           </button>
         </div>

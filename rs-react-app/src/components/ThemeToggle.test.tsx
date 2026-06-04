@@ -17,9 +17,7 @@ function renderWithTheme(initialDark = false) {
 describe('ThemeToggle', () => {
   it('renders a button with aria-label "Toggle theme"', () => {
     renderWithTheme();
-    expect(
-      screen.getByRole('button', { name: /toggle theme/i })
-    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /toggle theme/i })).toBeInTheDocument();
   });
 
   it('thumb does not have dark class in light mode', () => {
