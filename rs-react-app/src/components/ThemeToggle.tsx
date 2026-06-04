@@ -4,11 +4,7 @@ function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <button
-      className="theme-toggle"
-      onClick={toggleTheme}
-      aria-label="Toggle theme"
-    >
+    <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
       <span
         className={`theme-toggle-thumb${theme === 'dark' ? ' theme-toggle-thumb--dark' : ''}`}
       />

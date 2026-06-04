@@ -142,9 +142,7 @@ describe('DetailPanel', () => {
       </MemoryRouter>
     );
 
-    expect(
-      screen.getByRole('button', { name: 'Close details' })
-    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Close details' })).toBeInTheDocument();
   });
 
   it('should display error message when fetch fails', async () => {
@@ -194,9 +192,7 @@ describe('DetailPanel', () => {
     });
 
     render(
-      <MemoryRouter
-        initialEntries={['/details/squirtle?page=1&search=squirtle']}
-      >
+      <MemoryRouter initialEntries={['/details/squirtle?page=1&search=squirtle']}>
         <Routes>
           <Route path="/details/:name" element={<DetailPanel />} />
           <Route path="/" element={<div data-testid="main">Main Page</div>} />

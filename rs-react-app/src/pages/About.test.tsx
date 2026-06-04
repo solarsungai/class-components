@@ -10,9 +10,7 @@ describe('About', () => {
         <About />
       </MemoryRouter>
     );
-    expect(
-      screen.getByRole('heading', { name: /about pokédex explorer/i })
-    ).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /about pokédex explorer/i })).toBeInTheDocument();
   });
 
   it('should render the description text', () => {
@@ -30,18 +28,10 @@ describe('About', () => {
         <About />
       </MemoryRouter>
     );
-    expect(
-      screen.getByText(/instant search by pokémon name/i)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/paginated results with url sync/i)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/detailed stats panel via react router outlet/i)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/last search saved in localstorage/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/instant search by pokémon name/i)).toBeInTheDocument();
+    expect(screen.getByText(/paginated results with url sync/i)).toBeInTheDocument();
+    expect(screen.getByText(/detailed stats panel via react router outlet/i)).toBeInTheDocument();
+    expect(screen.getByText(/last search saved in localstorage/i)).toBeInTheDocument();
   });
 
   it('should render the author info and RS School link', () => {
@@ -71,8 +61,6 @@ describe('About', () => {
         <About />
       </MemoryRouter>
     );
-    expect(
-      screen.getByRole('link', { name: /go to pokédex/i })
-    ).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /go to pokédex/i })).toBeInTheDocument();
   });
 });

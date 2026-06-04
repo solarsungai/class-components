@@ -1,9 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import pokemonReducer, {
-  addPokemon,
-  deletePokemon,
-  clearAllSelections,
-} from './pokemonSlice';
+import pokemonReducer, { addPokemon, deletePokemon, clearAllSelections } from './pokemonSlice';
 
 describe('pokemonSlice', () => {
   const initialState = { selectedNames: [] };

@@ -1,9 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import type {
-  PokemonApiResponse,
-  PokemonData,
-  PokemonListResponse,
-} from '../types';
+import type { PokemonApiResponse, PokemonData, PokemonListResponse } from '../types';
 import { SERVER_URL, POKEMON_PER_PAGE_LIMIT } from '../constants';
 
 export const pokemonApi = createApi({
@@ -12,10 +8,7 @@ export const pokemonApi = createApi({
   keepUnusedDataFor: Number(import.meta.env.VITE_CACHE_TTL) || 60,
   tagTypes: ['PokemonList', 'PokemonDetail'],
   endpoints: (build) => ({
-    getPokemonByPage: build.query<
-      { results: PokemonData[]; count: number },
-      number
-    >({
+    getPokemonByPage: build.query<{ results: PokemonData[]; count: number }, number>({
       providesTags: ['PokemonList'],
       query: (page) => {
         const offset = (page - 1) * POKEMON_PER_PAGE_LIMIT;
@@ -31,9 +24,7 @@ export const pokemonApi = createApi({
     }),
 
     getPokemonByName: build.query<PokemonData, string>({
-      providesTags: (_result, _error, name) => [
-        { type: 'PokemonDetail', id: name },
-      ],
+      providesTags: (_result, _error, name) => [{ type: 'PokemonDetail', id: name }],
       query: (term) => `${term}`,
       transformResponse: (response: PokemonApiResponse) => {
         const types = Array.isArray(response.types)
@@ -59,5 +50,4 @@ export const pokemonApi = createApi({
   }),
 });
 
-export const { useGetPokemonByPageQuery, useGetPokemonByNameQuery } =
-  pokemonApi;
+export const { useGetPokemonByPageQuery, useGetPokemonByNameQuery } = pokemonApi;

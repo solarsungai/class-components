@@ -13,9 +13,8 @@ function About() {
           <div className="about-text">
             <h1 className="page-title">About Pokédex Explorer</h1>
             <p className="page-subtitle">
-              A fast and minimal Pokédex built with React. Search any Pokémon by
-              name, browse stats, and explore the full PokéAPI catalogue - all
-              in one place.
+              A fast and minimal Pokédex built with React. Search any Pokémon by name, browse stats,
+              and explore the full PokéAPI catalogue - all in one place.
             </p>
             <ul className="about-features">
               <li>Instant search by Pokémon name</li>

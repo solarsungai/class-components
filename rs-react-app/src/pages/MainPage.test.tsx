@@ -4,10 +4,7 @@ import { MemoryRouter, Routes, Route } from 'react-router';
 import userEvent from '@testing-library/user-event';
 import MainPage from './MainPage';
 import ErrorBoundary from '../components/ErrorBoundary';
-import {
-  useGetPokemonByPageQuery,
-  useGetPokemonByNameQuery,
-} from '../services/pokemonApi';
+import { useGetPokemonByPageQuery, useGetPokemonByNameQuery } from '../services/pokemonApi';
 import { ThemeProvider } from '../context/ThemeProvider';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
@@ -23,8 +20,7 @@ vi.mock('../services/pokemonApi', () => ({
   useGetPokemonByNameQuery: vi.fn(),
 }));
 
-const makeStore = () =>
-  configureStore({ reducer: { pokemon: pokemonReducer } });
+const makeStore = () => configureStore({ reducer: { pokemon: pokemonReducer } });
 
 const renderPage = (initialEntries?: string[]) =>
   render(
@@ -44,10 +40,7 @@ const renderPageWithRoutes = (initialEntries?: string[]) =>
         <MemoryRouter initialEntries={initialEntries || ['/']}>
           <Routes>
             <Route path="/" element={<MainPage />}>
-              <Route
-                path="details/:name"
-                element={<div data-testid="detail">Detail</div>}
-              />
+              <Route path="details/:name" element={<div data-testid="detail">Detail</div>} />
             </Route>
           </Routes>
         </MemoryRouter>
@@ -301,9 +294,7 @@ describe('MainPage', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Something went wrong')).toBeInTheDocument();
-      expect(
-        screen.getByText('Test error button triggered')
-      ).toBeInTheDocument();
+      expect(screen.getByText('Test error button triggered')).toBeInTheDocument();
     });
   });
 });

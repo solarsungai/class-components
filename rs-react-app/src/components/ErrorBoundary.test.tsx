@@ -92,8 +92,6 @@ describe('ErrorBoundary', () => {
         <BrokenNonError />
       </ErrorBoundary>
     );
-    expect(
-      screen.getByText('Unexpected application error')
-    ).toBeInTheDocument();
+    expect(screen.getByText('Unexpected application error')).toBeInTheDocument();
   });
 });

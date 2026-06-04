@@ -41,13 +41,7 @@ function DetailPanel() {
         <div className="detail-content">
           <h2 className="pokemon-name detail-title">{pokemon.name}</h2>
 
-          {pokemon.image && (
-            <img
-              className="detail-image"
-              src={pokemon.image}
-              alt={pokemon.name}
-            />
-          )}
+          {pokemon.image && <img className="detail-image" src={pokemon.image} alt={pokemon.name} />}
 
           <div className="pokemon-info">
             {pokemon.types && pokemon.types.length > 0 && (

@@ -14,8 +14,7 @@ const makeStore = (names: string[] = []) => {
       pokemon: pokemonReducer,
       [pokemonApi.reducerPath]: pokemonApi.reducer,
     },
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(pokemonApi.middleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(pokemonApi.middleware),
   });
 
   names.forEach((n) => s.dispatch(addPokemon(n)));
@@ -91,23 +90,15 @@ describe('Flyout', () => {
   it('Download button triggers CSV download on success', async () => {
     const user = userEvent.setup();
 
-    pokemonApi.endpoints.getPokemonByName.initiate = vi
-      .fn()
-      .mockImplementation(() => ({
-        type: 'api/mock',
-        unwrap: () => Promise.resolve(mockPokemon('pikachu')),
-      }));
+    pokemonApi.endpoints.getPokemonByName.initiate = vi.fn().mockImplementation(() => ({
+      type: 'api/mock',
+      unwrap: () => Promise.resolve(mockPokemon('pikachu')),
+    }));
 
     const mockObjectURL = 'blob:mock-url';
-    const createObjectURL = vi
-      .spyOn(URL, 'createObjectURL')
-      .mockReturnValue(mockObjectURL);
-    const revokeObjectURL = vi
-      .spyOn(URL, 'revokeObjectURL')
-      .mockImplementation(() => {});
-    const clickSpy = vi
-      .spyOn(HTMLAnchorElement.prototype, 'click')
-      .mockImplementation(() => {});
+    const createObjectURL = vi.spyOn(URL, 'createObjectURL').mockReturnValue(mockObjectURL);
+    const revokeObjectURL = vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {});
+    const clickSpy = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
 
     render(
       <Provider store={makeStore(['pikachu'])}>
@@ -129,12 +120,10 @@ describe('Flyout', () => {
   it('Download button shows error message on failure', async () => {
     const user = userEvent.setup();
 
-    pokemonApi.endpoints.getPokemonByName.initiate = vi
-      .fn()
-      .mockImplementation(() => ({
-        type: 'api/mock',
-        unwrap: () => Promise.reject(new Error('Network error')),
-      }));
+    pokemonApi.endpoints.getPokemonByName.initiate = vi.fn().mockImplementation(() => ({
+      type: 'api/mock',
+      unwrap: () => Promise.reject(new Error('Network error')),
+    }));
 
     render(
       <Provider store={makeStore(['pikachu'])}>
@@ -145,21 +134,17 @@ describe('Flyout', () => {
     await user.click(screen.getByRole('button', { name: /download/i }));
 
     await waitFor(() => {
-      expect(
-        screen.getByText(/download failed: network error/i)
-      ).toBeInTheDocument();
+      expect(screen.getByText(/download failed: network error/i)).toBeInTheDocument();
     });
   });
 
   it('Download button shows generic error for non-Error throws', async () => {
     const user = userEvent.setup();
 
-    pokemonApi.endpoints.getPokemonByName.initiate = vi
-      .fn()
-      .mockImplementation(() => ({
-        type: 'api/mock',
-        unwrap: () => Promise.reject('string error'),
-      }));
+    pokemonApi.endpoints.getPokemonByName.initiate = vi.fn().mockImplementation(() => ({
+      type: 'api/mock',
+      unwrap: () => Promise.reject('string error'),
+    }));
 
     render(
       <Provider store={makeStore(['pikachu'])}>
@@ -177,12 +162,10 @@ describe('Flyout', () => {
   it('Unselect all clears error message', async () => {
     const user = userEvent.setup();
 
-    pokemonApi.endpoints.getPokemonByName.initiate = vi
-      .fn()
-      .mockImplementation(() => ({
-        type: 'api/mock',
-        unwrap: () => Promise.reject(new Error('fail')),
-      }));
+    pokemonApi.endpoints.getPokemonByName.initiate = vi.fn().mockImplementation(() => ({
+      type: 'api/mock',
+      unwrap: () => Promise.reject(new Error('fail')),
+    }));
 
     render(
       <Provider store={makeStore(['pikachu'])}>
@@ -191,14 +174,10 @@ describe('Flyout', () => {
     );
 
     await user.click(screen.getByRole('button', { name: /download/i }));
-    await waitFor(() =>
-      expect(screen.getByText(/download failed/i)).toBeInTheDocument()
-    );
+    await waitFor(() => expect(screen.getByText(/download failed/i)).toBeInTheDocument());
 
     await user.click(screen.getByRole('button', { name: /unselect all/i }));
-    await waitFor(() =>
-      expect(screen.queryByText(/download failed/i)).not.toBeInTheDocument()
-    );
+    await waitFor(() => expect(screen.queryByText(/download failed/i)).not.toBeInTheDocument());
   });
 
   it('hides flyout when all selections are cleared', async () => {
@@ -215,11 +194,9 @@ describe('Flyout', () => {
 
     await user.click(screen.getByRole('button', { name: /unselect all/i }));
 
-    await waitFor(
-      () =>
-        expect(screen.queryByText(/selected pokémon/i)).not.toBeInTheDocument(),
-      { timeout: 1000 }
-    );
+    await waitFor(() => expect(screen.queryByText(/selected pokémon/i)).not.toBeInTheDocument(), {
+      timeout: 1000,
+    });
   });
 
   it('shows flyout when items added to initially empty store', async () => {
@@ -249,20 +226,18 @@ describe('Flyout', () => {
   it('Download handles pokemon with missing types/height/weight', async () => {
     const user = userEvent.setup();
 
-    pokemonApi.endpoints.getPokemonByName.initiate = vi
-      .fn()
-      .mockImplementation(() => ({
-        type: 'api/mock',
-        unwrap: (): Promise<Partial<PokemonData>> =>
-          Promise.resolve({
-            name: 'missingno',
-            types: undefined,
-            height: undefined,
-            weight: undefined,
-            baseExperience: 0,
-            abilities: [],
-          }),
-      }));
+    pokemonApi.endpoints.getPokemonByName.initiate = vi.fn().mockImplementation(() => ({
+      type: 'api/mock',
+      unwrap: (): Promise<Partial<PokemonData>> =>
+        Promise.resolve({
+          name: 'missingno',
+          types: undefined,
+          height: undefined,
+          weight: undefined,
+          baseExperience: 0,
+          abilities: [],
+        }),
+    }));
 
     vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:mock');
     vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {});
@@ -276,8 +251,6 @@ describe('Flyout', () => {
 
     await user.click(screen.getByRole('button', { name: /download/i }));
 
-    await waitFor(() =>
-      expect(screen.queryByText(/download failed/i)).not.toBeInTheDocument()
-    );
+    await waitFor(() => expect(screen.queryByText(/download failed/i)).not.toBeInTheDocument());
   });
 });

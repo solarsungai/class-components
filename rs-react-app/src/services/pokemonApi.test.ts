@@ -54,9 +54,7 @@ describe('getPokemonByPage', () => {
   });
 
   it('transforms response to results and count', async () => {
-    const result = await store.dispatch(
-      pokemonApi.endpoints.getPokemonByPage.initiate(1)
-    );
+    const result = await store.dispatch(pokemonApi.endpoints.getPokemonByPage.initiate(1));
     expect(result.data).toEqual({
       count: 1302,
       results: [{ name: 'bulbasaur' }, { name: 'ivysaur' }],
@@ -102,10 +100,10 @@ describe('getPokemonByName', () => {
 
   it('sets image to undefined when front_default is null', async () => {
     spy.mockResolvedValue(
-      new Response(
-        JSON.stringify({ ...detailResponse, sprites: { front_default: null } }),
-        { status: 200, headers: { 'Content-Type': 'application/json' } }
-      )
+      new Response(JSON.stringify({ ...detailResponse, sprites: { front_default: null } }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      })
     );
     const result = await store.dispatch(
       pokemonApi.endpoints.getPokemonByName.initiate('bulbasaur')
@@ -115,10 +113,10 @@ describe('getPokemonByName', () => {
 
   it('sets types and abilities to empty arrays when undefined', async () => {
     spy.mockResolvedValue(
-      new Response(
-        JSON.stringify({ ...detailResponse, types: [], abilities: [] }),
-        { status: 200, headers: { 'Content-Type': 'application/json' } }
-      )
+      new Response(JSON.stringify({ ...detailResponse, types: [], abilities: [] }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      })
     );
     const result = await store.dispatch(
       pokemonApi.endpoints.getPokemonByName.initiate('bulbasaur')
@@ -139,9 +137,7 @@ describe('getPokemonByName', () => {
       )
     );
 
-    const result = await store.dispatch(
-      pokemonApi.endpoints.getPokemonByName.initiate('test')
-    );
+    const result = await store.dispatch(pokemonApi.endpoints.getPokemonByName.initiate('test'));
 
     expect(result.data?.types).toEqual([]);
     expect(result.data?.abilities).toEqual([]);

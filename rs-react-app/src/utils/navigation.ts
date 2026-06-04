@@ -5,7 +5,7 @@ interface SearchUrlParams {
   search?: string | null;
 }
 
-const createSearchQueryString = ({ page, search }: SearchUrlParams): string => {
+function createSearchQueryString({ page, search }: SearchUrlParams): string {
   const params = new URLSearchParams({
     [URL_PARAMS.PAGE]: String(page),
   });
@@ -15,6 +15,6 @@ const createSearchQueryString = ({ page, search }: SearchUrlParams): string => {
   }
 
   return params.toString();
-};
+}
 
 export default createSearchQueryString;

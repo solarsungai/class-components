@@ -10,9 +10,7 @@ type ResultItemProps = {
 
 function ResultItem({ pokemon, onSelect }: ResultItemProps) {
   const dispatch = useDispatch();
-  const selectedNames = useSelector(
-    (state: RootState) => state.pokemon.selectedNames
-  );
+  const selectedNames = useSelector((state: RootState) => state.pokemon.selectedNames);
   const isSelected = selectedNames.includes(pokemon.name);
 
   const types = pokemon.types ?? [];
@@ -22,18 +20,12 @@ function ResultItem({ pokemon, onSelect }: ResultItemProps) {
     pokemon.weight !== undefined &&
     pokemon.baseExperience !== undefined;
   const hasExtraDetails =
-    Boolean(pokemon.image) ||
-    types.length > 0 ||
-    abilities.length > 0 ||
-    hasStats;
+    Boolean(pokemon.image) || types.length > 0 || abilities.length > 0 || hasStats;
 
   return (
     <div className="pokemon-card" onClick={() => onSelect(pokemon.name)}>
       <div className="pokemon-header">
-        <label
-          className="pokemon-checkbox-label"
-          onClick={(e) => e.stopPropagation()}
-        >
+        <label className="pokemon-checkbox-label" onClick={(e) => e.stopPropagation()}>
           <input
             type="checkbox"
             className="pokemon-checkbox"
@@ -51,9 +43,7 @@ function ResultItem({ pokemon, onSelect }: ResultItemProps) {
         <h2 className="pokemon-name">{pokemon.name}</h2>
       </div>
 
-      {pokemon.image && (
-        <img src={pokemon.image} alt={pokemon.name} className="pokemon-image" />
-      )}
+      {pokemon.image && <img src={pokemon.image} alt={pokemon.name} className="pokemon-image" />}
 
       {hasExtraDetails && (
         <div className="pokemon-info">

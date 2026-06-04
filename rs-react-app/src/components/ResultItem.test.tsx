@@ -7,8 +7,7 @@ import ResultItem from './ResultItem';
 import pokemonReducer from '../store/pokemonSlice';
 import type { PokemonData } from '../types';
 
-const makeStore = () =>
-  configureStore({ reducer: { pokemon: pokemonReducer } });
+const makeStore = () => configureStore({ reducer: { pokemon: pokemonReducer } });
 
 describe('ResultItem', () => {
   let mockPokemon: PokemonData;
@@ -73,10 +72,7 @@ describe('ResultItem', () => {
   it('should not render the image if it not received from the API', () => {
     render(
       <Provider store={makeStore()}>
-        <ResultItem
-          pokemon={{ ...mockPokemon, image: undefined }}
-          onSelect={() => {}}
-        />
+        <ResultItem pokemon={{ ...mockPokemon, image: undefined }} onSelect={() => {}} />
       </Provider>
     );
     expect(screen.queryByRole('img')).not.toBeInTheDocument();
@@ -85,10 +81,7 @@ describe('ResultItem', () => {
   it('should not render the types if it not received from the API', () => {
     render(
       <Provider store={makeStore()}>
-        <ResultItem
-          pokemon={{ ...mockPokemon, types: [] }}
-          onSelect={() => {}}
-        />
+        <ResultItem pokemon={{ ...mockPokemon, types: [] }} onSelect={() => {}} />
       </Provider>
     );
     expect(screen.queryByText('electric')).not.toBeInTheDocument();
@@ -97,10 +90,7 @@ describe('ResultItem', () => {
   it('should not render the abilities if it not received from the API', () => {
     render(
       <Provider store={makeStore()}>
-        <ResultItem
-          pokemon={{ ...mockPokemon, abilities: [] }}
-          onSelect={() => {}}
-        />
+        <ResultItem pokemon={{ ...mockPokemon, abilities: [] }} onSelect={() => {}} />
       </Provider>
     );
     expect(screen.queryByText('static')).not.toBeInTheDocument();
@@ -109,10 +99,7 @@ describe('ResultItem', () => {
   it('should not render stats if it not received from the API', () => {
     render(
       <Provider store={makeStore()}>
-        <ResultItem
-          pokemon={{ ...mockPokemon, height: undefined }}
-          onSelect={() => {}}
-        />
+        <ResultItem pokemon={{ ...mockPokemon, height: undefined }} onSelect={() => {}} />
       </Provider>
     );
     expect(screen.queryByText('Height:')).not.toBeInTheDocument();

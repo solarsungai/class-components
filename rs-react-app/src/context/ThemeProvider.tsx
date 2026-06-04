@@ -22,11 +22,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     localStorage.setItem(THEME_KEY, theme);
   }, [theme]);
 
-  return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>;
 };
 
 export default ThemeProvider;

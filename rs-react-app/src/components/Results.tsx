@@ -15,11 +15,7 @@ function Results({ results, onSelect }: ResultsProps) {
   ) : (
     <div className="results">
       {results.map((pokemon, index) => (
-        <ResultItem
-          key={`${pokemon.name}-${index}`}
-          pokemon={pokemon}
-          onSelect={onSelect}
-        />
+        <ResultItem key={`${pokemon.name}-${index}`} pokemon={pokemon} onSelect={onSelect} />
       ))}
     </div>
   );

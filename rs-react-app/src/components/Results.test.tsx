@@ -6,13 +6,9 @@ import Results from './Results';
 import pokemonReducer from '../store/pokemonSlice';
 import type { PokemonData } from '../types';
 
-const makeStore = () =>
-  configureStore({ reducer: { pokemon: pokemonReducer } });
+const makeStore = () => configureStore({ reducer: { pokemon: pokemonReducer } });
 
-const mockPokemons: PokemonData[] = [
-  { name: 'bulbasaur' },
-  { name: 'ivysaur' },
-];
+const mockPokemons: PokemonData[] = [{ name: 'bulbasaur' }, { name: 'ivysaur' }];
 
 describe('Results', () => {
   it('should render empty state when results array is empty', () => {
