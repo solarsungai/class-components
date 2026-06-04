@@ -2,7 +2,7 @@ import type { PokemonData } from '../types';
 import { useDispatch, useSelector } from 'react-redux';
 import { addPokemon, deletePokemon } from '../store/pokemonSlice';
 import type { RootState } from '../store';
-import PokemonDetails from './PokemonDetails';
+import PokemonInfoBlock from './PokemonInfoBlock';
 
 type ResultItemProps = {
   pokemon: PokemonData;
@@ -17,8 +17,12 @@ function ResultItem({ pokemon, onSelect }: ResultItemProps) {
   const types = pokemon.types ?? [];
   const abilities = pokemon.abilities ?? [];
   const hasExtraDetails =
-    Boolean(pokemon.image) || types.length > 0 || abilities.length > 0 ||
-    (pokemon.height !== undefined && pokemon.weight !== undefined && pokemon.baseExperience !== undefined);
+    Boolean(pokemon.image) ||
+    types.length > 0 ||
+    abilities.length > 0 ||
+    (pokemon.height !== undefined &&
+      pokemon.weight !== undefined &&
+      pokemon.baseExperience !== undefined);
 
   return (
     <div className="pokemon-card" onClick={() => onSelect(pokemon.name)}>
@@ -44,7 +48,7 @@ function ResultItem({ pokemon, onSelect }: ResultItemProps) {
       {pokemon.image && <img src={pokemon.image} alt={pokemon.name} className="pokemon-image" />}
 
       {hasExtraDetails && (
-        <PokemonDetails
+        <PokemonInfoBlock
           types={types}
           abilities={abilities}
           height={pokemon.height}

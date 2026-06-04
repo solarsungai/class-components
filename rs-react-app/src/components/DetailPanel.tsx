@@ -3,7 +3,7 @@ import { useGetPokemonByNameQuery } from '../services/pokemonApi';
 import getErrorMessage from '../utils/getErrorMessage';
 import createSearchQueryString from '../utils/navigation';
 import { URL_PARAMS, DEFAULT_PAGE } from '../constants';
-import PokemonDetails from './PokemonDetails';
+import PokemonInfoBlock from './PokemonInfoBlock';
 
 function DetailPanel() {
   const navigate = useNavigate();
@@ -44,7 +44,7 @@ function DetailPanel() {
 
           {pokemon.image && <img className="detail-image" src={pokemon.image} alt={pokemon.name} />}
 
-          <PokemonDetails
+          <PokemonInfoBlock
             types={pokemon.types}
             abilities={pokemon.abilities}
             height={pokemon.height}

@@ -1,4 +1,4 @@
-type PokemonDetailsProps = {
+type PokemonInfoBlockProps = {
   types?: string[];
   abilities?: string[];
   height?: number;
@@ -6,7 +6,13 @@ type PokemonDetailsProps = {
   baseExperience?: number;
 };
 
-function PokemonDetails({ types = [], abilities = [], height, weight, baseExperience }: PokemonDetailsProps) {
+function PokemonInfoBlock({
+  types = [],
+  abilities = [],
+  height,
+  weight,
+  baseExperience,
+}: PokemonInfoBlockProps) {
   const hasStats = height !== undefined && weight !== undefined && baseExperience !== undefined;
 
   return (
@@ -66,4 +72,4 @@ function PokemonDetails({ types = [], abilities = [], height, weight, baseExperi
   );
 }
 
-export default PokemonDetails;
+export default PokemonInfoBlock;
