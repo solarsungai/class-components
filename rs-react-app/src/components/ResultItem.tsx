@@ -2,6 +2,7 @@ import type { PokemonData } from '../types';
 import { useDispatch, useSelector } from 'react-redux';
 import { addPokemon, deletePokemon } from '../store/pokemonSlice';
 import type { RootState } from '../store';
+import PokemonDetails from './PokemonDetails';
 
 type ResultItemProps = {
   pokemon: PokemonData;
@@ -15,12 +16,9 @@ function ResultItem({ pokemon, onSelect }: ResultItemProps) {
 
   const types = pokemon.types ?? [];
   const abilities = pokemon.abilities ?? [];
-  const hasStats =
-    pokemon.height !== undefined &&
-    pokemon.weight !== undefined &&
-    pokemon.baseExperience !== undefined;
   const hasExtraDetails =
-    Boolean(pokemon.image) || types.length > 0 || abilities.length > 0 || hasStats;
+    Boolean(pokemon.image) || types.length > 0 || abilities.length > 0 ||
+    (pokemon.height !== undefined && pokemon.weight !== undefined && pokemon.baseExperience !== undefined);
 
   return (
     <div className="pokemon-card" onClick={() => onSelect(pokemon.name)}>
@@ -46,50 +44,13 @@ function ResultItem({ pokemon, onSelect }: ResultItemProps) {
       {pokemon.image && <img src={pokemon.image} alt={pokemon.name} className="pokemon-image" />}
 
       {hasExtraDetails && (
-        <div className="pokemon-info">
-          {types.length > 0 && (
-            <div className="info-group">
-              <h3>Types</h3>
-              <div className="tags">
-                {types.map((type) => (
-                  <span key={type} className={`tag tag-${type}`}>
-                    {type}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {abilities.length > 0 && (
-            <div className="info-group">
-              <h3>Abilities</h3>
-              <div className="tags">
-                {abilities.map((ability) => (
-                  <span key={ability} className="tag tag-ability">
-                    {ability}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {hasStats && (
-            <div className="pokemon-stats">
-              <div className="stat">
-                <span className="label">Height:</span>
-                <span className="value">{pokemon.height! / 10} m</span>
-              </div>
-              <div className="stat">
-                <span className="label">Weight:</span>
-                <span className="value">{pokemon.weight! / 10} kg</span>
-              </div>
-              <div className="stat">
-                <span className="label">Base XP:</span>
-                <span className="value">{pokemon.baseExperience}</span>
-              </div>
-            </div>
-          )}
-        </div>
+        <PokemonDetails
+          types={types}
+          abilities={abilities}
+          height={pokemon.height}
+          weight={pokemon.weight}
+          baseExperience={pokemon.baseExperience}
+        />
       )}
     </div>
   );
