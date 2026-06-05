@@ -17,8 +17,7 @@ function MainPage() {
   const {
     searchFromUrl,
     page,
-    inputValue,
-    setInputValue,
+    initialSearchValue,
     loading,
     error,
     results,
@@ -33,10 +32,10 @@ function MainPage() {
   const [shouldThrowTestError, setShouldThrowTestError] = useState<boolean>(false);
   if (shouldThrowTestError) throw new Error('Test error button triggered');
 
-  function handleSearch(): void {
+  function handleSearch(value: string): void {
     const queryString = createSearchQueryString({
       page: DEFAULT_PAGE,
-      search: inputValue,
+      search: value,
     });
     navigate(`/?${queryString}`);
   }
@@ -70,12 +69,7 @@ function MainPage() {
   return (
     <div className="App">
       <Header />
-      <SearchSection
-        inputValue={inputValue}
-        setInputValue={setInputValue}
-        handleSearch={handleSearch}
-        error={error}
-      />
+      <SearchSection initialValue={initialSearchValue} handleSearch={handleSearch} error={error} />
       <ResultsSection
         handleCloseDetails={handleCloseDetails}
         handleSelect={handleSelect}

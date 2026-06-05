@@ -4,20 +4,15 @@ import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import type { SerializedError } from '@reduxjs/toolkit';
 
 export type SearchSectionProps = {
-  inputValue: string;
-  setInputValue: (value: string) => void;
-  handleSearch: () => void;
+  initialValue: string;
+  handleSearch: (value: string) => void;
   error?: FetchBaseQueryError | SerializedError;
 };
 
-function SearchSection({ inputValue, setInputValue, handleSearch, error }: SearchSectionProps) {
+function SearchSection({ initialValue, handleSearch, error }: SearchSectionProps) {
   return (
     <section className="search-section">
-      <Search
-        value={inputValue}
-        onChange={(value) => setInputValue(value)}
-        onSearch={handleSearch}
-      />
+      <Search key={initialValue} defaultValue={initialValue} onSearch={handleSearch} />
       {error && <div className="error-message">{getErrorMessage(error)}</div>}
     </section>
   );

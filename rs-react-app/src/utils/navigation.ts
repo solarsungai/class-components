@@ -6,14 +6,8 @@ interface SearchUrlParams {
 }
 
 function createSearchQueryString({ page, search }: SearchUrlParams): string {
-  const params = new URLSearchParams({
-    [URL_PARAMS.PAGE]: String(page),
-  });
-
-  if (search?.trim()) {
-    params.set(URL_PARAMS.SEARCH, search.trim());
-  }
-
+  const params = new URLSearchParams({ [URL_PARAMS.PAGE]: String(page) });
+  if (search?.trim()) params.set(URL_PARAMS.SEARCH, search.trim());
   return params.toString();
 }
 

@@ -11,9 +11,8 @@ describe('Search', () => {
     user = userEvent.setup();
 
     mockData = {
-      value: 'pikachu',
-      onChange: vi.fn<(value: string) => void>(),
-      onSearch: vi.fn<() => void>(),
+      defaultValue: 'pikachu',
+      onSearch: vi.fn<(value: string) => void>(),
     };
   });
 
@@ -27,21 +26,15 @@ describe('Search', () => {
     expect(screen.getByRole('button')).toBeInTheDocument();
   });
 
-  it('should call onChange when the user types something in input', async () => {
-    render(<Search {...mockData} />);
-    await user.type(screen.getByRole('textbox'), 'pikachu');
-    expect(mockData.onChange).toHaveBeenCalled();
-  });
-
   it('should call onSearch when the user clickes the button', async () => {
     render(<Search {...mockData} />);
     await user.click(screen.getByRole('button'));
-    expect(mockData.onSearch).toHaveBeenCalled();
+    expect(mockData.onSearch).toHaveBeenCalledWith('pikachu');
   });
 
   it('should call onSearch when the user presses Enter in the input', async () => {
     render(<Search {...mockData} />);
     await user.type(screen.getByRole('textbox'), '{Enter}');
-    expect(mockData.onSearch).toHaveBeenCalled();
+    expect(mockData.onSearch).toHaveBeenCalledWith('pikachu');
   });
 });
