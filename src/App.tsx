@@ -7,8 +7,7 @@ function App() {
   return (
     <>
       <section id="center">
-        <div className="hero">
-        </div>
+        <div className="hero"></div>
         <div>
           <h1>Get started</h1>
           <p>
