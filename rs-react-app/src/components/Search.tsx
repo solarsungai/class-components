@@ -1,23 +1,30 @@
+import { useRef } from 'react';
+
 export type SearchProps = {
-  value: string;
-  onChange: (value: string) => void;
-  onSearch: () => void;
+  defaultValue: string;
+  onSearch: (value: string) => void;
 };
 
-function Search({ value, onChange, onSearch }: SearchProps) {
+function Search({ defaultValue, onSearch }: SearchProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleTriggerSearch = () => {
+    if (inputRef.current) onSearch(inputRef.current.value.trim());
+  };
+
   return (
     <div className="search-controls">
       <input
+        ref={inputRef}
         className="search-input"
         type="text"
         placeholder="Search..."
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
+        defaultValue={defaultValue}
         onKeyDown={(e) => {
-          if (e.key === 'Enter') onSearch();
+          if (e.key === 'Enter') handleTriggerSearch();
         }}
       />
-      <button className="search-button" onClick={onSearch}>
+      <button className="search-button" onClick={handleTriggerSearch}>
         Search
       </button>
     </div>

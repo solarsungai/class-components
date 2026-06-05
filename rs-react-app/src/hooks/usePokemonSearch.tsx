@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import useSearchTermLocalStorage from '../hooks/useSearchTermLocalStorage';
 import { URL_PARAMS, DEFAULT_PAGE } from '../constants';
 import { useSearchParams } from 'react-router';
@@ -8,9 +7,7 @@ function usePokemonSearch() {
   const { getSearchTerm } = useSearchTermLocalStorage();
   const [searchParams, setSearchParams] = useSearchParams();
   const searchFromUrl = (searchParams.get(URL_PARAMS.SEARCH) ?? '').trim().toLowerCase();
-  const [inputValue, setInputValue] = useState<string>(
-    () => searchFromUrl || (getSearchTerm() ?? '')
-  );
+  const initialSearchValue = searchFromUrl || (getSearchTerm() ?? '');
   const hasSearch = Boolean(searchFromUrl);
   const page = Number(searchParams.get(URL_PARAMS.PAGE)) || DEFAULT_PAGE;
 
@@ -40,8 +37,7 @@ function usePokemonSearch() {
   return {
     searchFromUrl,
     page,
-    inputValue,
-    setInputValue,
+    initialSearchValue,
     loading,
     error,
     results,
