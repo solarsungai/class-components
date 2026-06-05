@@ -1,12 +1,13 @@
 import { Link } from 'react-router';
+import { NOT_FOUND_POKEMON_IMG } from '../constants';
 
 function NotFound() {
   return (
     <div className="page-wrapper">
       <div className="page-card not-found">
         <img
-          src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/54.png"
-          alt="Psyduck confused"
+          src={NOT_FOUND_POKEMON_IMG.URL}
+          alt={NOT_FOUND_POKEMON_IMG.NAME}
           className="not-found-pokemon"
         />
         <h1 className="not-found-code">404</h1>
