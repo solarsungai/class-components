@@ -24,8 +24,13 @@ function ResultItem({ pokemon, onSelect }: ResultItemProps) {
       pokemon.weight !== undefined &&
       pokemon.baseExperience !== undefined);
 
+  const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    onSelect(pokemon.name);
+  };
+
   return (
-    <div className="pokemon-card" onClick={() => onSelect(pokemon.name)}>
+    <div className="pokemon-card" onClick={handleCardClick}>
       <div className="pokemon-header">
         <label className="pokemon-checkbox-label" onClick={(e) => e.stopPropagation()}>
           <input

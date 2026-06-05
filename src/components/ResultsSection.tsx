@@ -5,7 +5,7 @@ import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import type { SerializedError } from '@reduxjs/toolkit';
 
 export type ResultsSectionProps = {
-  handleCloseDetails: (event: React.MouseEvent<HTMLDivElement>) => void;
+  handleCloseDetails: () => void;
   handleSelect: (name: string) => void;
   results: PokemonData[];
   loading: boolean;
