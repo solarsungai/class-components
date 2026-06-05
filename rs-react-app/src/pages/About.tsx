@@ -1,15 +1,12 @@
 import { Link } from 'react-router';
+import { ABOUT_POKEMON_IMG, RS_SCHOOL_COURSE_URL } from '../constants';
 
 function About() {
   return (
     <div className="page-wrapper">
       <div className="page-card">
         <div className="about-hero">
-          <img
-            src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png"
-            alt="Pikachu"
-            className="about-pokemon"
-          />
+          <img src={ABOUT_POKEMON_IMG.URL} alt={ABOUT_POKEMON_IMG.NAME} className="about-pokemon" />
           <div className="about-text">
             <h1 className="page-title">About Pokédex Explorer</h1>
             <p className="page-subtitle">
@@ -25,7 +22,7 @@ function About() {
             <p className="about-author">
               Built by <strong>solarsungai</strong> as part of the{' '}
               <a
-                href="https://rs.school/courses/reactjs"
+                href={RS_SCHOOL_COURSE_URL}
                 target="_blank"
                 rel="noreferrer"
                 className="about-link"
