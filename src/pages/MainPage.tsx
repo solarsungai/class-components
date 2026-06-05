@@ -40,9 +40,9 @@ function MainPage() {
     navigate(`/?${queryString}`);
   }
 
-  function handleCloseDetails(event: React.MouseEvent<HTMLDivElement>): void {
+  function handleCloseDetails(): void {
     const isDetailOpen = location.pathname.startsWith('/details/');
-    if (isDetailOpen && !(event.target as HTMLElement).closest('.pokemon-card')) {
+    if (isDetailOpen) {
       const queryString = createSearchQueryString({
         page,
         search: searchFromUrl,
