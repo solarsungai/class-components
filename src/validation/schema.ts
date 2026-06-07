@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import countries from '../constants/countries';
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024;
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png'];
@@ -15,7 +16,7 @@ const schema = z
       return true;
     }, 'Invalid email'),
     gender: z.enum(['male', 'female']),
-    country: z.string().min(1, 'Country is required'),
+    country: z.string().refine((val) => countries.includes(val), 'Country must be from the list'),
     image: z
       .instanceof(File)
       .refine((file) => file.size <= MAX_FILE_SIZE, 'Max file size is 2MB')

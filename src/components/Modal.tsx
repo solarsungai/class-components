@@ -20,7 +20,7 @@ function Modal({ onClose, children }: ModalProps) {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [onClose]);
 
   return createPortal(
     <div className="modal-overlay" onClick={onClose}>
