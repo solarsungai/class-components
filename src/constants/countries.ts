@@ -49,7 +49,7 @@ const countries: string[] = [
   'Ukraine',
   'United Arab Emirates',
   'United Kingdom',
-  'United States'
+  'United States',
 ];
 
 export default countries;

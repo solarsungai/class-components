@@ -1,5 +1,4 @@
 function RHFForm() {
-
   return (
     <form>
       <label htmlFor="name">Name</label>

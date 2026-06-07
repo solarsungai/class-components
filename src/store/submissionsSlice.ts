@@ -1,13 +1,13 @@
-import { createSlice  } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 type SubmissionType = {
-    name: string,
-    age: number,
-    email: string,
-    gender: string,
-    country: string,
-    image:  string,
-    terms: boolean,
+  name: string;
+  age: number;
+  email: string;
+  gender: string;
+  country: string;
+  image: string;
+  terms: boolean;
 };
 
 const submissionsSlice = createSlice({
@@ -15,9 +15,10 @@ const submissionsSlice = createSlice({
   initialState: [] as SubmissionType[],
   reducers: {
     addSubmission: (state, action) => {
-        state.push(action.payload)
-    }
-}});
+      state.push(action.payload);
+    },
+  },
+});
 
 export const { addSubmission } = submissionsSlice.actions;
 export default submissionsSlice.reducer;
