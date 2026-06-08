@@ -23,9 +23,10 @@ function UncontrolledForm({ onClose }: UncontrolledFormProps) {
     if (!passwordStrength.hasLowercase) missingRequirements.push('one lowercase letter');
     if (!passwordStrength.hasSpecial) missingRequirements.push('one special char');
   }
-  const passwordErrorMessage = missingRequirements.length > 0
-    ? `Password should contain minimum ${missingRequirements.join(', ')}`
-    : '';
+  const passwordErrorMessage =
+    missingRequirements.length > 0
+      ? `Password should contain minimum ${missingRequirements.join(', ')}`
+      : '';
 
   async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -108,7 +109,7 @@ function UncontrolledForm({ onClose }: UncontrolledFormProps) {
       />
       {errors.password && <span className="error">{errors.password}</span>}
       <div className={`password-indicators ${passwordErrorMessage ? 'visible' : 'hidden'}`}>
-         <span className="error">{passwordErrorMessage}</span>
+        <span className="error">{passwordErrorMessage}</span>
       </div>
       <label htmlFor="confirmPassword">Confirm Password</label>
       <input type="password" id="confirmPassword" name="confirmPassword" />
