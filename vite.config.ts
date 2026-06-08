@@ -9,7 +9,6 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./src/setupTests.ts'],
-    pool: 'forks',
     coverage: {
       provider: 'v8',
       include: ['src/**/*.{js,jsx,ts,tsx}'],
@@ -20,13 +19,14 @@ export default defineConfig({
         'src/main.tsx',
         'src/setupTests.{js,ts}',
         'src/**/*.d.ts',
+        'src/test-utils.tsx',
       ],
       thresholds: {
         global: {
-          statements: 80,
-          branches: 50,
-          functions: 50,
-          lines: 50,
+          statements: 100,
+          branches: 100,
+          functions: 100,
+          lines: 100,
         },
       },
     },

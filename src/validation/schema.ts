@@ -9,7 +9,10 @@ const schema = z
     name: z
       .string()
       .min(1, 'Name is required')
-      .refine((val) => val[0] === val[0].toUpperCase(), 'First letter must be uppercase'),
+      .refine(
+        (val) => !val.length || val[0] === val[0].toUpperCase(),
+        'First letter must be uppercase'
+      ),
     age: z.coerce.number().min(0, 'Age cannot be negative'),
     email: z.string().refine((value) => {
       const parts = value.split('@');

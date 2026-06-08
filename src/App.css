@@ -594,7 +594,9 @@ h2 {
 .password-indicators {
   min-height: 40px;
   margin-bottom: 5px;
-  transition: opacity 0.2s ease, visibility 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease;
 }
 
 .password-indicators.hidden {
