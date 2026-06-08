@@ -9,7 +9,7 @@ function useCountryAutocomplete() {
   const filteredCountries = countries.filter((country) =>
     country.toLowerCase().includes(countryInput.trim().toLowerCase())
   );
-    return { countryInput, setCountryInput, filteredCountries, countryInputRef };
+  return { countryInput, setCountryInput, filteredCountries, countryInputRef };
 }
 
 export default useCountryAutocomplete;

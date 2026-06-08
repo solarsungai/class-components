@@ -12,26 +12,26 @@ type FormSubmitType = {
   terms: boolean;
 };
 
-function useFormSubmit (onClose: () => void) {
-      const dispatch = useDispatch();
+function useFormSubmit(onClose: () => void) {
+  const dispatch = useDispatch();
 
-      async function submitForm(data: FormSubmitType) {
-        const imageBase64 = await toBase64(data.image);
-        dispatch(
-            addSubmission({
-            name: data.name,
-            age: data.age,
-            email: data.email,
-            gender: data.gender,
-            terms: data.terms,
-            country: data.country,
-            image: imageBase64,
-            })
-        );
-        onClose();
-      }
+  async function submitForm(data: FormSubmitType) {
+    const imageBase64 = await toBase64(data.image);
+    dispatch(
+      addSubmission({
+        name: data.name,
+        age: data.age,
+        email: data.email,
+        gender: data.gender,
+        terms: data.terms,
+        country: data.country,
+        image: imageBase64,
+      })
+    );
+    onClose();
+  }
 
-    return submitForm;
+  return submitForm;
 }
 
-export default useFormSubmit ;
+export default useFormSubmit;
