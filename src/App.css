@@ -562,11 +562,11 @@ h2 {
     transform 0.1s ease;
 }
 
-.submit-button:hover {
+.submit-button:not(:disabled):hover {
   background-color: #0077ed;
 }
 
-.submit-button:active {
+.submit-button:not(:disabled):active {
   transform: scale(0.98);
 }
 
