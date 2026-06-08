@@ -14,7 +14,11 @@ export function MainPage() {
     <>
       {formType !== null && (
         <Modal onClose={handleClose}>
-          {formType === 'uncontrolled' ? <UncontrolledForm onClose={handleClose}/> : <RHFForm onClose={handleClose}/>}
+          {formType === 'uncontrolled' ? (
+            <UncontrolledForm onClose={handleClose} />
+          ) : (
+            <RHFForm onClose={handleClose} />
+          )}
         </Modal>
       )}
       <div className="app-wrapper">

@@ -32,12 +32,12 @@ function Modal({ onClose, children }: ModalProps) {
         onClick={(e) => e.stopPropagation()}
       >
         <button
-            type="button"
-            className="modal-close-button"
-            onClick={onClose}
-            aria-label="Close modal"
-          >
-            <CloseIcon width="12" height="12" />
+          type="button"
+          className="modal-close-button"
+          onClick={onClose}
+          aria-label="Close modal"
+        >
+          <CloseIcon width="12" height="12" />
         </button>
         {children}
       </div>
