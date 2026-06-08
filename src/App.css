@@ -398,6 +398,7 @@ h2 {
     0 0 0 1px rgba(0, 0, 0, 0.04);
   outline: none;
   animation: scaleInModal 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
 }
 
 .modal-content,
@@ -411,6 +412,36 @@ h2 {
 .modal-content form::-webkit-scrollbar-track,
 .modal-content *::-webkit-scrollbar-track {
   background: transparent;
+}
+
+.modal-close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #f5f5f7;
+  color: #86868b;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 30;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
+}
+
+.modal-close-button:hover {
+  background-color: #e8e8ed;
+  color: #1d1d1f;
+}
+
+.modal-close-button:active {
+  transform: scale(0.95);
 }
 
 /* ================= FORM ELEMENTS INSIDE MODAL ================= */

@@ -8,12 +8,13 @@ import RHFForm from '../components/RHFForm';
 export function MainPage() {
   const [formType, setFormType] = useState<'uncontrolled' | 'rhf' | null>(null);
   const submissions = [1, 2, 3];
+  const handleClose = () => setFormType(null);
 
   return (
     <>
       {formType !== null && (
-        <Modal onClose={() => setFormType(null)}>
-          {formType === 'uncontrolled' ? <UncontrolledForm /> : <RHFForm />}
+        <Modal onClose={handleClose}>
+          {formType === 'uncontrolled' ? <UncontrolledForm onClose={handleClose}/> : <RHFForm onClose={handleClose}/>}
         </Modal>
       )}
       <div className="app-wrapper">
