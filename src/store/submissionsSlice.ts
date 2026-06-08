@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-type SubmissionType = {
+export type SubmissionType = {
   name: string;
   age: number;
   email: string;

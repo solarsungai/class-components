@@ -1,13 +1,16 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Modal from '../components/Modal';
+import SubmissionItem from '../components/SubmissionItem';
 import UncontrolledForm from '../components/UncontrolledForm';
 import RHFForm from '../components/RHFForm';
+import type { RootState } from '../store';
 
 export function MainPage() {
   const [formType, setFormType] = useState<'uncontrolled' | 'rhf' | null>(null);
-  const submissions = [1, 2, 3];
+  const submissions = useSelector((state: RootState) => state.submissions);
   const handleClose = () => setFormType(null);
 
   return (
@@ -43,7 +46,7 @@ export function MainPage() {
                 onClick={() => setFormType('rhf')}
               >
                 <div className="choose-form-button-bg" />
-                <span className="choose-form-button-label">Controlled</span>
+                <span className="choose-form-button-label">React Hook Form</span>
               </button>
             </div>
           </section>
@@ -59,8 +62,12 @@ export function MainPage() {
               </div>
             ) : (
               <div className="submissions-grid">
-                {submissions.map((_, index) => (
-                  <SubmissionItem key={index} />
+                {submissions.map((submission, index) => (
+                  <SubmissionItem
+                    key={submission.email}
+                    submission={submission}
+                    isNew={index === submissions.length - 1}
+                  />
                 ))}
               </div>
             )}
@@ -69,39 +76,6 @@ export function MainPage() {
         <Footer />
       </div>
     </>
-  );
-}
-
-function SubmissionItem() {
-  return (
-    <div className="submission-card">
-      <img
-        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&h=500&fit=crop"
-        alt="User"
-        className="card-image"
-      />
-      <div className="card-content">
-        <div className="card-header">
-          <h3>Sophie Bennett</h3>
-          <span className="verified-badge">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-            </svg>
-          </span>
-        </div>
-        <p className="card-text">
-          Profile update request:
-          <br />
-          Updated job title and location.
-        </p>
-        <div className="card-meta">
-          <span>Profile Update | Accepted</span>
-        </div>
-        <button type="button" className="card-btn">
-          Details
-        </button>
-      </div>
-    </div>
   );
 }
 

@@ -16,7 +16,11 @@ function UncontrolledForm({ onClose }: UncontrolledFormProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const submitForm = useFormSubmit(onClose);
 
-  async function handleAction(formData: FormData) {
+  async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formElement = e.currentTarget;
+    const formData = new FormData(formElement);
+
     const name = formData.get('name') as string;
     const age = formData.get('age');
     const email = formData.get('email');
@@ -60,11 +64,12 @@ function UncontrolledForm({ onClose }: UncontrolledFormProps) {
       });
       setErrors({});
       setCountryInput('');
+      formElement.reset();
     }
   }
 
   return (
-    <form action={handleAction}>
+    <form onSubmit={handleSubmit}>
       <label htmlFor="name">Name</label>
       <input type="text" id="name" name="name" />
       {errors.name && <span className="error">{errors.name}</span>}

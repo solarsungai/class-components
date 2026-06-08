@@ -6,11 +6,14 @@ const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png'];
 
 const schema = z
   .object({
-    name: z.string().min(1, 'Name is required').refine((val) => val[0] === val[0].toUpperCase(), 'First letter must be uppercase'),
+    name: z
+      .string()
+      .min(1, 'Name is required')
+      .refine((val) => val[0] === val[0].toUpperCase(), 'First letter must be uppercase'),
     age: z.coerce.number().min(0, 'Age cannot be negative'),
     email: z.string().refine((value) => {
       const parts = value.split('@');
-      if (parts.length !== 2) return false; 
+      if (parts.length !== 2) return false;
       if (parts[0].length < 1) return false;
       if (!parts[1].includes('.')) return false;
       return true;

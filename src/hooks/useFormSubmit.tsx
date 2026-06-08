@@ -17,18 +17,20 @@ function useFormSubmit(onClose: () => void) {
 
   async function submitForm(data: FormSubmitType) {
     const imageBase64 = await toBase64(data.image);
-    dispatch(
-      addSubmission({
-        name: data.name,
-        age: data.age,
-        email: data.email,
-        gender: data.gender,
-        terms: data.terms,
-        country: data.country,
-        image: imageBase64,
-      })
-    );
     onClose();
+    setTimeout(() => {
+      dispatch(
+        addSubmission({
+          name: data.name,
+          age: data.age,
+          email: data.email,
+          gender: data.gender,
+          terms: data.terms,
+          country: data.country,
+          image: imageBase64,
+        })
+      );
+    }, 200);
   }
 
   return submitForm;
