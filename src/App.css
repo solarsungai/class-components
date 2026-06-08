@@ -589,6 +589,21 @@ h2 {
   animation: fadeInError 0.2s ease-out;
 }
 
+.password-indicators {
+  min-height: 64px; 
+  transition: opacity 0.2s ease;
+}
+
+.password-indicators.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.password-indicators.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
 /* ================= AUTOCOMPLETE SUGGESTIONS DROPDOWN ================= */
 
 .autocomplete-wrapper {

@@ -16,6 +16,17 @@ function UncontrolledForm({ onClose }: UncontrolledFormProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const submitForm = useFormSubmit(onClose);
 
+  const missingRequirements = [];
+  if (passwordTouched) {
+    if (!passwordStrength.hasNumber) missingRequirements.push('one number');
+    if (!passwordStrength.hasUppercase) missingRequirements.push('one uppercase letter');
+    if (!passwordStrength.hasLowercase) missingRequirements.push('one lowercase letter');
+    if (!passwordStrength.hasSpecial) missingRequirements.push('one special char');
+  }
+  const passwordErrorMessage = missingRequirements.length > 0
+    ? `Password should contain minimum ${missingRequirements.join(', ')}`
+    : '';
+
   async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     const formElement = e.currentTarget;
@@ -96,18 +107,9 @@ function UncontrolledForm({ onClose }: UncontrolledFormProps) {
         onChange={(e) => handlePasswordChange(e.target.value)}
       />
       {errors.password && <span className="error">{errors.password}</span>}
-      {passwordTouched && !passwordStrength.hasNumber && (
-        <span className="error">Password should contain minimum one number</span>
-      )}
-      {passwordTouched && !passwordStrength.hasUppercase && (
-        <span className="error">Password should contain minimum one uppercase letter</span>
-      )}
-      {passwordTouched && !passwordStrength.hasLowercase && (
-        <span className="error">Password should contain minimum one lowercase letter</span>
-      )}
-      {passwordTouched && !passwordStrength.hasSpecial && (
-        <span className="error">Password should contain minimum one special char</span>
-      )}
+      <div className={`password-indicators ${passwordErrorMessage ? 'visible' : 'hidden'}`}>
+         <span className="error">{passwordErrorMessage}</span>
+      </div>
       <label htmlFor="confirmPassword">Confirm Password</label>
       <input type="password" id="confirmPassword" name="confirmPassword" />
       {errors.confirmPassword && <span className="error">{errors.confirmPassword}</span>}

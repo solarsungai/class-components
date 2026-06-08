@@ -51,6 +51,19 @@ function RHFForm({ onClose }: { onClose: () => void }) {
     reset();
   }
 
+  const missingRequirements = [];
+  if (isPasswordDirty) {
+    if (!hasNumber) missingRequirements.push('one number');
+    if (!hasUppercase) missingRequirements.push('one uppercase letter');
+    if (!hasLowercase) missingRequirements.push('one lowercase letter');
+    if (!hasSpecial) missingRequirements.push('one special char');
+  }
+
+  let errorMessage = '';
+  if (missingRequirements.length > 0) {
+    errorMessage = `Password should contain minimum ${missingRequirements.join(', ')}`;
+  }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <label htmlFor="name">Name</label>
@@ -74,20 +87,9 @@ function RHFForm({ onClose }: { onClose: () => void }) {
       <label htmlFor="password">Password</label>
       <input type="password" id="password" {...register('password')} />
       {errors.password && <span className="error">{errors.password.message}</span>}
-      {isPasswordDirty && (
-        <div className="password-indicators">
-          {!hasNumber && <span className="error">Password should contain minimum one number</span>}
-          {!hasUppercase && (
-            <span className="error">Password should contain minimum one uppercase letter</span>
-          )}
-          {!hasLowercase && (
-            <span className="error">Password should contain minimum one lowercase letter</span>
-          )}
-          {!hasSpecial && (
-            <span className="error">Password should contain minimum one special char</span>
-          )}
-        </div>
-      )}
+      <div className={`password-indicators ${errorMessage ? 'visible' : 'hidden'}`}>
+        <span className="error">{errorMessage}</span>
+      </div>
       <label htmlFor="confirmPassword">Confirm Password</label>
       <input type="password" id="confirmPassword" {...register('confirmPassword')} />
       {errors.confirmPassword && <span className="error">{errors.confirmPassword.message}</span>}
