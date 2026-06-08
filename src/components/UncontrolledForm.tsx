@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import schema from '../validation/schema';
-import toBase64 from '../utils/toBase64';
-import { addSubmission } from '../store/submissionsSlice';
-import { type RootState } from '../store';
+import usePasswordStrength from '../hooks/usePasswordStrength';
+import useCountryAutocomplete from '../hooks/useCountryAutocomplete';
+import useFormSubmit from '../hooks/useFormSubmit';
 
 type UncontrolledFormProps = {
   onClose: () => void;
@@ -11,26 +10,12 @@ type UncontrolledFormProps = {
 
 function UncontrolledForm({ onClose }: UncontrolledFormProps) {
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [passwordTouched, setPasswordTouched] = useState(false);
-  const [passwordStrength, setPasswordStrength] = useState({
-    hasNumber: false,
-    hasUppercase: false,
-    hasLowercase: false,
-    hasSpecial: false,
-  });
-
-  const countries = useSelector((state: RootState) => state.countries);
-  const [countryInput, setCountryInput] = useState('');
+  const { handlePasswordChange, passwordTouched, passwordStrength } = usePasswordStrength();
+  const { countryInput, setCountryInput, filteredCountries, countryInputRef } = useCountryAutocomplete();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const filteredCountries = countries.filter((country) =>
-    country.toLowerCase().includes(countryInput.trim().toLowerCase())
-  );
+  const submitForm = useFormSubmit(onClose);
 
-  const dispatch = useDispatch();
-
-  async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+  async function handleAction(formData: FormData) {
     const name = formData.get('name') as string;
     const age = formData.get('age');
     const email = formData.get('email');
@@ -63,35 +48,22 @@ function UncontrolledForm({ onClose }: UncontrolledFormProps) {
       });
       setErrors(fieldErrors);
     } else {
-      const imageBase64 = await toBase64(result.data.image);
-      dispatch(
-        addSubmission({
-          name: result.data.name,
-          age: result.data.age,
-          email: result.data.email,
-          gender: result.data.gender,
-          terms: result.data.terms,
-          country: result.data.country,
-          image: imageBase64,
-        })
-      );
-      onClose();
+      await submitForm({
+        name: result.data.name,
+        age: result.data.age,
+        email: result.data.email,
+        gender: result.data.gender,
+        terms: result.data.terms,
+        country: result.data.country,
+        image: result.data.image,
+      })
+      setErrors({});
+      setCountryInput('');
     }
   }
 
-  function handlePasswordChange(pass: string) {
-    setPasswordTouched(true);
-    const hasNumber = [...pass].some((char) => char !== ' ' && !isNaN(Number(char)));
-    const hasUppercase = [...pass].some((char) => char !== char.toLowerCase());
-    const hasLowercase = [...pass].some((char) => char !== char.toUpperCase());
-    const specialChars = '!@#$%^&*()_+-=[]{}|;:\'",.<>/?~`';
-    const hasSpecial = [...pass].some((char) => specialChars.includes(char));
-    setPasswordStrength({ hasNumber, hasUppercase, hasLowercase, hasSpecial });
-  }
-
   return (
-    <>
-      <form onSubmit={handleSubmit}>
+      <form action={handleAction}>
         <label htmlFor="name">Name</label>
         <input type="text" id="name" name="name" />
         {errors.name && <span className="error">{errors.name}</span>}
@@ -134,12 +106,12 @@ function UncontrolledForm({ onClose }: UncontrolledFormProps) {
         <input type="password" id="confirmPassword" name="confirmPassword" />
         {errors.confirmPassword && <span className="error">{errors.confirmPassword}</span>}
         <label htmlFor="country">Country</label>
-        <div className="autocomplete-wrapper" style={{ position: 'relative' }}>
+        <div className="autocomplete-wrapper">
           <input
             type="text"
             id="country"
             name="country"
-            value={countryInput}
+            ref={countryInputRef}
             onChange={(e) => {
               setCountryInput(e.target.value);
               setIsDropdownOpen(true);
@@ -160,6 +132,7 @@ function UncontrolledForm({ onClose }: UncontrolledFormProps) {
                 <li
                   key={country}
                   onClick={() => {
+                    if (countryInputRef.current) countryInputRef.current.value = country;
                     setCountryInput(country);
                     setIsDropdownOpen(false);
                   }}
@@ -179,7 +152,6 @@ function UncontrolledForm({ onClose }: UncontrolledFormProps) {
           Submit
         </button>
       </form>
-    </>
   );
 }
 

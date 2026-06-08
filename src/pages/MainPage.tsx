@@ -35,7 +35,7 @@ export function MainPage() {
                 onClick={() => setFormType('uncontrolled')}
               >
                 <div className="choose-form-button-bg" />
-                <span className="choose-form-button-label">Basic</span>
+                <span className="choose-form-button-label">Uncontrolled</span>
               </button>
               <button
                 type="button"
@@ -43,7 +43,7 @@ export function MainPage() {
                 onClick={() => setFormType('rhf')}
               >
                 <div className="choose-form-button-bg" />
-                <span className="choose-form-button-label">Advanced</span>
+                <span className="choose-form-button-label">Controlled</span>
               </button>
             </div>
           </section>
