@@ -1,7 +1,6 @@
 import type { YearData, Country } from '../types';
 
-export const getAvailableColumns = (): string[] => {
-  return [
+export const AVAILABLE_COLUMNS = [
     'year',
     'population',
     'co2',
@@ -21,8 +20,7 @@ export const getAvailableColumns = (): string[] => {
     'temperature_change_from_co2',
     'total_ghg',
     'total_ghg_per_capita',
-  ];
-};
+];
 
 export const createYearDataMap = (data: YearData[]): Map<number, YearData> => {
   const map = new Map<number, YearData>();

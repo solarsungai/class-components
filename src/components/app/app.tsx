@@ -5,7 +5,7 @@ import { SearchBar } from '../search-bar/search-bar';
 import { YearSelector } from '../year-selector/year-selector';
 import { CountryList } from '../country-list/country-list';
 import { ColumnModal } from '../column-modal/column-modal';
-import { getAvailableYears, getAvailableColumns } from '../../utils/data-transformers';
+import { getAvailableYears, AVAILABLE_COLUMNS } from '../../utils/data-transformers';
 
 import styles from './app.module.css';
 
@@ -33,7 +33,6 @@ export const App = () => {
   });
 
   const years = useMemo(() => {return data ? getAvailableYears(data) : []}, [data]);
-  const availableColumns = useMemo(() => getAvailableColumns(), []);
 
   const handleSearch = useCallback((value: string) => {
     setState(prevState => ({ ...prevState, searchQuery: value }));
@@ -121,7 +120,7 @@ export const App = () => {
       {/* Column Modal */}
       <ColumnModal
         isOpen={state.isColumnModalOpen}
-        availableColumns={availableColumns}
+        availableColumns={AVAILABLE_COLUMNS}
         selectedColumns={state.selectedColumns}
         onToggle={handleColumnToggle}
         onClose={handleModalToggle}
