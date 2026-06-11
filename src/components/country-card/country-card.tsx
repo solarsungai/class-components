@@ -1,3 +1,4 @@
+import React, { useMemo } from 'react';
 import type { Country } from '../../types';
 import { DataTable } from '../data-table/data-table';
 import {
@@ -15,10 +16,13 @@ type CountryCardProps = {
   selectedColumns: string[];
 };
 
-export const CountryCard = ({ country, selectedYear, selectedColumns }: CountryCardProps) => {
-  const yearDataMap = createYearDataMap(country.data);
-  const population = getPopulationForYear(yearDataMap, selectedYear);
-  const co2 = getCo2ForYear(yearDataMap, selectedYear);
+export const CountryCard = React.memo(({ country, selectedYear, selectedColumns }: CountryCardProps) => {
+  const { population, co2 } = useMemo(() => {
+    const yearDataMap = createYearDataMap(country.data);
+    const population = getPopulationForYear(yearDataMap, selectedYear);
+    const co2 = getCo2ForYear(yearDataMap, selectedYear);
+    return { population, co2 };
+}, [country.data, selectedYear]);
 
   return (
     <div className={styles.card}>
@@ -39,4 +43,4 @@ export const CountryCard = ({ country, selectedYear, selectedColumns }: CountryC
       <DataTable data={country.data} year={selectedYear} columns={selectedColumns} />
     </div>
   );
-};
+});
