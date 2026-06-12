@@ -32,33 +32,40 @@ export const App = () => {
     isColumnModalOpen: false,
   });
 
-  const years = useMemo(() => {return data ? getAvailableYears(data) : []}, [data]);
+  const years = useMemo(() => {
+    return data ? getAvailableYears(data) : [];
+  }, [data]);
 
   const handleSearch = useCallback((value: string) => {
-    setState(prevState => ({ ...prevState, searchQuery: value }));
+    setState((prevState) => ({ ...prevState, searchQuery: value }));
   }, []);
 
   const handleYearChange = useCallback((year: number) => {
-    setState(prevState => ({ ...prevState, selectedYear: year }));
+    setState((prevState) => ({ ...prevState, selectedYear: year }));
   }, []);
 
   const handleSortFieldChange = useCallback((field: 'name' | 'population') => {
-  setState(prevState => ({ ...prevState, sortField: field }));
+    setState((prevState) => ({ ...prevState, sortField: field }));
   }, []);
 
   const handleSortOrderToggle = useCallback(() => {
-  setState(prevState => ({ ...prevState, sortOrder: prevState.sortOrder === 'asc' ? 'desc' : 'asc' }));
+    setState((prevState) => ({
+      ...prevState,
+      sortOrder: prevState.sortOrder === 'asc' ? 'desc' : 'asc',
+    }));
   }, []);
 
   const handleColumnToggle = useCallback((column: string) => {
-  setState(prevState => ({ ...prevState, 
+    setState((prevState) => ({
+      ...prevState,
       selectedColumns: prevState.selectedColumns.includes(column)
         ? prevState.selectedColumns.filter((c) => c !== column)
-        : [...prevState.selectedColumns, column], }));
+        : [...prevState.selectedColumns, column],
+    }));
   }, []);
 
   const handleModalToggle = useCallback(() => {
-  setState(prevState => ({ ...prevState, isColumnModalOpen: !prevState.isColumnModalOpen }));
+    setState((prevState) => ({ ...prevState, isColumnModalOpen: !prevState.isColumnModalOpen }));
   }, []);
 
   if (isLoading) {
