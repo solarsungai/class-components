@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
+import { List } from 'react-window';
 import type { Country } from '../../types';
-import { CountryCard } from '../country-card/country-card';
+import { Row } from '../row/row';
 import {
   getPopulationForYear,
-  getCo2ForYear,
   createYearDataMap,
 } from '../../utils/data-transformers';
 import styles from './country-list.module.css';
@@ -56,23 +56,13 @@ export const CountryList = React.memo(
 
     return (
       <div className={styles.countryList}>
-        {filteredCountries.map((country) => {
-          const countryYearMap = yearMaps.get(country.id);
-          const population = countryYearMap
-            ? getPopulationForYear(countryYearMap, selectedYear)
-            : undefined;
-          const co2 = countryYearMap ? getCo2ForYear(countryYearMap, selectedYear) : undefined;
-          return (
-            <CountryCard
-              key={country.id}
-              country={country}
-              selectedYear={selectedYear}
-              selectedColumns={selectedColumns}
-              population={population}
-              co2={co2}
-            />
-          );
-        })}
+        <List
+          rowComponent={Row}
+          rowCount={filteredCountries.length}
+          rowHeight={295}
+          rowProps={{ filteredCountries, yearMaps, selectedYear, selectedColumns }}
+          className={styles.virtualList}
+        />
       </div>
     );
   }

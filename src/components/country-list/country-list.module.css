@@ -1,3 +1,8 @@
 .countryList {
   padding: 16px;
 }
+
+.virtualList {
+  height: 800px;
+  width: 100%;
+}
