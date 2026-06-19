@@ -10,7 +10,9 @@ interface ThemeProviderProps {
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(THEME_KEY) as Theme | null) ?? 'light'
+    () => typeof window !== 'undefined' 
+      ? (localStorage.getItem(THEME_KEY) as Theme | null) ?? 'light'
+      : 'light'
   );
 
   const toggleTheme = () => {

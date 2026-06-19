@@ -1,7 +1,13 @@
-import { NavLink } from 'react-router';
+'use client'
+
+import Link from 'next/link';
 import ThemeToggle from './ThemeToggle';
+import { usePathname } from 'next/navigation';
 
 function Header() {
+  const pathname = usePathname();
+  const isActive = pathname === '/about';
+
   return (
     <header className="header">
       <div className="header-content">
@@ -11,14 +17,12 @@ function Header() {
         </div>
         <div className="header-buttons">
           <ThemeToggle />
-          <NavLink
-            to="/about"
-            className={({ isActive }) =>
-              isActive ? 'header-nav-link header-nav-link--active' : 'header-nav-link'
-            }
+          <Link
+            href="/about"
+            className={isActive ? 'header-nav-link header-nav-link--active' : 'header-nav-link'}
           >
             About
-          </NavLink>
+          </Link>
         </div>
       </div>
     </header>
