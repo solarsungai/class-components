@@ -1,11 +1,13 @@
-import useSearchTermLocalStorage from '../hooks/useSearchTermLocalStorage';
-import { URL_PARAMS, DEFAULT_PAGE } from '../constants';
-import { useSearchParams } from 'react-router';
-import { useGetPokemonByPageQuery, useGetPokemonByNameQuery } from '../services/pokemonApi';
+import { useSearchParams, useRouter } from 'next/navigation';
+import useSearchTermLocalStorage from '@/hooks/useSearchTermLocalStorage';
+import { URL_PARAMS, DEFAULT_PAGE } from '@/constants';
+import { useGetPokemonByPageQuery, useGetPokemonByNameQuery } from '@/services/pokemonApi';
+import createSearchQueryString from '@/utils/navigation';
 
 function usePokemonSearch() {
   const { getSearchTerm } = useSearchTermLocalStorage();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const searchFromUrl = (searchParams.get(URL_PARAMS.SEARCH) ?? '').trim().toLowerCase();
   const initialSearchValue = searchFromUrl || (getSearchTerm() ?? '');
   const hasSearch = Boolean(searchFromUrl);
@@ -27,11 +29,11 @@ function usePokemonSearch() {
   const count = hasSearch ? (searchData ? 1 : 0) : (pageData?.count ?? 0);
 
   function handlePageChange(newPage: number) {
-    const params: Record<string, string> = {
-      [URL_PARAMS.PAGE]: String(newPage),
-    };
-    if (searchFromUrl) params[URL_PARAMS.SEARCH] = searchFromUrl;
-    setSearchParams(params);
+    const queryString = createSearchQueryString({
+      page: newPage,
+      search: searchFromUrl,
+    });
+    router.push(`/?${queryString}`);
   }
 
   return {
