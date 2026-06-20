@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import Header from '@/components/Header';
 import ThemeProvider from '@/context/ThemeProvider';
+import ReduxProvider from '@/components/ReduxProvider';
 
 export const metadata: Metadata = {
   title: 'Pokédex Explorer',
@@ -16,10 +17,12 @@ export default function RootLayout({
   return (
   <html lang="en">
       <body>
-      <ThemeProvider>
-          <Header />
-          <main>{children}</main>
-      </ThemeProvider>
+        <ReduxProvider>
+          <ThemeProvider>
+              <Header />
+              <main>{children}</main>
+          </ThemeProvider>
+        </ReduxProvider>
       </body>
   </html>
 );

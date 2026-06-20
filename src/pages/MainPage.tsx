@@ -1,17 +1,17 @@
-import '../App.css';
+'use client'
+
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router';
+import { useRouter, usePathname } from 'next/navigation';
 import { useDispatch } from 'react-redux';
-import type { AppDispatch } from '../store';
-import { DEFAULT_PAGE } from '../constants';
-import Header from '../components/Header';
-import SearchSection from '../components/SearchSection';
-import ResultsSection from '../components/ResultsSection';
-import ToolsRow from '../components/ToolsRow';
-import Flyout from '../components/Flyout';
-import usePokemonSearch from '../hooks/usePokemonSearch';
-import createSearchQueryString from '../utils/navigation';
-import { pokemonApi } from '../services/pokemonApi';
+import type { AppDispatch } from '@/store';
+import { DEFAULT_PAGE } from '@/constants';
+import SearchSection from '@/components/SearchSection';
+import ResultsSection from '@/components/ResultsSection';
+import ToolsRow from '@/components/ToolsRow';
+import Flyout from '@/components/Flyout';
+import usePokemonSearch from '@/hooks/usePokemonSearch';
+import createSearchQueryString from '@/utils/navigation';
+import { pokemonApi } from '@/services/pokemonApi';
 
 function MainPage() {
   const {
@@ -25,8 +25,8 @@ function MainPage() {
     handlePageChange,
   } = usePokemonSearch();
 
-  const navigate = useNavigate();
-  const location = useLocation();
+  const router = useRouter();
+  const pathname = usePathname();
   const dispatch = useDispatch<AppDispatch>();
 
   const [shouldThrowTestError, setShouldThrowTestError] = useState<boolean>(false);
@@ -37,17 +37,17 @@ function MainPage() {
       page: DEFAULT_PAGE,
       search: value,
     });
-    navigate(`/?${queryString}`);
+    router.push(`/?${queryString}`);
   }
 
   function handleCloseDetails(): void {
-    const isDetailOpen = location.pathname.startsWith('/details/');
+    const isDetailOpen = pathname.startsWith('/details/');
     if (isDetailOpen) {
       const queryString = createSearchQueryString({
         page,
         search: searchFromUrl,
       });
-      navigate(`/?${queryString}`);
+      router.push(`/?${queryString}`);
     }
   }
 
@@ -56,7 +56,7 @@ function MainPage() {
       page,
       search: searchFromUrl,
     });
-    navigate(`/details/${name}?${queryString}`);
+    router.push(`/details/${name}?${queryString}`);
   }
 
   const handleTestErrorClick = () => {
@@ -68,7 +68,6 @@ function MainPage() {
 
   return (
     <div className="App">
-      <Header />
       <SearchSection initialValue={initialSearchValue} handleSearch={handleSearch} error={error} />
       <ResultsSection
         handleCloseDetails={handleCloseDetails}
