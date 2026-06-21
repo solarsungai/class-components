@@ -1,8 +1,9 @@
 import { useParams, useSearchParams, useNavigate } from 'react-router';
-import { useGetPokemonByNameQuery } from '../services/pokemonApi';
-import getErrorMessage from '../utils/getErrorMessage';
-import createSearchQueryString from '../utils/navigation';
-import { URL_PARAMS, DEFAULT_PAGE } from '../constants';
+import Image from 'next/image';
+import { useGetPokemonByNameQuery } from '@/services/pokemonApi';
+import getErrorMessage from '@/utils/getErrorMessage';
+import createSearchQueryString from '@/utils/navigation';
+import { URL_PARAMS, DEFAULT_PAGE } from '@/constants';
 import PokemonInfoBlock from './PokemonInfoBlock';
 
 function DetailPanel() {
@@ -42,7 +43,7 @@ function DetailPanel() {
         <div className="detail-content">
           <h2 className="pokemon-name detail-title">{pokemon.name}</h2>
 
-          {pokemon.image && <img className="detail-image" src={pokemon.image} alt={pokemon.name} />}
+          {pokemon.image && <Image src={pokemon.image} alt={pokemon.name} className="detail-image" width={148} height={148}/>}
 
           <PokemonInfoBlock
             types={pokemon.types}

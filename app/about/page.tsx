@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { ABOUT_POKEMON_IMG, RS_SCHOOL_COURSE_URL } from '@/constants';
 
 function About() {
@@ -6,7 +7,13 @@ function About() {
     <div className="page-wrapper">
       <div className="page-card">
         <div className="about-hero">
-          <img src={ABOUT_POKEMON_IMG.URL} alt={ABOUT_POKEMON_IMG.NAME} className="about-pokemon" />
+          <Image 
+            src={ABOUT_POKEMON_IMG.URL} 
+            alt={ABOUT_POKEMON_IMG.NAME} 
+            className="about-pokemon"
+            width={180}
+            height={180}
+          />
           <div className="about-text">
             <h1 className="page-title">About Pokédex Explorer</h1>
             <p className="page-subtitle">

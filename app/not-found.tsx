@@ -1,14 +1,17 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { NOT_FOUND_POKEMON_IMG } from '@/constants';
 
 function NotFound() {
   return (
     <div className="page-wrapper">
       <div className="page-card not-found">
-        <img
-          src={NOT_FOUND_POKEMON_IMG.URL}
-          alt={NOT_FOUND_POKEMON_IMG.NAME}
+        <Image 
+          src={NOT_FOUND_POKEMON_IMG.URL} 
+          alt={NOT_FOUND_POKEMON_IMG.NAME} 
           className="not-found-pokemon"
+          width={160}
+          height={160}
         />
         <h1 className="not-found-code">404</h1>
         <p className="page-subtitle">Looks like this page ran away...</p>

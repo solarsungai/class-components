@@ -1,7 +1,8 @@
-import type { PokemonData } from '../types';
+import type { PokemonData } from '@/types';
 import { useDispatch, useSelector } from 'react-redux';
-import { addPokemon, deletePokemon } from '../store/pokemonSlice';
-import type { RootState } from '../store';
+import Image from 'next/image';
+import { addPokemon, deletePokemon } from '@/store/pokemonSlice';
+import type { RootState } from '@/store';
 import PokemonInfoBlock from './PokemonInfoBlock';
 
 type ResultItemProps = {
@@ -49,8 +50,7 @@ function ResultItem({ pokemon, onSelect }: ResultItemProps) {
         </label>
         <h2 className="pokemon-name">{pokemon.name}</h2>
       </div>
-
-      {pokemon.image && <img src={pokemon.image} alt={pokemon.name} className="pokemon-image" />}
+      {pokemon.image && <Image src={pokemon.image} alt={pokemon.name} className="pokemon-image" width={112} height={112}/>}
 
       {hasExtraDetails && (
         <PokemonInfoBlock
