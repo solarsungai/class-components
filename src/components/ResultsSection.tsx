@@ -1,4 +1,3 @@
-import { Outlet } from 'react-router';
 import Results from '../components/Results';
 import type { PokemonData } from '../types';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
@@ -27,7 +26,6 @@ function ResultsSection({
             <Results results={results} onSelect={handleSelect} />
             {loading && <div className="loader loader--overlay">Loading...</div>}
           </div>
-          <Outlet />
         </div>
       )}
     </section>

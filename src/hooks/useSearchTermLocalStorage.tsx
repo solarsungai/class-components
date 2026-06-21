@@ -3,11 +3,11 @@ import { SEARCH_TERM_KEY } from '../constants';
 
 function useSearchTermLocalStorage() {
   const getSearchTerm = useCallback((): string | null => {
-    return localStorage.getItem(SEARCH_TERM_KEY);
+    return typeof window !== 'undefined' ? localStorage.getItem(SEARCH_TERM_KEY) : null;
   }, []);
 
   const setSearchTerm = useCallback((term: string): void => {
-    localStorage.setItem(SEARCH_TERM_KEY, term);
+    typeof window !== 'undefined' ? localStorage.setItem(SEARCH_TERM_KEY, term) : null;
   }, []);
 
   return { getSearchTerm, setSearchTerm };
