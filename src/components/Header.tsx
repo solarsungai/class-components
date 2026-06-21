@@ -9,23 +9,25 @@ function Header() {
   const isActive = pathname === '/about';
 
   return (
-    <header className="header">
-      <div className="header-content">
-        <div>
-          <h1>Pokédex Explorer</h1>
-          <p className="header-subtitle">Search Pokémon and view key stats instantly.</p>
+    <div className="header-wrapper">
+      <header className="header">
+        <div className="header-content">
+          <div>
+            <h1>Pokédex Explorer</h1>
+            <p className="header-subtitle">Search Pokémon and view key stats instantly.</p>
+          </div>
+          <div className="header-buttons">
+            <ThemeToggle />
+            <Link
+              href="/about"
+              className={isActive ? 'header-nav-link header-nav-link--active' : 'header-nav-link'}
+            >
+              About
+            </Link>
+          </div>
         </div>
-        <div className="header-buttons">
-          <ThemeToggle />
-          <Link
-            href="/about"
-            className={isActive ? 'header-nav-link header-nav-link--active' : 'header-nav-link'}
-          >
-            About
-          </Link>
-        </div>
-      </div>
-    </header>
+      </header>
+    </div>
   );
 }
 
