@@ -5,7 +5,7 @@ import { SERVER_URL, POKEMON_PER_PAGE_LIMIT } from '../constants';
 export const pokemonApi = createApi({
   reducerPath: 'pokemonApi',
   baseQuery: fetchBaseQuery({ baseUrl: SERVER_URL }),
-  keepUnusedDataFor: Number(import.meta.env.VITE_CACHE_TTL) || 60,
+  keepUnusedDataFor: Number(process.env.NEXT_PUBLIC_CACHE_TTL) || 60,
   tagTypes: ['PokemonList', 'PokemonDetail'],
   endpoints: (build) => ({
     getPokemonByPage: build.query<{ results: PokemonData[]; count: number }, number>({
