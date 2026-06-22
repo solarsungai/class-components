@@ -6,9 +6,9 @@ A simple React application that allows users to search items using an external A
 
 ## Tech Stack
 
-* React
-* TypeScript
-* Vite
+- React
+- TypeScript
+- Vite
 
 ## Getting Started
 
