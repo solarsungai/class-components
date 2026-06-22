@@ -63,8 +63,9 @@ html[data-theme='dark'],
   max-width: 980px;
   margin: 0 auto;
   padding: 28px 20px 40px;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  grid-template-rows: auto 1fr auto auto;
   gap: 16px;
   color: var(--text);
   font-family:
@@ -160,13 +161,28 @@ html[data-theme='dark'],
   background: #c56ff4;
 }
 
-.search-section,
+.search-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: var(--shadow-sm);
+  grid-column: 1 / -1;
+  grid-row: 1;
+}
+
 .results-section {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 18px;
   padding: 18px;
   box-shadow: var(--shadow-sm);
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.App:not(:has(.detail-panel)) .results-section {
+  grid-column: 1 / -1;
 }
 
 .search-controls {
@@ -629,6 +645,8 @@ html[data-theme='dark'],
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  grid-column: 1 / -1;
+  grid-row: 3;
 }
 
 /* ── Pagination ── */
@@ -773,6 +791,8 @@ html[data-theme='dark'],
   border-radius: 18px;
   padding: 20px 18px 18px;
   box-shadow: var(--shadow-md);
+  grid-column: 2;
+  grid-row: 2;
 }
 
 .detail-close {
@@ -790,6 +810,7 @@ html[data-theme='dark'],
   display: flex;
   align-items: center;
   justify-content: center;
+  text-decoration: none;
   transition:
     background-color 0.18s ease,
     color 0.18s ease,
@@ -986,6 +1007,8 @@ html[data-theme='dark'],
   width: 100%;
   margin-bottom: -40px;
   animation: flyout-enter 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  grid-column: 1 / -1;
+  grid-row: 4;
 }
 
 .flyout-box--hiding {
@@ -1118,6 +1141,8 @@ html[data-theme='dark'],
 @media (max-width: 768px) {
   .App {
     padding: 16px 14px 28px;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto auto;
   }
 
   .flyout-box {
@@ -1138,8 +1163,23 @@ html[data-theme='dark'],
     grid-template-columns: 1fr;
   }
 
-  .content-row {
-    flex-direction: column;
+  .results-section {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .detail-panel {
+    grid-column: 1;
+    grid-row: 3;
+    position: relative;
+  }
+
+  .tools-row {
+    grid-row: 4;
+  }
+
+  .flyout-box {
+    grid-row: 5;
   }
 
   .split-view {
@@ -1159,7 +1199,7 @@ html[data-theme='dark'],
   }
 }
 
-/* ── Dark theme overrides for hard-coded colours ── */
+/* ── Dark theme ── */
 
 [data-theme='dark'] body,
 [data-theme='dark'] {

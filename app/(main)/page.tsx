@@ -67,7 +67,7 @@ function MainPage() {
   };
 
   return (
-    <div className="App">
+    <>
       <SearchSection initialValue={initialSearchValue} handleSearch={handleSearch} error={error} />
       <ResultsSection
         handleCloseDetails={handleCloseDetails}
@@ -86,7 +86,7 @@ function MainPage() {
         error={error}
       />
       <Flyout />
-    </div>
+    </>
   );
 }
 
